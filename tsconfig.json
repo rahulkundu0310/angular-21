@@ -1,6 +1,6 @@
 /**
- * Defines TypeScript configuration by setting compiler options and build settings for Angular application development workflow.
- * Processes configuration with type checking and module resolution to maintain consistent code analysis within the application.
+ * Defines TypeScript architecture by establishing compiler options and build variables for project development workflows.
+ * Processes preferences with type checking and module resolutions to maintain consistent validity within the application.
  *
  * @since 01 December 2025
  * @author Rahul Kundu

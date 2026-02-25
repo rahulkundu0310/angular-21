@@ -9,8 +9,8 @@ import pluginImport from 'eslint-plugin-import';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 /**
- * Defines workspace linting configuration by extending base defaults and assigning quality rules for the review workflow.
- * Processes linting configuration with rules and formatting to maintain consistent source quality within the application.
+ * Defines workspace linting guidelines by extending base defaults and establishing strict rules for the review workflows.
+ * Processes configuration with coding standards and output formatting to maintain coherent source within the application.
  *
  * @since 01 December 2025
  * @author Rahul Kundu

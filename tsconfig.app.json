@@ -1,6 +1,6 @@
 /**
- * Defines TypeScript application configuration by extending base settings and setting build parameters for production bundling.
- * Processes configuration with output directories and file inclusion to maintain consistent build cycle within the application.
+ * Defines TypeScript properties by extending base defaults and establishing compiling parameters for production bundling.
+ * Processes references with output directories and file inclusions to maintain uniform lifecycles within the application.
  *
  * @since 01 December 2025
  * @author Rahul Kundu
