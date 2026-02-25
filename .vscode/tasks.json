@@ -1,5 +1,4 @@
 {
-	// For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
 	"version": "2.0.0",
 	"tasks": [
 		{
@@ -7,8 +6,8 @@
 			"script": "start",
 			"isBackground": true,
 			"problemMatcher": {
-				"owner": "typescript",
 				"pattern": "$tsc",
+				"owner": "typescript",
 				"background": {
 					"activeOnStart": true,
 					"beginsPattern": {
@@ -25,8 +24,8 @@
 			"script": "test",
 			"isBackground": true,
 			"problemMatcher": {
-				"owner": "typescript",
 				"pattern": "$tsc",
+				"owner": "typescript",
 				"background": {
 					"activeOnStart": true,
 					"beginsPattern": {

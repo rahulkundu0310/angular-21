@@ -8,6 +8,13 @@ import { defineConfig } from 'eslint/config';
 import pluginImport from 'eslint-plugin-import';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
+/**
+ * Defines workspace linting configuration by extending base defaults and assigning quality rules for the review workflow.
+ * Processes linting configuration with rules and formatting to maintain consistent source quality within the application.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 export default defineConfig([
 	// Excludes build output and tooling folders from lint passes to save time
 	{ ignores: ['dist', '.angular', 'node_modules', 'coverage'] },
@@ -82,6 +89,8 @@ export default defineConfig([
 			'jsdoc/require-returns-type': 'off'
 		}
 	},
+
+	// Enables console restrictions exclusively for the dedicated service file
 	{
 		files: ['**/services/logger.ts'],
 		rules: {
@@ -102,6 +111,8 @@ export default defineConfig([
 			]
 		}
 	},
+
+	// Scans HTML files with template quality guards and strict equality check
 	{
 		files: ['**/*.html'],
 		extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],

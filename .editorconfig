@@ -1,6 +1,7 @@
-# Editor configuration, see https://editorconfig.org
+# Applies universal baseline formatting rules across every file in project
 root = true
 
+# Defines indentation charset line endings and whitespace across all files
 [*]
 charset = utf-8
 indent_size = 4
@@ -9,10 +10,12 @@ indent_style = tab
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# Restricts TypeScript to single quotes and disables double quote in files
 [*.ts]
 quote_type = single
 ij_typescript_use_double_quotes = false
 
+# Disables trailing whitespace trimming and removes line length boundaries
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
