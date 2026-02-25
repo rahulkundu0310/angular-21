@@ -1,0 +1,62 @@
+{
+	// Set general editor tab size and enable format-on-save features
+	"files.eol": "\n",
+	"editor.tabSize": 4,
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"editor.cursorBlinking": "expand",
+	"github.copilot.enable": { "*": false },
+	"editor.cursorSmoothCaretAnimation": "on",
+
+	// Configure Prettier formatting rules for consistent code style
+	"prettier.semi": true,
+	"prettier.useTabs": true,
+	"prettier.printWidth": 100,
+	"prettier.singleQuote": true,
+	"prettier.proseWrap": "always",
+	"prettier.requireConfig": false,
+	"prettier.bracketSpacing": true,
+	"prettier.trailingComma": "none",
+
+	// Set Tailwind CSS root font size to 10 for predictable rem scaling
+	"tailwindCSS.rootFontSize": 10,
+
+	// Disable compact folder display in the VS Code explorer sidebar
+	"explorer.compactFolders": false,
+
+	// Ignore lint warnings for unknown CSS / SCSS at-rules in projects
+	"css.lint.unknownAtRules": "ignore",
+	"scss.lint.unknownAtRules": "ignore",
+
+	// Enable ESLint flat config and auto-fix lint errors on editor save
+	"eslint.useFlatConfig": true,
+	"editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
+
+	// Associate *.yml / *.yaml files with the YAML language mode
+	"files.associations": {
+		"*.yml": "yaml",
+		"*.yaml": "yaml"
+	},
+
+	// Configure Prettier as default formatter for core front-end languages
+	"[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+	"[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+	"[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+	"[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+	"[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+
+	// Disable format-on-save and paste for Markdown to avoid auto-format
+	"[markdown]": {
+		"editor.formatOnSave": false,
+		"editor.formatOnPaste": false,
+		"editor.defaultFormatter": null
+	},
+
+	// Set YAML-specific indentation and spacing preferences in the editor
+	"[yaml]": {
+		"editor.tabSize": 4,
+		"editor.insertSpaces": true,
+		"editor.autoIndent": "none",
+		"editor.detectIndentation": true
+	}
+}

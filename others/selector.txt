@@ -1,0 +1,194 @@
+import { isArray } from 'lodash-es';
+import type { TRecord } from '@shared/types';
+import { computed, type Signal } from '@angular/core';
+import {
+    getEventType,
+    type IRequestSnapshot,
+    type TRequestStatusEvent
+} from './with-request-status';
+
+// --- Types ---
+
+export type TRequestStatusEvents = TRequestStatusEvent | TRequestStatusEvent[];
+
+export interface IRequestStatusStore {
+    requestStatus: Signal<TRecord<IRequestSnapshot>>;
+}
+
+export interface IRequestStatusSource {
+    store: IRequestStatusStore;
+    events: TRequestStatusEvents;
+}
+
+// --- Implementation ---
+
+/**
+ * Tracks active request status for one or more store/event sources.
+ * Returns the first active (loading/error) snapshot found, or the first idle one.
+ */
+export function selectRequestStatus(
+    input: IRequestStatusSource | IRequestStatusSource[]
+): Signal<IRequestSnapshot> {
+
+    // 1. Normalize Input: Always work with an array of sources
+    const sources = isArray(input) ? input : [input];
+
+    // 2. Normalize Selectors: Flatten all sources into simple { store, eventKey } pairs
+    const selectors = sources.flatMap(source => {
+        const events = isArray(source.events) ? source.events : [source.events];
+        return events.map(event => ({ store: source.store, event: getEventType(event) }));
+    });
+
+    if (selectors.length === 0) {
+        throw new Error('selectRequestStatus: No events provided to track.');
+    }
+
+    // 3. Compute Status
+    return computed(() => {
+        // Priority Check: Return first non-idle status (Loading/Error/Success)
+        for (const { store, event } of selectors) {
+            const snapshot = store.requestStatus()[event];
+            if (!snapshot.isIdle) return snapshot;
+        }
+
+        // Fallback: Return the idle state of the very first event
+        const first = selectors[0];
+        return first.store.requestStatus()[first.event];
+    });
+}
+
+
+// Situation 1 - Track a single event on one store
+readonly requestStatus = selectRequestStatus<TAuthEvent>(this.authStore, authEvents.SIGN_IN);
+  
+// Situation 2 - Track multiple events on the same store
+readonly requestStatus = selectRequestStatus<TAuthEvent>(this.authStore, [authEvents.SIGN_IN, authEvents.SIGN_OUT]);
+
+// Situation 3 - Track multiple stores with their respective events
+readonly requestStatus = selectRequestStatus<TAuthEvent>([
+	{ store: this.authStore, events: authEvents.SIGN_IN },
+	{ store: this.authStore, events: [authEvents.FORGOT_PASSWORD, authEvents.SIGN_OUT] }
+]);
+
+// Situation 3 - Track multiple stores with their respective events
+readonly requestStatus = selectRequestStatus<WHATWILLBETHEYPEHERE>([
+	{ store: this.userStore, events: userEvents.FETCH_USER },
+	{ store: this.roleStore, events: roleEvents.FETCH_MASTER_ROLES] }
+]);
+
+type TFeatureEvents = Pick<TUserEvents, 'FETCH_USER'> & Pick<TRoleEvents, 'FETCH_MASTER_ROLES'>;
+
+
+readonly requestStatus = selectRequestStatus<WHATWILLBETHEYPEHERE>([
+	{ store: this.roleStore, events: roleEvents.FETCH_MASTER_ROLES] },
+	{ store: this.userStore, events: [userEvents.FETCH_USERS, userEvents.FETCH_USER, userEvents.DELETE_USER] },
+]);
+
+private requestStatusEffect = effect(() => {
+	const {event, status, message, data} = this.requestStatus();
+	
+	untracked(() => {
+		if (status === 'idle') return;
+
+		if (status === 'pending') {
+			// Start loader
+			return;
+		}
+
+		if (status === 'rejected') {
+			// Hide loader
+			// Show Toast
+			return;
+		}
+
+		// Success block
+		switch (event) {
+			case userEvents.FETCH_USER:
+				this.property.update((value) => ({..value, isUserLoaded: true}))
+				break
+			case userEvents.FETCH_MASTER_ROLES:
+				this.property.update((value) => ({..value, isRolesLoaded: true}))
+			default:
+				break;
+		}
+	})
+});
+
+
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { UserStore } from './user.store';
+import { RoleStore } from './role.store';
+import { userEvents } from './user.events';
+import { roleEvents } from './role.events';
+import { selectRequestStatus } from './shared/request-status.feature'; // Your utility
+
+// 1. Strict Union Type for keys
+type PageTaskEvents = 
+  | typeof userEvents.FETCH_USER 
+  | typeof roleEvents.FETCH_MASTER_ROLES;
+
+@Component({
+  selector: 'app-user-manage',
+  template: `...`,
+  providers: [UserStore, RoleStore]
+})
+export class UserManageComponent {
+  readonly userStore = inject(UserStore);
+  readonly roleStore = inject(RoleStore);
+
+  // 2. The Tracker Signal (Strictly Typed)
+  // null = Idle. Record = Tracking.
+  private readonly activeTasks = signal<Record<PageTaskEvents, boolean> | null>(null);
+
+  // 3. Monitor specific events from both stores
+  readonly requestStatus = selectRequestStatus([
+    { store: this.roleStore, events: [roleEvents.FETCH_MASTER_ROLES] },
+    { store: this.userStore, events: [userEvents.FETCH_USER] },
+  ]);
+
+  constructor() {
+    effect(() => {
+      const { event, status } = this.requestStatus();
+
+      untracked(() => {
+        // Guard: Exit if not success or if we aren't tracking anything
+        if (status !== 'success' || !this.activeTasks()) return;
+
+        // A. Update Step (One-liner)
+        // We know 'activeTasks' is not null here. We explicitly cast 'event' to keep TS happy 
+        // if your selectRequestStatus returns generic strings.
+        this.activeTasks.update((tasks) => ({ 
+          ...tasks!, 
+          [event]: true 
+        }));
+
+        // B. Completion Check
+        // Read the *updated* value immediately
+        const currentTasks = this.activeTasks();
+        
+        // If all values in the object are TRUE
+        if (currentTasks && Object.values(currentTasks).every(Boolean)) {
+          this.openDrawer();
+          this.activeTasks.set(null); // Reset to IDLE
+        }
+      });
+    });
+  }
+
+  onEditUserClick(userId: string) {
+    // 4. Initialize & Start
+    // Define the specific dependencies for this action inline.
+    this.activeTasks.set(Object.fromEntries([
+      [userEvents.FETCH_USER, false],
+      [roleEvents.FETCH_MASTER_ROLES, false]
+    ]) as Record<PageTaskEvents, boolean>);
+
+    // Fire the requests
+    this.userStore.fetchUser({ id: userId });
+    this.roleStore.fetchMasterRoles();
+  }
+
+  openDrawer() {
+    console.log('All Dependencies Resolved. Opening UI.');
+  }
+}

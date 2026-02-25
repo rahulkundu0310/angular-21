@@ -1,0 +1,27 @@
+/**
+ * Defines TypeScript application configuration by extending base settings and setting build parameters for production bundling.
+ * Processes configuration with output directories and file inclusion to maintain consistent build cycle within the application.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"types": ["node"],
+		"outDir": "./out-tsc/app",
+		"paths": {
+			"@/*": ["./*"],
+			"@app/*": ["src/app/*"],
+			"@store*": ["src/app/store"],
+			"@core/*": ["src/app/core/*"],
+			"@store/*": ["src/app/store/*"],
+			"@configs": ["src/app/configs"],
+			"@pages/*": ["src/app/pages/*"],
+			"@env/*": ["src/environments/*"],
+			"@shared/*": ["src/app/shared/*"]
+		}
+	},
+	"exclude": ["src/**/*.spec.ts"],
+	"include": ["src/**/*.ts", "src/**/*.d.ts"]
+}

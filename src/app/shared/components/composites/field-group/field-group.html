@@ -1,0 +1,77 @@
+@let fieldConfig = config();
+@let fieldInstance = field();
+@let fieldHint = config().hint;
+@let fieldError = validationState();
+@let fieldLabelId = fieldConfig.inputId + '-label';
+
+<div
+	role="group"
+	class="field-group"
+	[class]="groupClasses()"
+	[style]="fieldConfig.style ?? null"
+	[class.form-group-invalid]="hasValidationError()"
+	[attr.aria-labelledby]="fieldConfig.label ? fieldLabelId : null"
+	[class.form-group-filled]="fieldInstance ? !!fieldInstance().value() : false"
+>
+	@if (!!fieldConfig.label) {
+		<label class="field-label" [attr.id]="fieldLabelId" [attr.for]="fieldConfig.inputId">
+			{{ fieldConfig.label }}
+
+			@if (isRequired()) {
+				<sup class="field-asterisk" aria-label="required">*</sup>
+			}
+
+			@if (!!fieldHint) {
+				@if (!!fieldHint.label) {
+					<em
+						class="field-hint-label"
+						[attr.role]="fieldHint.ariaRole ?? null"
+						[attr.aria-label]="fieldHint.ariaLabel ?? null"
+					>
+						({{ fieldHint.label }})
+					</em>
+				} @else if (!!fieldHint.tooltip) {
+					<span
+						role="img"
+						class="field-hint-badge"
+						[tooltipStyleClass]="'tooltip'"
+						[pTooltip]="fieldHint.tooltip"
+						[tooltipPosition]="fieldHint.tooltipPosition ?? 'top'"
+						[tooltipDisabled]="!fieldHint.tooltip || !!fieldConfig.disabled"
+						[attr.aria-label]="
+							fieldHint.ariaLabel || fieldHint.tooltip || 'Help information'
+						"
+					>
+						<lucide-icon name="info" [size]="14" />
+					</span>
+				}
+			}
+		</label>
+	}
+
+	<div class="field-affix" [class]="fieldConfig.affixStyleClass ?? null">
+		<ng-content />
+
+		@if (fieldInstance?.()?.pending()) {
+			<div class="field-pending">
+				<p-progressSpinner
+					[strokeWidth]="'4'"
+					[class]="'field-spinner'"
+					[animationDuration]="'2.5s'"
+					[attr.aria-label]="'Field is loading'"
+				/>
+			</div>
+		}
+	</div>
+
+	@if (fieldConfig.enableValidation && hasValidationError() && !!fieldError) {
+		<div
+			role="alert"
+			class="field-feedback"
+			[attr.id]="fieldError.id"
+			[attr.aria-live]="fieldError.ariaLive"
+		>
+			<p>{{ fieldError.message }}</p>
+		</div>
+	}
+</div>

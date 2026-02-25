@@ -1,0 +1,14 @@
+<section
+	role="status"
+	aria-live="polite"
+	class="empty-state"
+	[attr.aria-label]="`Empty state: ${message()}`"
+>
+	@if (!!icon()) {
+		<div class="empty-state-icon" aria-hidden="true">
+			<lucide-icon [name]="icon()!" [size]="iconSize()" [strokeWidth]="iconStrokeWidth()" />
+		</div>
+	}
+
+	<p class="empty-state-message">{{ message() }}</p>
+</section>

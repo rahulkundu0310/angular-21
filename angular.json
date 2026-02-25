@@ -1,0 +1,180 @@
+{
+	"version": 1,
+	"newProjectRoot": "projects",
+	"cli": {
+		"packageManager": "npm",
+		"schematicCollections": ["angular-eslint"]
+	},
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"projects": {
+		"angular-21": {
+			"root": "",
+			"prefix": "",
+			"sourceRoot": "src",
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:pipe": {
+					"skipTests": true
+				},
+				"@schematics/angular:class": {
+					"skipTests": true
+				},
+				"@schematics/angular:guard": {
+					"skipTests": true
+				},
+				"@schematics/angular:service": {
+					"skipTests": true
+				},
+				"@schematics/angular:resolver": {
+					"skipTests": true
+				},
+				"@schematics/angular:directive": {
+					"skipTests": true
+				},
+				"@schematics/angular:interceptor": {
+					"skipTests": true
+				},
+				"@schematics/angular:component": {
+					"style": "scss",
+					"skipTests": true,
+					"inlineStyle": false,
+					"displayBlock": true,
+					"inlineTemplate": false,
+					"changeDetection": "OnPush"
+				}
+			},
+			"architect": {
+				"build": {
+					"builder": "@angular/build:application",
+					"options": {
+						"browser": "src/main.ts",
+						"tsConfig": "tsconfig.app.json",
+						"outputPath": {
+							"browser": "",
+							"base": "dist"
+						},
+						"assets": [
+							{
+								"glob": "**/*",
+								"input": "public"
+							}
+						],
+						"styles": ["public/scss/main.scss", "src/styles.scss"],
+						"allowedCommonJsDependencies": ["buffer", "webfontloader"],
+						"stylePreprocessorOptions": {
+							"includePaths": ["public/scss"]
+						}
+					},
+					"configurations": {
+						"production": {
+							"aot": true,
+							"sourceMap": false,
+							"namedChunks": false,
+							"optimization": true,
+							"extractLicenses": true,
+							"deleteOutputPath": true,
+							"outputHashing": "bundles",
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumError": "6MB",
+									"maximumWarning": "4MB"
+								},
+								{
+									"type": "bundle",
+									"maximumError": "6MB",
+									"maximumWarning": "4MB"
+								},
+								{
+									"type": "all",
+									"maximumError": "12MB",
+									"maximumWarning": "8MB"
+								},
+								{
+									"maximumError": "150KB",
+									"maximumWarning": "100KB",
+									"type": "anyComponentStyle"
+								}
+							]
+						},
+						"staging": {
+							"aot": true,
+							"sourceMap": false,
+							"namedChunks": false,
+							"optimization": true,
+							"extractLicenses": true,
+							"deleteOutputPath": true,
+							"outputHashing": "bundles",
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumError": "6MB",
+									"maximumWarning": "4MB"
+								},
+								{
+									"type": "bundle",
+									"maximumError": "6MB",
+									"maximumWarning": "4MB"
+								},
+								{
+									"type": "all",
+									"maximumError": "12MB",
+									"maximumWarning": "8MB"
+								},
+								{
+									"maximumError": "150KB",
+									"maximumWarning": "100KB",
+									"type": "anyComponentStyle"
+								}
+							],
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.staging.ts"
+								}
+							]
+						},
+						"development": {
+							"sourceMap": true,
+							"namedChunks": true,
+							"optimization": false,
+							"outputHashing": "none",
+							"extractLicenses": false,
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.development.ts"
+								}
+							]
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"options": {
+						"port": 5454
+					},
+					"defaultConfiguration": "development",
+					"builder": "@angular/build:dev-server",
+					"configurations": {
+						"production": {
+							"buildTarget": "angular-21:build:production"
+						},
+						"development": {
+							"buildTarget": "angular-21:build:development"
+						}
+					}
+				},
+				"test": {
+					"builder": "@angular/build:unit-test"
+				},
+				"lint": {
+					"builder": "@angular-eslint/builder:lint",
+					"options": {
+						"lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+					}
+				}
+			}
+		}
+	}
+}

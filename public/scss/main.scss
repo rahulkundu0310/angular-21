@@ -1,0 +1,18 @@
+// Includes immutable configuration values and static shared tools styling
+@use 'abstracts/mixins';
+@use 'abstracts/variables';
+@use 'abstracts/functions';
+
+// Includes standard browser defaults and global typography system styling
+@use 'base/reset';
+@use 'base/fonts';
+@use 'base/icons';
+@use 'base/typography';
+
+// Includes structural layout grid system and generic form pattern styling
+@use 'layouts/grid';
+@use 'layouts/forms';
+@use 'layouts/container';
+
+// Includes external third party library assets and vendor package styling
+@use 'vendors/primeng';

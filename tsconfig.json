@@ -1,0 +1,77 @@
+/**
+ * Defines TypeScript configuration by setting compiler options and build settings for Angular application development workflow.
+ * Processes configuration with type checking and module resolution to maintain consistent code analysis within the application.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+{
+	"compileOnSave": false,
+	"compilerOptions": {
+		/* JavaScript language and environment options */
+		"target": "ES2022",
+		"module": "preserve",
+		"skipLibCheck": true,
+		"experimentalDecorators": true,
+		"useDefineForClassFields": false,
+		"lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+		/* Module resolution and bundling */
+		"baseUrl": "./",
+		"allowJs": true,
+		"sourceMap": false,
+		"declaration": false,
+		"importHelpers": true,
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"moduleResolution": "bundler",
+
+		/* Interop and compatibility */
+		"esModuleInterop": true,
+		"downlevelIteration": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+
+		/* Linting and strict checks */
+		"strict": true,
+		"noImplicitReturns": true,
+		"noErrorTruncation": true,
+		"noImplicitOverride": true,
+		"noFallthroughCasesInSwitch": true,
+		"noPropertyAccessFromIndexSignature": true,
+
+		/* Advanced type safety and validation */
+		"alwaysStrict": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": false,
+		"allowUnusedLabels": false,
+		"noUnusedParameters": false,
+		"allowUnreachableCode": false,
+
+		/* Alias imports */
+		"paths": {
+			"@/*": ["./*"],
+			"@app/*": ["src/app/*"],
+			"@store*": ["src/app/store"],
+			"@core/*": ["src/app/core/*"],
+			"@store/*": ["src/app/store/*"],
+			"@configs": ["src/app/configs"],
+			"@pages/*": ["src/app/pages/*"],
+			"@env/*": ["src/environments/*"],
+			"@shared/*": ["src/app/shared/*"]
+		}
+	},
+	"angularCompilerOptions": {
+		/* Angular template and injection strictness */
+		"strictTemplates": true,
+		"typeCheckHostBindings": true,
+		"strictInjectionParameters": true,
+		"strictInputAccessModifiers": true,
+
+		/* Angular i18n options */
+		"enableI18nLegacyMessageIdFormat": false
+	},
+	"files": [],
+	"references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.spec.json" }]
+}

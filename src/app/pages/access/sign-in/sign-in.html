@@ -1,0 +1,44 @@
+<form novalidate (submit)="signInOnSubmit($event)">
+	<field-group
+		[submitted]="submitted()"
+		[field]="signInForm.email"
+		[config]="{
+			inputId: 'email',
+			label: 'Email Address'
+		}"
+	>
+		<input
+			trimInput
+			id="email"
+			type="email"
+			preventAutofill
+			class="field-control"
+			[formField]="signInForm.email"
+			placeholder="Enter Email Address"
+			aria-describedby="email-hint email-error"
+		/>
+	</field-group>
+	<field-group
+		[submitted]="submitted()"
+		[field]="signInForm.password"
+		[config]="{
+			label: 'Password',
+			inputId: 'password'
+		}"
+	>
+		<input
+			trimInput
+			id="password"
+			type="password"
+			preventAutofill
+			class="field-control"
+			placeholder="Enter Password"
+			[formField]="signInForm.password"
+			aria-describedby="password-hint password-error"
+		/>
+	</field-group>
+	<button type="submit">Sign In</button>
+	<a [routerLink]="['/forgot-password']">Forgot Password?</a>
+</form>
+<p>Email: {{ signInForm.email().value() }}</p>
+<p>Password: {{ signInForm.password().value() }}</p>

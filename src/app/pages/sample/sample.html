@@ -1,0 +1,101 @@
+<div class="nav-test-container">
+	<h2 class="nav-test-title">Route Navigation Test</h2>
+
+	<ul class="vbar-menu" role="menubar" aria-label="Primary navigation">
+		@for (menuItem of menuItems(); track $index) {
+			@let subItems = menuItem.items;
+
+			@if (!subItems?.length) {
+				<li
+					class="vbar-item"
+					[class]="menuItem.styleClass ?? ''"
+					[routerLinkActive]="'vbar-item-active'"
+					[routerLinkActiveOptions]="{ exact: false }"
+				>
+					<a
+						role="menuitem"
+						class="vbar-link"
+						[routerLink]="menuItem.routerLink"
+						[queryParams]="menuItem.queryParams"
+						[queryParamsHandling]="menuItem.queryParamsHandling"
+						[attr.aria-label]="menuItem.label"
+					>
+						<lucide-angular
+							aria-hidden="true"
+							[name]="menuItem.icon"
+							[size]="menuItem.iconSize"
+							class="vbar-icon"
+						/>
+						<span class="vbar-label">
+							{{ menuItem.label }}
+						</span>
+					</a>
+				</li>
+			} @else {
+				<li class="vbar-item" [class]="menuItem.expanded ? 'vbar-item-expanded' : ''">
+					<button
+						type="button"
+						class="vbar-toggle"
+						aria-haspopup="true"
+						(click)="onToggleMenuItem(menuItem)"
+						[attr.aria-expanded]="menuItem.expanded"
+					>
+						<lucide-angular
+							class="vbar-icon"
+							aria-hidden="true"
+							[name]="menuItem.icon"
+							[size]="menuItem.iconSize"
+						/>
+						<span class="vbar-label">
+							{{ menuItem.label }}
+						</span>
+						<lucide-icon
+							[size]="16"
+							aria-hidden="true"
+							name="chevron-right"
+							class="vbar-toggle-icon"
+						/>
+					</button>
+
+					@if (menuItem.expanded) {
+						<div class="vbar-submenu-panel">
+							<ul
+								class="vbar-submenu"
+								role="menu"
+								[attr.aria-label]="menuItem.label + ' submenu'"
+							>
+								@for (subItem of subItems; track $index) {
+									<li
+										class="vbar-subitem"
+										[class]="subItem.styleClass ?? ''"
+										[routerLinkActive]="'vbar-subitem-active'"
+										[routerLinkActiveOptions]="{ exact: false }"
+									>
+										<a
+											role="menuitem"
+											class="vbar-sublink"
+											[routerLink]="subItem.routerLink"
+											[queryParams]="subItem.queryParams"
+											[queryParamsHandling]="subItem.queryParamsHandling"
+											[attr.aria-label]="subItem.label"
+										>
+											<lucide-angular
+												class="vbar-icon"
+												aria-hidden="true"
+												[name]="subItem.icon"
+												[size]="subItem.iconSize"
+											/>
+											<span class="vbar-sublabel">
+												{{ subItem.label }}
+											</span>
+										</a>
+									</li>
+								}
+							</ul>
+						</div>
+					}
+				</li>
+			}
+		}
+	</ul>
+</div>

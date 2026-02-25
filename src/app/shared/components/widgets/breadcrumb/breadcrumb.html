@@ -1,0 +1,82 @@
+@let showBreadcrumbs = requireMultiple() ? breadcrumbs().length > 1 : !!breadcrumbs().length;
+
+@if (showBreadcrumbs) {
+	<nav class="breadcrumb-trail" role="navigation" aria-label="Breadcrumb navigation">
+		<ol class="breadcrumb" role="list" aria-label="Navigation path">
+			@for (breadcrumb of breadcrumbs(); track breadcrumb.routerLink; let last = $last) {
+				@let breadcrumbLabel = breadcrumb.label;
+				@let breadcrumbDisabled = breadcrumb.disabled;
+
+				<li
+					role="listitem"
+					class="breadcrumb-item"
+					[class.breadcrumb-active]="last"
+					[class.breadcrumb-home]="breadcrumb.home"
+					[attr.aria-current]="last ? 'page' : null"
+					[class.breadcrumb-disabled]="breadcrumbDisabled"
+				>
+					@if (!last && !breadcrumbDisabled) {
+						<a
+							role="link"
+							class="breadcrumb-link"
+							[routerLink]="[breadcrumb.routerLink]"
+							[queryParams]="breadcrumb.queryParams"
+							[attr.aria-label]="`Navigate to ${breadcrumbLabel}`"
+							[queryParamsHandling]="breadcrumb.queryParamsHandling"
+						>
+							<ng-container
+								[ngTemplateOutlet]="breadcrumbContent"
+								[ngTemplateOutletContext]="{ breadcrumb, last }"
+							/>
+						</a>
+					} @else if (!last && breadcrumbDisabled) {
+						<a
+							tabindex="-1"
+							aria-disabled="true"
+							class="breadcrumb-link"
+							[attr.aria-label]="breadcrumbLabel"
+						>
+							<ng-container
+								[ngTemplateOutlet]="breadcrumbContent"
+								[ngTemplateOutletContext]="{ breadcrumb, last }"
+							/>
+						</a>
+					} @else {
+						<ng-container
+							[ngTemplateOutlet]="breadcrumbContent"
+							[ngTemplateOutletContext]="{ breadcrumb, last }"
+						/>
+					}
+				</li>
+
+				@if (!last) {
+					<li role="listitem" class="breadcrumb-separator" aria-hidden="true">
+						<span aria-hidden="true">/</span>
+					</li>
+				}
+			}
+		</ol>
+	</nav>
+}
+
+<ng-template #breadcrumbContent let-breadcrumb="breadcrumb" let-last="last">
+	@let breadcrumbLabel = breadcrumb.label;
+	@let breadcrumbIcon = breadcrumb.icon ?? (breadcrumb.home ? 'house' : null);
+
+	@if (!!breadcrumbIcon) {
+		<lucide-icon
+			role="img"
+			class="breadcrumb-icon"
+			[name]="breadcrumbIcon"
+			[size]="breadcrumb.iconSize ?? 16"
+		/>
+	}
+
+	<span
+		class="breadcrumb-label"
+		[attr.aria-current]="last ? 'page' : null"
+		[attr.aria-label]="last ? `Current page: ${breadcrumbLabel}` : breadcrumbLabel"
+	>
+		{{ breadcrumb.label }}
+	</span>
+</ng-template>

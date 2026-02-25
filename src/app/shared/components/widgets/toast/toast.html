@@ -1,0 +1,78 @@
+<div
+	role="alert"
+	class="toast"
+	[attr.data-id]="id()"
+	[attr.data-type]="type()"
+	[class]="`toast-${type()}`"
+>
+	<div class="toast-metadata">
+		<div class="toast-icon" [attr.data-icon]="'true'" aria-hidden="true">
+			@switch (type()) {
+				@case ('info') {
+					<span class="material-icons">info</span>
+				}
+				@case ('error') {
+					<span class="material-icons">error</span>
+				}
+				@case ('warning') {
+					<span class="material-icons">warning</span>
+				}
+				@case ('success') {
+					<span class="material-icons">check_circle</span>
+				}
+				@case ('loading') {
+					<span class="material-icons">progress_activity</span>
+				}
+			}
+		</div>
+
+		<div class="toast-content">
+			<div class="toast-message" [attr.data-message]="'true'">
+				{{ message() }}
+			</div>
+			@if (!!description()) {
+				<div class="toast-description" [attr.data-description]="'true'">
+					{{ description() }}
+				</div>
+			}
+		</div>
+	</div>
+
+	<div class="toast-actions">
+		@if (action(); as action) {
+			<button
+				type="button"
+				[attr.data-button]="true"
+				(click)="action.onClick($event)"
+				[attr.aria-label]="action.label"
+				class="toast-button toast-button-action"
+			>
+				{{ action.label }}
+			</button>
+		}
+
+		@if (cancel(); as cancel) {
+			<button
+				type="button"
+				[attr.data-cancel]="true"
+				(click)="cancel.onClick($event)"
+				[attr.aria-label]="cancel.label"
+				class="toast-button toast-button-cancel"
+			>
+				{{ cancel.label }}
+			</button>
+		}
+
+		@if (dismissible()) {
+			<button
+				type="button"
+				aria-label="Close toast"
+				[attr.data-close-button]="true"
+				(click)="state().dismiss(id())"
+				class="toast-button toast-button-close"
+			>
+				<span class="material-icons">close</span>
+			</button>
+		}
+	</div>
+</div>

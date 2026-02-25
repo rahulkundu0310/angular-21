@@ -1,0 +1,124 @@
+@let actionConfig = config();
+@let actionIconConfig = actionConfig.icon;
+@let actionLinkConfig = actionConfig.link;
+@let actionRouterConfig = actionConfig.router;
+
+@switch (actionMode()) {
+	@case ('link') {
+		<a
+			class="action"
+			[class]="actionClasses()"
+			(blur)="blurred.emit($event)"
+			(focus)="focused.emit($event)"
+			(click)="clicked.emit($event)"
+			[href]="actionLinkConfig!.url"
+			[target]="actionLinkConfig!.target"
+			[style]="actionConfig.style ?? null"
+			[attr.aria-disabled]="actionConfig.disabled"
+			[attr.role]="actionConfig.ariaRole ?? 'link'"
+			[attr.tabindex]="actionConfig.tabindex ?? null"
+			[attr.aria-current]="actionConfig.ariaCurrent ?? null"
+			[attr.aria-describedby]="actionConfig.ariaDescribedby ?? null"
+			[attr.aria-label]="actionConfig.ariaLabel ?? actionConfig.label"
+		>
+			<ng-container [ngTemplateOutlet]="actionContent" />
+		</a>
+	}
+
+	@case ('router') {
+		<a
+			class="action"
+			[class]="actionClasses()"
+			(blur)="blurred.emit($event)"
+			(focus)="focused.emit($event)"
+			(click)="clicked.emit($event)"
+			[state]="actionRouterConfig!.state"
+			[routerLinkActive]="'action-active'"
+			[style]="actionConfig.style ?? null"
+			[fragment]="actionRouterConfig!.fragment"
+			[attr.aria-disabled]="actionConfig.disabled"
+			[attr.role]="actionConfig.ariaRole ?? 'link'"
+			[replaceUrl]="actionRouterConfig!.replaceUrl"
+			[routerLink]="actionRouterConfig!.routerLink"
+			[attr.tabindex]="actionConfig.tabindex ?? null"
+			[queryParams]="actionRouterConfig!.queryParams"
+			[attr.aria-current]="actionConfig.ariaCurrent ?? null"
+			[preserveFragment]="actionRouterConfig!.preserveFragment"
+			[skipLocationChange]="actionRouterConfig!.skipLocationChange"
+			[attr.aria-describedby]="actionConfig.ariaDescribedby ?? null"
+			[queryParamsHandling]="actionRouterConfig!.queryParamsHandling"
+			[attr.aria-label]="actionConfig.ariaLabel ?? actionConfig.label"
+			[routerLinkActiveOptions]="actionRouterConfig!.routerLinkActiveOptions"
+		>
+			<ng-container [ngTemplateOutlet]="actionContent" />
+		</a>
+	}
+
+	@default {
+		<button
+			class="action"
+			[attr.form]="formId()"
+			[class]="actionClasses()"
+			(blur)="blurred.emit($event)"
+			(focus)="focused.emit($event)"
+			(click)="clicked.emit($event)"
+			[attr.type]="actionConfig.type"
+			[disabled]="actionConfig.disabled"
+			[style]="actionConfig.style ?? null"
+			[attr.role]="actionConfig.ariaRole ?? 'button'"
+			[attr.tabindex]="actionConfig.tabindex ?? null"
+			[attr.aria-current]="actionConfig.ariaCurrent ?? null"
+			[attr.aria-pressed]="actionConfig.ariaPressed ?? null"
+			[attr.aria-expanded]="actionConfig.ariaExpanded ?? null"
+			[attr.aria-haspopup]="actionConfig.ariaHaspopup ?? null"
+			[attr.aria-describedby]="actionConfig.ariaDescribedby ?? null"
+			[attr.aria-label]="actionConfig.ariaLabel ?? actionConfig.label"
+		>
+			<ng-container [ngTemplateOutlet]="actionContent" />
+		</button>
+	}
+}
+
+<ng-template #actionContent>
+	@if (actionConfig.loading) {
+		<div class="action-spinner">
+			<p-progressSpinner
+				[strokeWidth]="'4'"
+				[animationDuration]="'2.5s'"
+				[attr.aria-label]="'Loading'"
+				[class]="'action-spinner-icon'"
+			/>
+		</div>
+	} @else {
+		@if (!!actionIconConfig) {
+			@let actionIconClass = `action-icon-${actionIconConfig.position ?? ''}`;
+
+			<lucide-icon
+				class="action-icon"
+				[class]="actionIconClass"
+				[name]="actionIconConfig.name"
+				[size]="actionIconConfig.size"
+				[style]="actionIconConfig.style"
+				[strokeWidth]="actionIconConfig.strokeWidth"
+				[attr.aria-hidden]="actionIconConfig.ariaHidden ?? null"
+				[absoluteStrokeWidth]="actionIconConfig.absoluteStrokeWidth"
+			/>
+		}
+
+		<span
+			class="action-label"
+			[style]="actionConfig.labelStyle ?? null"
+			[class]="actionConfig.labelStyleClass ?? ''"
+		>
+			{{ actionConfig.label }}
+		</span>
+
+		@if (!!actionConfig.badge) {
+			@let actionBadgeClass = `action-badge-${actionConfig.badgeSeverity ?? 'secondary'}`;
+
+			<span class="action-badge" [class]="actionBadgeClass">
+				{{ actionConfig.badge }}
+			</span>
+		}
+	}
+</ng-template>

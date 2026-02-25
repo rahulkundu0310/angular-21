@@ -1,0 +1,15 @@
+/**
+ * Defines TypeScript testing configuration by extending base settings and specifying test parameters for unit testing workflow.
+ * Processes testing configuration with test types and output settings to maintain consistent test build within the application.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./out-tsc/spec",
+		"types": ["vitest/globals"]
+	},
+	"include": ["src/**/*.d.ts", "src/**/*.spec.ts"]
+}

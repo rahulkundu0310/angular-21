@@ -1,0 +1,21 @@
+{
+	"semi": true,
+	"tabWidth": 4,
+	"useTabs": true,
+	"printWidth": 100,
+	"singleQuote": true,
+	"proseWrap": "always",
+	"bracketSpacing": true,
+	"requireConfig": false,
+	"trailingComma": "none",
+	"editor.formatOnSave": true,
+	"jsxBracketSameLine": false,
+	"overrides": [
+		{
+			"files": "*.html",
+			"options": {
+				"parser": "angular"
+			}
+		}
+	]
+}
