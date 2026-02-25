@@ -1,5 +1,7 @@
+# Auto-detects text files and normalizes all line endings to LF throughout
 * text=auto eol=lf
 
+# Enforces consistent LF line endings across all tracked text file formats
 *.ts        text eol=lf
 *.html      text eol=lf
 *.css       text eol=lf
@@ -11,6 +13,7 @@
 *.yaml      text eol=lf
 .husky/*    text eol=lf
 
+# Preserves image and font byte integrity by treating all assets as binary
 *.png       binary
 *.jpg       binary
 *.jpeg      binary

@@ -1,17 +1,15 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
-
-# Compiled output
+# Excludes compiled build artifacts and transpiled output folders from Git
 /dist
 /tmp
 /out-tsc
 /bazel-out
 
-# Node
+# Bypasses Node runtime folder and ignores package manager error log files
 /node_modules
 npm-debug.log
 yarn-error.log
 
-# IDEs and editors
+# Ignores IDE workspace files and editor-specific config from git tracking
 .idea/
 .project
 .classpath
@@ -20,7 +18,7 @@ yarn-error.log
 .settings/
 *.sublime-workspace
 
-# Visual Studio Code
+# Retains only VS Code specific configs and excludes full history contents
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -28,7 +26,7 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
+# Covers Angular Sass caches coverage logs lock files and all test outputs
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -38,6 +36,6 @@ testem.log
 /typings
 __screenshots__/
 
-# System files
+# Strips OS-generated system metadata files that corrupt shared repository
 .DS_Store
 Thumbs.db
