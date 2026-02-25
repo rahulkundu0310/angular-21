@@ -67,9 +67,9 @@ export default defineConfig([
 
 			// JavaScript rules limit noise and enforce rigid spacing for clear output
 			curly: 'off',
-			'no-console': 'off',
 			'no-unused-vars': 'off',
 			'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
+			'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
 			'spaced-comment': ['error', 'always', { markers: ['/'], block: { balanced: true } }],
 
 			// Import order groups paths keeping stable alphabet list for rapid search
@@ -80,6 +80,26 @@ export default defineConfig([
 			'jsdoc/check-indentation': 'warn',
 			'jsdoc/require-param-type': 'off',
 			'jsdoc/require-returns-type': 'off'
+		}
+	},
+	{
+		files: ['**/services/logger.ts'],
+		rules: {
+			'no-console': [
+				'warn',
+				{
+					allow: [
+						'log',
+						'info',
+						'warn',
+						'debug',
+						'error',
+						'group',
+						'groupEnd',
+						'groupCollapsed'
+					]
+				}
+			]
 		}
 	},
 	{
