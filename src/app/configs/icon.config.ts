@@ -1,5 +1,6 @@
 import type { LucideIcons } from 'lucide-angular';
 import {
+	X,
 	Eye,
 	Info,
 	List,
@@ -25,6 +26,7 @@ import {
  * @author Rahul Kundu
  */
 export const iconConfig: LucideIcons = {
+	X,
 	Eye,
 	Info,
 	Plus,

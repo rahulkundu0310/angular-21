@@ -1,4 +1,8 @@
-<form novalidate (submit)="signInOnSubmit($event)">
+@let request = requestSnapshot();
+@let formInvalid = signInForm().invalid();
+@let signInEvent = request.event === AuthEvent.SIGN_IN;
+
+<form novalidate (submit)="attemptSignIn($event)">
 	<field-group
 		[submitted]="submitted()"
 		[field]="signInForm.email"
@@ -35,8 +39,17 @@
 			}"
 		/>
 	</field-group>
-	<button type="submit">Sign In</button>
-	<a [routerLink]="['/forgot-password']">Forgot Password?</a>
+	<a class="form-link" aria-label="Reset your password" [routerLink]="['/forgot-password']">
+		Forgot Password?
+	</a>
+	<action
+		[config]="{
+			type: 'submit',
+			label: 'Sign In',
+			ariaRole: 'button',
+			ariaLabel: 'Sign in to your account',
+			loading: request.isPending && signInEvent,
+			disabled: formInvalid || (request.isDisabled && signInEvent)
+		}"
+	/>
 </form>
-<p>Email: {{ signInForm.email().value() }}</p>
-<p>Password: {{ signInForm.password().value() }}</p>

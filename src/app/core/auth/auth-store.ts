@@ -41,7 +41,7 @@ const initialState: IAuthState = {
 
 /**
  * Defines declarative state container which centralizes reactive store management to maintain seamless state integration.
- * Provides composite interface of store properties, lifecycle hooks and executing methods to support predictable updates.
+ * Provides composite interface of store properties lifecycle hooks and executable methods to support predictable updates.
  *
  * @since 01 December 2025
  * @author Rahul Kundu
