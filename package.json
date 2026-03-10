@@ -73,7 +73,10 @@
 		"vitest": "^4.0.8"
 	},
 	"lint-staged": {
-		"*.{ts,html}": "eslint --fix",
-		"*.{css,scss,json,md,js}": "prettier --write"
+		"*.{css,scss,json,md,js}": "prettier --write",
+		"*.{ts,html}": [
+			"eslint --fix",
+			"prettier --write"
+		]
 	}
 }
