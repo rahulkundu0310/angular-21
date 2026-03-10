@@ -1,0 +1,27 @@
+<div
+	class="preloader"
+	[animate.enter]="animation() ? 'fade-in' : ''"
+	[animate.leave]="animation() ? 'fade-out' : ''"
+>
+	<div class="preloader-content">
+		<!-- Lazily renders the brand logo wrapper when the branding option is provided -->
+		@if (branding()) {
+			@defer {
+				<div class="preloader-brand">
+					<brand-logo
+						[width]="64"
+						[height]="74"
+						variant="compact"
+						[interactive]="false"
+					/>
+				</div>
+			}
+		}
+
+		<!-- Renders the feedback area containing the message and the loading indicator -->
+		<div class="preloader-feedback">
+			<p class="preloader-message">{{ message() }}</p>
+			<div class="preloader-indicator"></div>
+		</div>
+	</div>
+</div>

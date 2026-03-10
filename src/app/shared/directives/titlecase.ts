@@ -19,7 +19,7 @@ export class Titlecase {
 	 * @author Rahul Kundu
 	 */
 	@HostListener('input', ['$event'])
-	public handleFieldInput(event: Event): void {
+	protected formatToTitleCase(event: Event): void {
 		// Checks if event is trusted to prevent infinite loops from internal flow
 		if (!event.isTrusted) return;
 

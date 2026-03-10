@@ -66,7 +66,7 @@ export class DebounceInput implements OnInit {
 	 * @author Rahul Kundu
 	 */
 	@HostListener('blur', ['$event'])
-	public handleFieldBlur(event: FocusEvent): void {
+	protected processTrimmedValue(event: FocusEvent): void {
 		// Retrieves the latest value from the native input element for processing
 		const inputValue = this.ngModel.control.value ?? '';
 
@@ -87,7 +87,7 @@ export class DebounceInput implements OnInit {
 	 * @author Rahul Kundu
 	 */
 	@HostListener('paste', ['$event'])
-	public handleFieldPaste(event: ClipboardEvent): void {
+	protected processPastedContent(event: ClipboardEvent): void {
 		// Prevents default paste behavior to perform complex clipboard processing
 		event.preventDefault();
 

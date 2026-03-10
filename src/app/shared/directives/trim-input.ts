@@ -23,7 +23,7 @@ export class TrimInput {
 	 * @author Rahul Kundu
 	 */
 	@HostListener('blur', ['$event'])
-	public handleFieldBlur(event: FocusEvent): void {
+	protected normalizeInputSpacing(event: FocusEvent): void {
 		// Retrieves the latest value from the native input element for processing
 		const inputValue = this.inputInstance.value;
 
@@ -47,7 +47,7 @@ export class TrimInput {
 	 * @author Rahul Kundu
 	 */
 	@HostListener('paste', ['$event'])
-	public handleFieldPaste(event: ClipboardEvent): void {
+	protected insertTrimmedContent(event: ClipboardEvent): void {
 		// Retrieves the plain text string from clipboard safely for insertion use
 		const clipboardContent = event.clipboardData?.getData('text') ?? '';
 

@@ -2,6 +2,7 @@
 @let imageSummary = `Brand ${condensed ? 'Icon' : 'Logo'}`;
 @let imageName = `${condensed ? 'logo-icon' : 'logo'}-${mode()}.svg`;
 
+<!-- Renders the brand logo figure as either a plain image or a routable anchor -->
 <figure class="brand-logo" [class]="`brand-logo-${variant()} brand-logo-${mode()}`">
 	@if (!interactive()) {
 		<ng-container [ngTemplateOutlet]="brandImage" />
@@ -12,6 +13,7 @@
 	}
 </figure>
 
+<!-- Named template that renders the brand image with label and size attributes -->
 <ng-template #brandImage>
 	<img
 		priority

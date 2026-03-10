@@ -5,5 +5,5 @@ export { transportConfig } from './transport.config';
 export { fileUploadConfig } from './file-upload.config';
 export { ngProgressConfig } from './ng-progress.config';
 export { applicationConfig } from './application.config';
-export { signalFormsConfig } from './signal-forms.config';
 export { menuItemsConfig } from './menu-items.config';
+export { signalFormsConfig, fieldStateConfig } from './signal-forms.config';

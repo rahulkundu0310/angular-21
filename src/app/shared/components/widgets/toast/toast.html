@@ -5,7 +5,9 @@
 	[attr.data-type]="type()"
 	[class]="`toast-${type()}`"
 >
+	<!-- Renders the metadata section that holds the toast icon and message content -->
 	<div class="toast-metadata">
+		<!-- Renders the icon wrapper and switches the displayed icon by the toast type -->
 		<div class="toast-icon" [attr.data-icon]="'true'" aria-hidden="true">
 			@switch (type()) {
 				@case ('info') {
@@ -26,6 +28,7 @@
 			}
 		</div>
 
+		<!-- Renders the content area that holds the toast message and description text -->
 		<div class="toast-content">
 			<div class="toast-message" [attr.data-message]="'true'">
 				{{ message() }}
@@ -38,7 +41,9 @@
 		</div>
 	</div>
 
+	<!-- Renders the toast actions wrapper that holds all available control buttons -->
 	<div class="toast-actions">
+		<!-- Renders the action button bound to a click handler when action is provided -->
 		@if (action(); as action) {
 			<button
 				type="button"
@@ -51,6 +56,7 @@
 			</button>
 		}
 
+		<!-- Renders the cancel button bound to a click handler when cancel is provided -->
 		@if (cancel(); as cancel) {
 			<button
 				type="button"
@@ -63,6 +69,7 @@
 			</button>
 		}
 
+		<!-- Renders the close button when this toast supports being manually dismissed -->
 		@if (dismissible()) {
 			<button
 				type="button"

@@ -28,30 +28,17 @@ export class PreventAutofill<TElement = HTMLInputElement | InputNumber>
 	}
 
 	/**
-	 * Intercepts focus on the input field to trigger attribute randomization preventing standard browser autofill mechanisms.
-	 * Processes the focus event by enforcing randomized name and autocomplete attributes to maintain strict security context.
+	 * Intercepts focus and blur events on the input field to trigger attribute randomization preventing browser auto filling.
+	 * Processes these interactions by enforcing regenerated random name and autocomplete attributes to maintain safe context.
 	 *
-	 * @param event - The focus event object containing control context for field protection against browser autofill actions.
-	 *
-	 * @since 01 December 2025
-	 * @author Rahul Kundu
-	 */
-	@HostListener('focus', ['$event'])
-	public handleFieldFocus(event: FocusEvent): void {
-		this.setupAutofillPrevention();
-	}
-
-	/**
-	 * Intercepts blur on the input field to reapply attribute randomization enforcing persistent browser autofill prevention.
-	 * Processes the blur event by regenerating randomized name and autocomplete attributes to stop delayed browser capturing.
-	 *
-	 * @param event - The leave event object containing control context for field protection through active autofill blocking.
+	 * @param event - The interaction object containing control context for field protection through active autofill blocking.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
 	@HostListener('blur', ['$event'])
-	public handleFieldBlur(event: FocusEvent): void {
+	@HostListener('focus', ['$event'])
+	protected enforceAutofillPrevention(event: FocusEvent): void {
 		this.setupAutofillPrevention();
 	}
 

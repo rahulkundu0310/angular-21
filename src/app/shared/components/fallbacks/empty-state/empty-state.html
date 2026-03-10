@@ -4,11 +4,13 @@
 	class="empty-state"
 	[attr.aria-label]="`Empty state: ${message()}`"
 >
+	<!-- Renders the icon along with its wrapper container when the icon is defined -->
 	@if (!!icon()) {
 		<div class="empty-state-icon" aria-hidden="true">
 			<lucide-icon [name]="icon()!" [size]="iconSize()" [strokeWidth]="iconStrokeWidth()" />
 		</div>
 	}
 
+	<!-- Renders the paragraph that outputs the current empty state message content -->
 	<p class="empty-state-message">{{ message() }}</p>
 </section>

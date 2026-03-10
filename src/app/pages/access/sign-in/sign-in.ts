@@ -2,9 +2,9 @@ import { Toaster } from '@core/services';
 import { applicationConfig } from '@configs';
 import { AuthEvent, AuthStore } from '@core/auth';
 import { Router, RouterLink } from '@angular/router';
-import { FieldGroup } from '@shared/components/composites';
 import { selectRequestSnapshot } from '@store/request-status';
 import { PreventAutofill, TrimInput } from '@shared/directives';
+import { FieldGroup, PasswordField } from '@shared/components/composites';
 import { form, FormField, validateStandardSchema } from '@angular/forms/signals';
 import { initialSignInModel, signInSchema, type TSignInModel } from './sign-in.schema';
 import {
@@ -21,7 +21,7 @@ import {
 	styleUrl: './sign-in.scss',
 	templateUrl: './sign-in.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [FieldGroup, FormField, TrimInput, PreventAutofill, RouterLink]
+	imports: [FieldGroup, FormField, TrimInput, PreventAutofill, RouterLink, PasswordField]
 })
 export class SignIn {
 	// Dependency injections providing direct access to services and injectors

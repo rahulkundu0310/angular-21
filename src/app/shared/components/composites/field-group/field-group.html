@@ -13,14 +13,17 @@
 	[attr.aria-labelledby]="fieldConfig.label ? fieldLabelId : null"
 	[class.form-group-filled]="fieldInstance ? !!fieldInstance().value() : false"
 >
+	<!-- Renders the field label element and binds it to the configured input field -->
 	@if (!!fieldConfig.label) {
 		<label class="field-label" [attr.id]="fieldLabelId" [attr.for]="fieldConfig.inputId">
 			{{ fieldConfig.label }}
 
+			<!-- Renders the asterisk superscript element when the field has required state -->
 			@if (isRequired()) {
 				<sup class="field-asterisk" aria-label="required">*</sup>
 			}
 
+			<!-- Renders either a hint label or a tooltip icon depending on the hint config -->
 			@if (!!fieldHint) {
 				@if (!!fieldHint.label) {
 					<em
@@ -49,21 +52,16 @@
 		</label>
 	}
 
-	<div class="field-affix" [class]="fieldConfig.affixStyleClass ?? null">
-		<ng-content />
+	<!-- Renders field content in an affix container or otherwise outputs it inline -->
+	@if (!fieldConfig.affix) {
+		<ng-container *ngTemplateOutlet="fieldContent" />
+	} @else {
+		<div class="field-affix" [class]="fieldConfig.affixStyleClass ?? null">
+			<ng-container *ngTemplateOutlet="fieldContent" />
+		</div>
+	}
 
-		@if (fieldInstance?.()?.pending()) {
-			<div class="field-pending">
-				<p-progressSpinner
-					[strokeWidth]="'4'"
-					[class]="'field-spinner'"
-					[animationDuration]="'2.5s'"
-					[attr.aria-label]="'Field is loading'"
-				/>
-			</div>
-		}
-	</div>
-
+	<!-- Shows field validation error message using role alert and ARIA live region -->
 	@if (fieldConfig.enableValidation && hasValidationError() && !!fieldError) {
 		<div
 			role="alert"
@@ -75,3 +73,20 @@
 		</div>
 	}
 </div>
+
+<!-- Named template that renders field content and overlays the pending spinner -->
+<ng-template #fieldContent>
+	<ng-content />
+
+	<!-- Overlays a progress spinner when the async field validation is in progress -->
+	@if (fieldInstance?.()?.pending()) {
+		<div class="field-pending">
+			<p-progressSpinner
+				[strokeWidth]="'4'"
+				[class]="'field-spinner'"
+				[animationDuration]="'2.5s'"
+				[attr.aria-label]="'Field is loading'"
+			/>
+		</div>
+	}
+</ng-template>

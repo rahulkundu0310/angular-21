@@ -69,7 +69,7 @@ export class DigitOnly {
 	 * @author Rahul Kundu
 	 */
 	@HostListener('beforeinput', ['$event'])
-	public handleBeforeInput(event: InputEvent): void {
+	protected filterInvalidCharacters(event: InputEvent): void {
 		// Extracts character being inserted from the input event or as nil string
 		const inputCharacter = event.data ?? '';
 
@@ -109,7 +109,7 @@ export class DigitOnly {
 	 * @author Rahul Kundu
 	 */
 	@HostListener('keydown', ['$event'])
-	public handleFieldKeyDown(event: KeyboardEvent): void {
+	protected enforceNumericBounds(event: KeyboardEvent): void {
 		// Checks if a control or command key is press keyboard shortcut detection
 		const isModifierPressed = event.ctrlKey || event.metaKey;
 
@@ -215,7 +215,7 @@ export class DigitOnly {
 	 * @author Rahul Kundu
 	 */
 	@HostListener('paste', ['$event'])
-	public handleFieldPaste(event: ClipboardEvent): void {
+	protected insertPastedContent(event: ClipboardEvent): void {
 		// Determines if pasting is currently disabled for the input element field
 		const isPastingDisabled = !this.allowPaste();
 
@@ -256,7 +256,7 @@ export class DigitOnly {
 	 * @author Rahul Kundu
 	 */
 	@HostListener('drop', ['$event'])
-	public handleFieldDrop(event: DragEvent): void {
+	protected insertDroppedContent(event: DragEvent): void {
 		// Retrieves the text value from the drag event for proper input insertion
 		const droppedContent = event.dataTransfer?.getData('text') ?? '';
 

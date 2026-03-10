@@ -54,6 +54,7 @@ export default defineConfig([
 
 			// Angular quality rules lower risk patterns and encourage stable codebase
 			'@angular-eslint/no-input-rename': 'off',
+			'@angular-eslint/no-output-rename': 'off',
 			'@angular-eslint/use-lifecycle-interface': 'error',
 			'@angular-eslint/use-injectable-provided-in': 'off',
 			'@angular-eslint/prefer-on-push-component-change-detection': 'warn',

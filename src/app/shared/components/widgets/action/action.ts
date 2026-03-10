@@ -27,11 +27,12 @@ import {
 })
 export class Action {
 	// Input and output properties reflecting shared state and emitting events
-	public readonly blurred = output<FocusEvent>();
-	public readonly clicked = output<MouseEvent>();
-	public readonly focused = output<FocusEvent>();
-	public readonly formId = input<string | null>(null);
+	public readonly blurred = output<FocusEvent>({ alias: 'blurred' });
+	public readonly clicked = output<MouseEvent>({ alias: 'clicked' });
+	public readonly focused = output<FocusEvent>({ alias: 'focused' });
+	public readonly formId = input<string | null>(null, { alias: 'formId' });
 	public readonly config = input.required<IDerivedActionConfig, IActionConfig>({
+		alias: 'config',
 		transform: deriveActionConfig
 	});
 
@@ -42,7 +43,7 @@ export class Action {
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
-	public actionMode = computed<TActionMode>(() => {
+	protected readonly actionMode = computed<TActionMode>(() => {
 		// Retrieves config snapshot from the input signal before state resolution
 		const { router, link } = this.config();
 
@@ -63,7 +64,7 @@ export class Action {
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
-	public actionClasses = computed<string>(() => {
+	protected readonly actionClasses = computed<string>(() => {
 		// Retrieves config snapshot from the input signal before state resolution
 		const {
 			text,

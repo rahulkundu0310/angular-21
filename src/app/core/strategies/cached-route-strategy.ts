@@ -42,7 +42,7 @@ export class CachedRouteStrategy implements RouteReuseStrategy {
 
 	/**
 	 * Determines whether cached route handle should be attached by verifying stored entry availability for state restoration.
-	 * Processes the cache identifier presence and handler availability in storage to validate route reuse for mapped context.
+	 * Processes the cache identifier presence and handler availability in storage to validate route reuse for mapped pattern.
 	 *
 	 * @param route - The activated route snapshot object containing the defined route configuration and valid cache property.
 	 * @returns A boolean indicating whether the route should be attached based on verified cache presence to restore context.
@@ -89,7 +89,7 @@ export class CachedRouteStrategy implements RouteReuseStrategy {
 
 	/**
 	 * Retrieves detached route handles currently retained in the cache returning an array of instances for memory management.
-	 * Processes map of route handlers to generate sequence of preserved contexts for validating current dependency integrity.
+	 * Processes map of route handlers to generate sequence of preserved mappings for validating current dependency integrity.
 	 *
 	 * @returns An array of detached route handles containing preserved route context for halting active injector destruction.
 	 *
