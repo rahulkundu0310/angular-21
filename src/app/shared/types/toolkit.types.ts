@@ -57,10 +57,6 @@ export type TObservable<TValue, TFallback = never> = Observable<
 	TValue extends TRecord | null | undefined ? TFallback : TValue | TFallback
 >;
 
-// export type TConstructor<TInstance = unknown, TParams extends unknown[] = unknown[]> = new (
-// 	...params: TParams
-// ) => TInstance;
-
 export type TCallbackReturn<TParams extends unknown[] = []> =
 	| void
 	| TCallback<TParams>

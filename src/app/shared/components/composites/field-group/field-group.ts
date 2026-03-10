@@ -1,8 +1,9 @@
 import { keys, pickBy, isNil } from 'lodash-es';
 import { TooltipModule } from 'primeng/tooltip';
 import { HostModifier } from '@shared/directives';
+import { NgTemplateOutlet } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
-import type { TField, TRecord } from '@shared/types';
+import type { TFieldTree, TRecord } from '@shared/types';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { deriveFieldGroupConfig, resolveFieldGroupAriaLive } from './field-group-utils';
 import type {
@@ -25,13 +26,14 @@ import {
 	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	hostDirectives: [{ directive: HostModifier, inputs: ['behavior'] }],
-	imports: [LucideAngularModule, TooltipModule, ProgressSpinnerModule]
+	imports: [LucideAngularModule, TooltipModule, ProgressSpinnerModule, NgTemplateOutlet]
 })
 export class FieldGroup<TValue = unknown> {
 	// Input and output properties reflecting shared state and emitting events
-	public readonly field = input<TField<TValue>>(null);
-	public readonly submitted = input<boolean>(false);
+	public readonly submitted = input<boolean>(false, { alias: 'submitted' });
+	public readonly field = input<TFieldTree<TValue, true>>(null, { alias: 'field' });
 	public readonly config = input.required<IDerivedFieldGroupConfig, IFieldGroupConfig>({
+		alias: 'config',
 		transform: deriveFieldGroupConfig
 	});
 

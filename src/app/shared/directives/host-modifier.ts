@@ -22,7 +22,7 @@ export class HostModifier {
 	 * @author Rahul Kundu
 	 */
 	@HostBinding('style.display')
-	public get hostDisplay(): string {
+	protected get hostDisplay(): string {
 		return this.resolvedBehavior;
 	}
 
@@ -36,7 +36,7 @@ export class HostModifier {
 	 * @author Rahul Kundu
 	 */
 	@HostBinding('class')
-	public get hostClasses(): string {
+	protected get hostClasses(): string {
 		// Retrieves style classes property applied to the host directive instance
 		const styleClass = this.styleClass();
 

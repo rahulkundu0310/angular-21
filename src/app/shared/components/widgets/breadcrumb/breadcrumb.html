@@ -1,12 +1,15 @@
 @let showBreadcrumbs = requireMultiple() ? breadcrumbs().length > 1 : !!breadcrumbs().length;
 
+<!-- Renders the breadcrumb navigation trail only when breadcrumbs are provided -->
 @if (showBreadcrumbs) {
 	<nav class="breadcrumb-trail" role="navigation" aria-label="Breadcrumb navigation">
 		<ol class="breadcrumb" role="list" aria-label="Navigation path">
+			<!-- Iterates through each breadcrumb and tracks every items by the route value -->
 			@for (breadcrumb of breadcrumbs(); track breadcrumb.routerLink; let last = $last) {
 				@let breadcrumbLabel = breadcrumb.label;
 				@let breadcrumbDisabled = breadcrumb.disabled;
 
+				<!-- Renders the breadcrumb item with active disabled and home modifier classes -->
 				<li
 					role="listitem"
 					class="breadcrumb-item"
@@ -49,6 +52,7 @@
 					}
 				</li>
 
+				<!-- Renders the slash separator after each crumb and omits it on the last item -->
 				@if (!last) {
 					<li role="listitem" class="breadcrumb-separator" aria-hidden="true">
 						<span aria-hidden="true">/</span>
@@ -59,10 +63,12 @@
 	</nav>
 }
 
+<!-- Named template that renders the icon and label content for each breadcrumb -->
 <ng-template #breadcrumbContent let-breadcrumb="breadcrumb" let-last="last">
 	@let breadcrumbLabel = breadcrumb.label;
 	@let breadcrumbIcon = breadcrumb.icon ?? (breadcrumb.home ? 'house' : null);
 
+	<!-- Renders the icon and binds a position style class when the icon is defined -->
 	@if (!!breadcrumbIcon) {
 		<lucide-icon
 			role="img"
@@ -72,6 +78,7 @@
 		/>
 	}
 
+	<!-- Renders the breadcrumb label span and identifies the current page position -->
 	<span
 		class="breadcrumb-label"
 		[attr.aria-current]="last ? 'page' : null"

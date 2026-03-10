@@ -38,7 +38,7 @@ export const signInSchema = z
  * @author Rahul Kundu
  */
 export const initialSignInModel: TSignInModel = {
-	email: 'r.kundu5@gmail.com',
-	password: '123456',
+	email: '',
+	password: '',
 	rememberMe: false
 } as const;

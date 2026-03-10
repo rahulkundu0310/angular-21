@@ -3,7 +3,9 @@
 @let actionLinkConfig = actionConfig.link;
 @let actionRouterConfig = actionConfig.router;
 
+<!-- Switches the rendered element type based on the resolved action mode value -->
 @switch (actionMode()) {
+	<!-- Renders an anchor element bound to the link config for outbound navigation -->
 	@case ('link') {
 		<a
 			class="action"
@@ -25,6 +27,7 @@
 		</a>
 	}
 
+	<!-- Renders an anchor element with router bindings and active navigation state -->
 	@case ('router') {
 		<a
 			class="action"
@@ -54,6 +57,7 @@
 		</a>
 	}
 
+	<!-- Renders a button element as the default fallback for unmatched action mode -->
 	@default {
 		<button
 			class="action"
@@ -79,7 +83,9 @@
 	}
 }
 
+<!-- Named template that renders action content and handles the pending spinner -->
 <ng-template #actionContent>
+	<!-- Overlays an animated progress spinner while the action is in loading state -->
 	@if (actionConfig.loading) {
 		<div class="action-spinner">
 			<p-progressSpinner
@@ -90,6 +96,7 @@
 			/>
 		</div>
 	} @else {
+		<!-- Renders the icon linked to a position style class when the icon is defined -->
 		@if (!!actionIconConfig) {
 			@let actionIconClass = `action-icon-${actionIconConfig.position ?? ''}`;
 
@@ -105,6 +112,7 @@
 			/>
 		}
 
+		<!-- Renders the action label span with optional style and style class bindings -->
 		<span
 			class="action-label"
 			[style]="actionConfig.labelStyle ?? null"
@@ -113,6 +121,7 @@
 			{{ actionConfig.label }}
 		</span>
 
+		<!-- Renders the badge span with severity style class when the badge is defined -->
 		@if (!!actionConfig.badge) {
 			@let actionBadgeClass = `action-badge-${actionConfig.badgeSeverity ?? 'secondary'}`;
 

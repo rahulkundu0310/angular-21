@@ -8,7 +8,7 @@ import { LUCIDE_ICONS, LucideIconProvider } from 'lucide-angular';
  *
  * @returns A provider object containing the named symbol definitions for centralized vector graphics interface rendering.
  *
- * @since 16 February 2026
+ * @since 01 December 2025
  * @author Rahul Kundu
  */
 export function provideLucideIcons(): Provider {

@@ -1,13 +1,18 @@
 import type { LucideIcons } from 'lucide-angular';
 import {
+	Eye,
 	Info,
 	List,
 	Plus,
 	House,
+	Check,
 	Users,
+	Search,
 	Pencil,
+	EyeOff,
 	ChartBar,
 	Settings,
+	ChevronDown,
 	ChevronRight,
 	LayoutDashboard
 } from 'lucide-angular';
@@ -20,14 +25,19 @@ import {
  * @author Rahul Kundu
  */
 export const iconConfig: LucideIcons = {
+	Eye,
 	Info,
 	Plus,
 	List,
 	House,
+	Check,
 	Users,
+	Search,
 	Pencil,
-	Settings,
+	EyeOff,
 	ChartBar,
+	Settings,
+	ChevronDown,
 	ChevronRight,
 	LayoutDashboard
 } as const;

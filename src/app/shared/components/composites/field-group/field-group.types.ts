@@ -17,6 +17,7 @@ export interface IFieldGroupConfig {
 	label?: string;
 	fluid?: boolean;
 	inputId: string;
+	affix?: boolean;
 	inline?: boolean;
 	size?: TFieldSize;
 	pending?: boolean;
@@ -30,6 +31,7 @@ export interface IFieldGroupConfig {
 }
 
 export interface IDerivedFieldGroupConfig extends IFieldGroupConfig {
+	affix: boolean;
 	fluid: boolean;
 	inline: boolean;
 	pending: boolean;

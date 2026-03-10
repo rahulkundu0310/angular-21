@@ -22,19 +22,17 @@
 		[submitted]="submitted()"
 		[field]="signInForm.password"
 		[config]="{
+			affix: false,
 			label: 'Password',
 			inputId: 'password'
 		}"
 	>
-		<input
-			trimInput
-			id="password"
-			type="password"
-			preventAutofill
-			class="field-control"
-			placeholder="Enter Password"
+		<password-field
 			[formField]="signInForm.password"
-			aria-describedby="password-hint password-error"
+			[config]="{
+				toggleMask: true,
+				inputId: 'password'
+			}"
 		/>
 	</field-group>
 	<button type="submit">Sign In</button>

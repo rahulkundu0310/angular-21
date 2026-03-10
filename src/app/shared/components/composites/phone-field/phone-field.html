@@ -1,0 +1,95 @@
+@let fieldConfig = config();
+@let isDisabled = disabled();
+@let inputMask = selectedCountry()?.sampleNationalNumber ?? '';
+
+<div
+	#phoneField
+	class="phone-field"
+	[style]="fieldConfig.style ?? null"
+	[class]="fieldConfig.styleClass ?? null"
+>
+	@let overlayWidth = phoneField.offsetWidth ? `${phoneField.offsetWidth}px` : 'auto';
+
+	<!-- Renders the country selector with flag image and filterable dial code list -->
+	<p-select
+		class="select"
+		[filter]="true"
+		[showClear]="false"
+		[options]="countries()"
+		[disabled]="isDisabled"
+		[scrollHeight]="'200px'"
+		[autofocusFilter]="true"
+		[resetFilterOnHide]="true"
+		[filterBy]="'isoShortName'"
+		[virtualScrollItemSize]="40"
+		[ngModel]="selectedCountry()"
+		[panelStyleClass]="'select-panel'"
+		[ariaLabel]="'Country code selector'"
+		[filterPlaceholder]="'Search Country'"
+		[style]="fieldConfig.selectStyle ?? null"
+		(onChange)="applyCountryFormat($event.value)"
+		[class]="fieldConfig.selectStyleClass ?? null"
+		[overlayOptions]="{
+			styleClass: 'select-overlay',
+			style: { width: overlayWidth, minWidth: overlayWidth }
+		}"
+	>
+		<ng-template #selectedItem let-country>
+			<div class="select-selected-content">
+				<img
+					alt=""
+					width="28"
+					height="28"
+					loading="lazy"
+					class="select-selected-image"
+					[src]="country.flagImage | sanitize: 'resourceUrl'"
+				/>
+				<h6 class="select-selected-label">+{{ country.dialCode }}</h6>
+			</div>
+		</ng-template>
+		<ng-template #item let-country>
+			<div class="select-option-content">
+				<img
+					alt=""
+					loading="lazy"
+					class="select-option-image"
+					[src]="country.flagImage | sanitize: 'resourceUrl'"
+				/>
+				<h6 class="select-option-label">
+					{{ country.isoShortName }} (+{{ country.dialCode }})
+				</h6>
+			</div>
+		</ng-template>
+		<ng-template #dropdownicon>
+			<lucide-icon
+				[size]="14"
+				aria-hidden="true"
+				name="chevron-down"
+				[strokeWidth]="2.5"
+			></lucide-icon>
+		</ng-template>
+		<ng-template #filtericon>
+			<lucide-icon [size]="20" name="search" aria-hidden="true"></lucide-icon>
+		</ng-template>
+		<ng-template #emptyfilter>
+			<p class="select-empty-text">Not Found!</p>
+		</ng-template>
+	</p-select>
+
+	<!-- Renders the phone number input using the active country format as the mask -->
+	<input
+		#inputRef
+		fieldState
+		preventAutofill
+		[mask]="inputMask"
+		class="field-control"
+		[value]="phoneNumber()"
+		[dropSpecialCharacters]="true"
+		[attr.id]="fieldConfig.inputId"
+		[attr.aria-label]="'Phone number'"
+		(input)="updatePhoneNumber($event)"
+		[placeholder]="fieldConfig.placeholder"
+		[style]="fieldConfig.inputStyle ?? null"
+		[class]="fieldConfig.inputStyleClass ?? null"
+	/>
+</div>

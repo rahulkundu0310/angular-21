@@ -19,6 +19,7 @@ export function deriveFieldGroupConfig(config: IFieldGroupConfig): IDerivedField
 	return {
 		...config,
 		fluid: config.fluid ?? true,
+		affix: config.affix ?? true,
 		size: config.size ?? 'large',
 		inline: config.inline ?? false,
 		pending: config.pending ?? false,
@@ -32,7 +33,7 @@ export function deriveFieldGroupConfig(config: IFieldGroupConfig): IDerivedField
  * Determines ARIA live mode by mapping validation kinds to announcement levels for screen readers during priority alerts.
  * Processes kind lookup and fallback selection in a map returning polite when no entry exists within validation contexts.
  *
- * @param validationKind - The validation kind used to evaluate the live mode, falling back to polite when it is unmapped.
+ * @param validationKind - The validation kind used to evaluate the live mode falling back to polite for an unknown input.
  * @returns An ARIA live mode string describing announcement priority for screen readers when validation messages surface.
  *
  * @since 01 December 2025
