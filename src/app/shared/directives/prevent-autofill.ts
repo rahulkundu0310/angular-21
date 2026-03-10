@@ -23,7 +23,7 @@ export class PreventAutofill<TElement = HTMLInputElement | InputNumber>
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
-	ngAfterViewInit(): void {
+	public ngAfterViewInit(): void {
 		this.setupAutofillPrevention();
 	}
 

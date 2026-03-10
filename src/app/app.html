@@ -1,4 +1,75 @@
-<router-outlet />
+<!-- Renders the global progress bar and spinner for application loading states -->
+<ng-progress [flat]="false" [spinner]="true" />
+
+<!-- Renders the initial preloader with branding when loading has not completed -->
+@if (isInitialLoading()) {
+	<preloader [label]="'Loading...'" [branding]="true" />
+}
+
+<!-- Renders the primary application container that hosts all routed components -->
+<main class="app-main">
+	<router-outlet />
+</main>
+
+<!-- Renders a global confirmation dialog that holds cancel and confirm buttons -->
+<p-confirmDialog
+	[appendTo]="'body'"
+	[closeOnEscape]="false"
+	[dismissableMask]="false"
+	[styleClass]="'confirm-dialog'"
+	[maskStyleClass]="'confirm-dialog-mask'"
+>
+	<ng-template #headless let-prompt let-onAccept="onAccept" let-onReject="onReject">
+		<div class="confirm-dialog-header">
+			<h5 class="confirm-dialog-title" id="confirm-dialog-title">
+				{{ prompt.header }}
+			</h5>
+			<div class="confirm-dialog-header-actions">
+				<button
+					type="button"
+					(click)="onReject()"
+					aria-label="Close dialog"
+					class="confirm-dialog-close-action"
+				>
+					<lucide-icon
+						name="x"
+						[size]="20"
+						aria-hidden="true"
+						[strokeWidth]="2.5"
+						class="confirm-dialog-close-action-icon"
+					/>
+				</button>
+			</div>
+		</div>
+		<div class="confirm-dialog-content" id="confirm-dialog-content" role="document">
+			<p class="confirm-dialog-message">
+				{{ prompt.message }}
+			</p>
+		</div>
+		<div class="confirm-dialog-footer">
+			<action
+				[config]="{
+					size: 'medium',
+					label: 'Cancel',
+					severity: 'light',
+					ariaLabel: 'Cancel and close dialog'
+				}"
+				(onClick)="onReject()"
+			/>
+			<action
+				[config]="{
+					size: 'medium',
+					label: 'Confirm',
+					severity: 'primary',
+					ariaLabel: 'Confirm action'
+				}"
+				(onClick)="onAccept()"
+			/>
+		</div>
+	</ng-template>
+</p-confirmDialog>
+
+<!-- Renders the global toast notification stack positioned at the bottom right -->
 <ngx-sonner-toaster
 	[duration]="400000"
 	[visibleToasts]="5"

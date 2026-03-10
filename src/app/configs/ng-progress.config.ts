@@ -11,8 +11,6 @@ export const ngProgressConfig: INgProgressConfig = {
 	min: 8,
 	max: 100,
 	speed: 350,
-	flat: false,
-	spinner: true,
 	fadeOutSpeed: 50,
 	debounceTime: 100,
 	trickleSpeed: 230,

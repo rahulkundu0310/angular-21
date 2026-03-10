@@ -151,7 +151,7 @@ export class PhoneField implements FormValueControl<IPhoneFieldValue | null> {
 	 * @param code - The two letter geographic string utilized to correctly recognize and retrieve the proper targeted entity.
 	 * @returns A structured country profile corresponding to the exact search letters otherwise deriving an unassigned state.
 	 *
-	 * @since 10 March 2026
+	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
 	private resolveCountry(code: string): IPhoneFieldCountry | null {
@@ -162,7 +162,7 @@ export class PhoneField implements FormValueControl<IPhoneFieldValue | null> {
 	 * Watches the underlying form state to track external property modifications and synchronize reactive reference bindings.
 	 * Processes the evaluated conditions by resolving missing values and applying exact character inputs avoiding recursions.
 	 *
-	 * @since 10 March 2026
+	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
 	private readonly watchValue: EffectRef = effect(() => {

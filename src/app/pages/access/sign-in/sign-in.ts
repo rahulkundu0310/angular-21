@@ -1,12 +1,16 @@
-import { Toaster } from '@core/services';
 import { applicationConfig } from '@configs';
+import { Logger, Toaster } from '@core/services';
 import { AuthEvent, AuthStore } from '@core/auth';
+import { Action } from '@shared/components/widgets';
 import { Router, RouterLink } from '@angular/router';
+import type { TSignInModel } from './sign-in.schema';
+import type { EffectRef, OnInit } from '@angular/core';
+import { decryption, encryption } from '@shared/utilities';
 import { selectRequestSnapshot } from '@store/request-status';
 import { PreventAutofill, TrimInput } from '@shared/directives';
+import { initialSignInModel, signInSchema } from './sign-in.schema';
 import { FieldGroup, PasswordField } from '@shared/components/composites';
 import { form, FormField, validateStandardSchema } from '@angular/forms/signals';
-import { initialSignInModel, signInSchema, type TSignInModel } from './sign-in.schema';
 import {
 	effect,
 	inject,
@@ -21,59 +25,131 @@ import {
 	styleUrl: './sign-in.scss',
 	templateUrl: './sign-in.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [FieldGroup, FormField, TrimInput, PreventAutofill, RouterLink, PasswordField]
+	imports: [FieldGroup, FormField, TrimInput, PreventAutofill, RouterLink, PasswordField, Action]
 })
-export class SignIn {
+export class SignIn implements OnInit {
 	// Dependency injections providing direct access to services and injectors
 	private readonly router = inject(Router);
+	private readonly logger = inject(Logger);
 	private readonly toaster = inject(Toaster);
 	private readonly authStore = inject(AuthStore);
 
 	// Public and private class member variables reflecting state and behavior
+	protected readonly AuthEvent = AuthEvent;
 	protected readonly submitted = signal<boolean>(false);
 	private readonly rememberMeKey = applicationConfig.rememberMeKey;
 	protected readonly signInModel = signal<TSignInModel>(initialSignInModel);
-	private readonly requestSnapshot = selectRequestSnapshot(this.authStore, AuthEvent.SIGN_IN);
+	protected readonly requestSnapshot = selectRequestSnapshot(this.authStore, AuthEvent.SIGN_IN);
 	protected readonly signInForm = form<TSignInModel>(this.signInModel, (schema) => {
 		validateStandardSchema(schema, signInSchema);
 	});
 
-	public signInOnSubmit(event: Event) {
+	/**
+	 * Handles initialization cycle by organizing necessary state structures and applying foundational configuration defaults.
+	 * Executes startup actions such as data retrieval, stream subscription, or state configuration for operational readiness.
+	 *
+	 * @since 01 December 2025
+	 * @author Rahul Kundu
+	 */
+	public ngOnInit(): void {
+		this.restoreCredentials();
+	}
+
+	/**
+	 * Attempts the initial authentication procedure by intercepting incoming submission events to inspect access credentials.
+	 * Processes checking the current form validity before dispatching collected authentication models into an assigned store.
+	 *
+	 * @param event - The generic interaction object containing the target element reference to block default browser reloads.
+	 *
+	 * @since 01 December 2025
+	 * @author Rahul Kundu
+	 */
+	public attemptSignIn(event: Event): void {
+		// Prevents default event behavior to stop unwanted browser page reloading
 		event.preventDefault();
+
+		// Updates submitted state to mark the form as ready for validation errors
 		this.submitted.set(true);
 
+		// Checks if the form is invalid and prevents submission and returns early
 		if (this.signInForm().invalid()) return;
+
+		// Executes sign in by dispatching collected form values to the auth store
 		this.authStore.signIn(this.signInModel());
 	}
 
-	private readonly watchRequestSnapshot = effect(() => {
-		const { event, status, message, data } = this.requestSnapshot();
+	/**
+	 * Restores previously secured authentication credentials by extracting an encrypted string from persistent local storage.
+	 * Processes decryption and parsing of recovered values to directly update the internal form model for immediate bindings.
+	 *
+	 * @since 10 March 2026
+	 * @author Rahul Kundu
+	 */
+	private restoreCredentials(): void {
+		// Retrieves stored value from local storage by the remember me identifier
+		const storedCredentials = localStorage.getItem(this.rememberMeKey);
 
-		untracked(() => {
-			if (status === 'idle') return;
+		// Checks if stored credentials are missing from storage and returns early
+		if (!storedCredentials) return;
 
-			if (status === 'pending') {
-				// Start loader
-				return;
-			}
+		// Wraps execution in a try block to catch and handle any thrown exception
+		try {
+			// Decrypts stored credentials into a usable string for further processing
+			const decryptedCredentials = decryption(storedCredentials);
 
+			// Serializes the decrypted string into a parsed object for model patching
+			const serializedCredentials = JSON.parse(decryptedCredentials);
+
+			// Updates the form model by merging recovered credentials into each entry
+			this.signInModel.update((formModel) => {
+				return { ...formModel, ...serializedCredentials };
+			});
+		} catch (error) {
+			this.logger.error('Failed to decrypt or parse credentials', error);
+		}
+	}
+
+	/**
+	 * Watches the reactive request snapshot to track execution phases and coordinate subsequent contextual interface actions.
+	 * Processes the evaluated statuses by resolving target events and extracting typed payloads to manage essential outcomes.
+	 *
+	 * @since 11 March 2026
+	 * @author Rahul Kundu
+	 */
+	private readonly watchRequestSnapshot: EffectRef = effect(() => {
+		// Retrieves the reactive request snapshot to track incoming state changes
+		const { status, message } = this.requestSnapshot();
+
+		// Executes inner callback without tracking any reactive signal dependency
+		untracked<void>(() => {
+			// Checks if the status remains at idle or pending state and returns early
+			if (status === 'idle' || status === 'pending') return;
+
+			// Updates the submitted state to reflect the request being fully resolved
+			this.submitted.set(false);
+
+			// Checks if the request has been rejected and notifies with error message
 			if (status === 'rejected') {
-				// Hide loader
-				// Show Toast
+				this.toaster.error(message!);
 				return;
 			}
 
-			switch (event) {
-				case AuthEvent.SIGN_IN:
-					// data is now properly typed as IAuthSession
-					console.log(data?.user_details); // Works without bracket notation!
-					console.log(data?.access_token);
-					// Hide loader
-					// Show Toast
-					break;
-				default:
-					break;
-			}
+			// Retrieves the form model snapshot to prepare for credential persistence
+			const formModel = this.signInModel();
+
+			// Encrypts latest credentials into a secure string for further processing
+			const encryptedCredentials = encryption(JSON.stringify(formModel));
+
+			// Checks if remember me is not enabled to purge or retain the credentials
+			if (!formModel.rememberMe) localStorage.removeItem(this.rememberMeKey);
+			else localStorage.setItem(this.rememberMeKey, encryptedCredentials);
+
+			// Shows an error notification to inform that the request was unsuccessful
+			// Shows a success notification to confirm that this request was completed
+			this.toaster.success(message!);
+
+			// Navigates toward the designated route after the request fully completes
+			this.router.navigate(['/dashboard']);
 		});
 	});
 }
