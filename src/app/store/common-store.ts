@@ -1,16 +1,23 @@
 import { withLogger } from './logger';
 import type { Observable } from 'rxjs';
-import { inject } from '@angular/core';
-import { Common } from '@core/services';
 import type { ICountry } from '@shared/types';
 import { withResetState } from './reset-state';
+import { Common, RouterState } from '@core/services';
+import { effect, inject, untracked } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { catchError, filter, tap, throwError } from 'rxjs';
-import { patchState, signalStore, withMethods, withProps, withState } from '@ngrx/signals';
+import {
+	withHooks,
+	withState,
+	withProps,
+	patchState,
+	signalStore,
+	withMethods
+} from '@ngrx/signals';
 
 interface ICommonState {
 	countries: ICountry[];
-	silentNavigation: boolean;
+	initialLoading: boolean;
 	_titleSegment: string | null;
 }
 
@@ -24,7 +31,7 @@ interface ICommonState {
 const initialState: ICommonState = {
 	countries: [],
 	_titleSegment: null,
-	silentNavigation: false
+	initialLoading: true
 };
 
 /**
@@ -70,6 +77,33 @@ export const CommonStore = signalStore(
 	withMethods((store) => {
 		// Dependency injections providing direct access to services and injectors
 		const common = inject(Common);
+		const routerState = inject(RouterState);
+
+		/**
+		 * Watches the router navigation events to track active routing completions and update initial interface loading contexts.
+		 * Processes the evaluated conditions by verifying transition endpoints and applying required overall state modifications.
+		 *
+		 * @since 01 December 2025
+		 * @author Rahul Kundu
+		 */
+		const _watchNavigationEnd = (): void => {
+			effect(() => {
+				// Retrieves the reactive navigation end event captured from router source
+				const navigationEnd = routerState.navigationEnd();
+
+				// Executes inner callback without tracking any reactive signal dependency
+				untracked<void>(() => {
+					// Checks if the navigation end event is missing before further processing
+					if (!navigationEnd) return;
+
+					// Retrieves the current initial loading state to check for view readiness
+					const initialLoading = store.initialLoading();
+
+					// Checks if loading persists in state and deactivates it before rendering
+					if (initialLoading) patchState(store, { initialLoading: false });
+				});
+			});
+		};
 
 		/**
 		 * Updates the page title segment within the signal state to support the dynamic modification of the browser window title.
@@ -85,20 +119,7 @@ export const CommonStore = signalStore(
 		};
 
 		/**
-		 * Updates the silent navigation status within the signal state to accommodate the dynamic control of navigation feedback.
-		 * Processes signal updates with mode assignment to ensure consistent synchronization for the navigation feedback display.
-		 *
-		 * @param isSilent - The boolean flag containing the silent mode value for reactive synchronization with the signal state.
-		 *
-		 * @since 01 December 2025
-		 * @author Rahul Kundu
-		 */
-		const setSilentNavigation = (isSilent: boolean): void => {
-			patchState(store, { silentNavigation: isSilent });
-		};
-
-		/**
-		 * Retrieves a single country entity from the store state by matching the unique alpha2 identifier used as the search key.
+		 * Resolves a single country entity from the stored state by matching the unique alpha2 identifier used as the search key.
 		 * Processes the array lookup operation to locate the corresponding country record containing full administrative details.
 		 *
 		 * @param countryCode - The unique two character string code alpha2 used to identify the given country entity in the list.
@@ -107,7 +128,7 @@ export const CommonStore = signalStore(
 		 * @since 01 December 2025
 		 * @author Rahul Kundu
 		 */
-		const getCountry = (countryCode: string): ICountry | undefined => {
+		const resolveCountry = (countryCode: string): ICountry | undefined => {
 			return store.countries().find(({ alpha2 }) => alpha2 === countryCode);
 		};
 
@@ -132,6 +153,34 @@ export const CommonStore = signalStore(
 		};
 
 		// Returns methods collection exposing callable features for public access
-		return { getCountry, loadCountries, setPageTitleSegment, setSilentNavigation };
+		return { resolveCountry, loadCountries, setPageTitleSegment, _watchNavigationEnd };
+	}),
+
+	// Provides lifecycle hooks executing side effects during store operations
+	withHooks((store) => {
+		/**
+		 * Handles store initialization by configuring reactive contexts and organizing state signals for consistent interactions.
+		 * Executes startup tasks such as triggering initial data loads, registering effects, or configuring reactive derivations.
+		 *
+		 * @since 01 December 2025
+		 * @author Rahul Kundu
+		 */
+		const onInit = (): void => {
+			store._watchNavigationEnd();
+		};
+
+		/**
+		 * Handles store destruction by releasing retained resources and dismantling reactive connections to prevent memory leaks.
+		 * Executes cleanup procedures such as cancelling inflight requests, resetting store signals, or clearing computed caches.
+		 *
+		 * @since 01 December 2025
+		 * @author Rahul Kundu
+		 */
+		const onDestroy = (): void => {
+			store.resetState(initialState);
+		};
+
+		// Returns callbacks collection executed during initialization and cleanup
+		return { onInit, onDestroy };
 	})
 );

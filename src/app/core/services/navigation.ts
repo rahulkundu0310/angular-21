@@ -119,8 +119,12 @@ export class Navigation {
 					({ routerLink }) => routerLink === breadcrumbPath
 				);
 
+				// Checks if breadcrumb has a valid label icon or home property configured
+				const hasBreadcrumbContent =
+					!!breadcrumbMeta.label || !!breadcrumbMeta.icon || !!breadcrumbMeta.home;
+
 				// Checks if breadcrumb is unique and label property provided for addition
-				if (!hasExistingBreadcrumb && !!breadcrumbMeta.label) {
+				if (!hasExistingBreadcrumb && hasBreadcrumbContent) {
 					// Initializes a variable to hold processed query params handling strategy
 					let resolvedParamsHandling: QueryParamsHandling = '';
 
@@ -148,11 +152,11 @@ export class Navigation {
 					const breadcrumb: IBreadcrumb = {
 						icon: icon ?? null,
 						home: home ?? false,
-						label: breadcrumbLabel,
 						context: context ?? null,
 						routerLink: breadcrumbPath,
 						iconSize: iconSize ?? null,
 						disabled: disabled ?? false,
+						label: breadcrumbLabel ?? null,
 						queryParamsHandling: resolvedParamsHandling,
 						queryParams: isActivatedRoute ? queryParams : {}
 					};
@@ -235,7 +239,7 @@ export class Navigation {
 		}
 
 		// Normalizes breadcrumb path by removing trailing slashes for consistency
-		// breadcrumbPath = breadcrumbPath.replace(/\/$/, '') || '/';
+		breadcrumbPath = breadcrumbPath.replace(/\/$/, '') || '/';
 
 		// Returns resolved context structure containing metadata and path segment
 		return { breadcrumbMeta, breadcrumbPath };

@@ -15,5 +15,6 @@ export class AccessLayout {
 	private readonly viewTransitionStore = inject(ViewTransitionStore);
 
 	// Public and private class member variables reflecting state and behavior
+	protected readonly layoutContext = this.layoutStore.accessLayoutContext;
 	protected readonly transitionNames = this.viewTransitionStore.transitionNames;
 }

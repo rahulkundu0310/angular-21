@@ -1,4 +1,19 @@
-<platform-header />
-<platform-drawer />
-<p>platform-layout works!</p>
-<router-outlet />
+@let compactLayout = layoutContext().compact;
+@let extendedLayout = layoutContext().extended;
+@let transitionName = transitionNames().platformOutlet;
+
+<div
+	class="platform-layout"
+	[class]="{
+		'platform-layout-compact': compactLayout,
+		'platform-layout-extended': extendedLayout
+	}"
+>
+	<platform-header />
+	<platform-drawer />
+	<div class="platform-layout-content">
+		<div class="platform-layout-outlet" [style.view-transition-name]="transitionName">
+			<router-outlet />
+		</div>
+	</div>
+</div>

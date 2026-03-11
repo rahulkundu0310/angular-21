@@ -1,8 +1,8 @@
-@let accessTransition = transitionNames().accessOutlet;
+@let transitionName = transitionNames().accessOutlet;
+
 <div class="access-layout">
-	<div class="access-layout-content" [style.view-transition-name]="accessTransition">
-		<p>access-layout works!</p>
-		<div class="access-layout-outlet">
+	<div class="access-layout-content">
+		<div class="access-layout-outlet" [style.view-transition-name]="transitionName">
 			<router-outlet />
 		</div>
 	</div>

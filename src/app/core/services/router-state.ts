@@ -117,7 +117,7 @@ export class RouterState {
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
-	public readonly isNavigating = toSignal<boolean, boolean>(
+	public readonly navigating = toSignal<boolean, boolean>(
 		this.router.events.pipe(
 			resolveEvent([NavigationStart, NavigationEnd, NavigationError, NavigationCancel]),
 			map((event) => !!resolveEvent(NavigationStart, event)),

@@ -1,58 +1,49 @@
 import type { IMenuItem } from '@shared/types';
 
+/**
+ * Defines menu items configuration by mapping visual icon properties and routing structures for navigation accessibility.
+ * Processes nested layout elements and interactive links to generate intuitive traversal pathways within the application.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 export const menuItemsConfig: IMenuItem[] = [
 	{
 		id: 1,
 		iconSize: 20,
 		label: 'Dashboard',
 		routerLink: '/dashboard',
-		icon: 'layout-dashboard',
-		styleClass: 'menu-item-dashboard'
+		icon: 'layout-dashboard'
 	},
 	{
 		id: 2,
 		iconSize: 20,
 		icon: 'users',
 		label: 'Users',
-		items: [
-			{
-				id: 21,
-				parent: 2,
-				icon: 'list',
-				iconSize: 20,
-				label: 'All Users',
-				routerLink: '/users'
-			},
-			{
-				id: 22,
-				parent: 2,
-				icon: 'plus',
-				iconSize: 20,
-				label: 'Create User',
-				routerLink: '/users/create'
-			},
-			{
-				id: 23,
-				parent: 2,
-				iconSize: 20,
-				icon: 'pencil',
-				label: 'Update User',
-				routerLink: '/users/update'
-			}
-		]
+		routerLink: '/users'
 	},
 	{
 		id: 3,
 		iconSize: 20,
-		icon: 'chart-bar',
-		label: 'Analytics',
-		routerLink: '/analytics'
-	},
-	{
-		id: 4,
-		iconSize: 20,
 		icon: 'settings',
 		label: 'Settings',
-		routerLink: '/settings'
+		items: [
+			{
+				id: 31,
+				parent: 3,
+				icon: 'plug',
+				iconSize: 20,
+				label: 'Integrations',
+				routerLink: '/integrations'
+			},
+			{
+				id: 32,
+				parent: 3,
+				icon: 'chart-bar',
+				iconSize: 20,
+				label: 'Analytics',
+				routerLink: '/analytics'
+			}
+		]
 	}
 ];

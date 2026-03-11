@@ -2,7 +2,7 @@
 <ng-progress [flat]="false" [spinner]="true" />
 
 <!-- Renders the initial preloader with branding when loading has not completed -->
-@if (isInitialLoading()) {
+@if (initialLoading()) {
 	<preloader [label]="'Loading...'" [branding]="true" />
 }
 

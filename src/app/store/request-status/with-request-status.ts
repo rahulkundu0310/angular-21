@@ -90,11 +90,10 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 					data: entity?.data ?? null,
 					status: entity?.status || 'idle',
 					message: entity?.message || null,
-					isPending: entity?.status === 'pending',
-					isDisabled: entity?.status === 'pending',
-					isRejected: entity?.status === 'rejected',
-					isFulfilled: entity?.status === 'fulfilled',
-					isIdle: !entity || entity.status === 'idle'
+					pending: entity?.status === 'pending',
+					rejected: entity?.status === 'rejected',
+					fulfilled: entity?.status === 'fulfilled',
+					idle: !entity || entity.status === 'idle'
 				} as const;
 			};
 

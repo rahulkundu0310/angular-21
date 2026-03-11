@@ -25,12 +25,12 @@ export interface IBreadcrumbContext {
 }
 
 export interface IBreadcrumb {
-	label: string;
 	home: boolean;
 	disabled: boolean;
 	routerLink: string;
 	queryParams: Params;
 	icon: string | null;
+	label: string | null;
 	iconSize: number | null;
 	state?: TRecord<unknown>;
 	context: TRecord<unknown> | null;

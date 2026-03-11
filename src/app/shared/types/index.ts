@@ -7,6 +7,7 @@ export type * from './config.types';
 export type * from './router.types';
 export type * from './common.types';
 export type * from './toolkit.types';
+export type * from './country.types';
 export type * from './prime-ng.types';
 export type * from './sanitize.types';
 export type * from './viewport.types';
