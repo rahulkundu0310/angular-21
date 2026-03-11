@@ -9,8 +9,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 	selector: 'platform-layout',
 	styleUrl: './platform-layout.scss',
 	templateUrl: './platform-layout.html',
-	imports: [PlatformHeader, PlatformDrawer, RouterOutlet],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [PlatformHeader, PlatformDrawer, RouterOutlet]
 })
 export class PlatformLayout {
 	// Dependency injections providing direct access to services and injectors
@@ -21,5 +21,6 @@ export class PlatformLayout {
 	// Public and private class member variables reflecting state and behavior
 	protected readonly menuItems = this.platformStore.menuItems;
 	protected readonly breadcrumbs = this.platformStore.breadcrumbs;
+	protected readonly layoutContext = this.layoutStore.platformLayoutContext;
 	protected readonly transitionNames = this.viewTransitionStore.transitionNames;
 }

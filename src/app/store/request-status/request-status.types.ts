@@ -40,12 +40,11 @@ export interface IRequestEntity<TData = unknown> {
 
 export interface IRequestSnapshot<TData = unknown> {
 	event: string;
-	isIdle: boolean;
-	isPending: boolean;
+	idle: boolean;
+	pending: boolean;
+	rejected: boolean;
+	fulfilled: boolean;
 	data: TData | null;
-	isRejected: boolean;
-	isDisabled: boolean;
-	isFulfilled: boolean;
 	message: string | null;
 	status: TRequestStatus;
 }

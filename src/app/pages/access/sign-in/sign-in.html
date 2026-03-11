@@ -1,6 +1,5 @@
-@let request = requestSnapshot();
+@let operation = operationState();
 @let formInvalid = signInForm().invalid();
-@let signInEvent = request.event === AuthEvent.SIGN_IN;
 
 <form novalidate (submit)="attemptSignIn($event)">
 	<field-group
@@ -47,9 +46,9 @@
 			type: 'submit',
 			label: 'Sign In',
 			ariaRole: 'button',
+			loading: operation.loading,
 			ariaLabel: 'Sign in to your account',
-			loading: request.isPending && signInEvent,
-			disabled: formInvalid || (request.isDisabled && signInEvent)
+			disabled: formInvalid || operation.loading
 		}"
 	/>
 </form>

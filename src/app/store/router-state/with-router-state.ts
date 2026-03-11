@@ -77,14 +77,14 @@ export function withRouterState() {
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
 			 */
-			const isNavigating = toSignal<boolean, boolean>(
+			const navigating = toSignal<boolean, boolean>(
 				router.events.pipe(
-					scan((isNavigating, event) => {
+					scan((navigating, event) => {
 						if (event instanceof NavigationStart) return true;
 						if (event instanceof NavigationEnd) return false;
 						if (event instanceof NavigationError) return false;
 						if (event instanceof NavigationCancel) return false;
-						return isNavigating;
+						return navigating;
 					}, false),
 					distinctUntilChanged()
 				),
@@ -92,7 +92,7 @@ export function withRouterState() {
 			);
 
 			// Returns properties collection exposing shared members for public access
-			return { routerEvent, isNavigating, navigationEnd, routerSnapshot };
+			return { routerEvent, navigating, navigationEnd, routerSnapshot };
 		})
 	);
 }

@@ -31,7 +31,6 @@ export interface IRouteData {
 	shouldDelay?: boolean;
 	preloadDelay?: number;
 	layout?: TRouteLayout;
-	showNavigationIndicator?: boolean;
 	hostBehavior?: 'contents' | 'block';
 	breadcrumb?: string | IRouteBreadcrumb;
 }

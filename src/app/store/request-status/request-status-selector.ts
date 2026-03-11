@@ -65,7 +65,7 @@ export function selectRequestSnapshot(
 			const requestStatus = store.requestStatus()[event];
 
 			// Checks if request snapshot is not idle, then returns the current status
-			if (!requestStatus.isIdle) return requestStatus;
+			if (!requestStatus.idle) return requestStatus;
 		}
 
 		// Retreives first selector entry to provide fallback snapshot as baseline

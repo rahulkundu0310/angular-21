@@ -1,11 +1,12 @@
 import { applicationConfig } from '@configs';
-import { Logger, Toaster } from '@core/services';
 import { AuthEvent, AuthStore } from '@core/auth';
 import { Action } from '@shared/components/widgets';
 import { Router, RouterLink } from '@angular/router';
 import type { TSignInModel } from './sign-in.schema';
+import type { IOperationState } from '@shared/types';
 import type { EffectRef, OnInit } from '@angular/core';
 import { decryption, encryption } from '@shared/utilities';
+import { Logger, RouterState, Toaster } from '@core/services';
 import { selectRequestSnapshot } from '@store/request-status';
 import { PreventAutofill, TrimInput } from '@shared/directives';
 import { initialSignInModel, signInSchema } from './sign-in.schema';
@@ -15,6 +16,7 @@ import {
 	effect,
 	inject,
 	signal,
+	computed,
 	Component,
 	untracked,
 	ChangeDetectionStrategy
@@ -33,10 +35,11 @@ export class SignIn implements OnInit {
 	private readonly logger = inject(Logger);
 	private readonly toaster = inject(Toaster);
 	private readonly authStore = inject(AuthStore);
+	private readonly routerState = inject(RouterState);
 
 	// Public and private class member variables reflecting state and behavior
-	protected readonly AuthEvent = AuthEvent;
 	protected readonly submitted = signal<boolean>(false);
+	protected readonly transitioning = signal<boolean>(false);
 	private readonly rememberMeKey = applicationConfig.rememberMeKey;
 	protected readonly signInModel = signal<TSignInModel>(initialSignInModel);
 	protected readonly requestSnapshot = selectRequestSnapshot(this.authStore, AuthEvent.SIGN_IN);
@@ -54,6 +57,27 @@ export class SignIn implements OnInit {
 	public ngOnInit(): void {
 		this.restoreCredentials();
 	}
+
+	/**
+	 * Computes the current operation state by merging active transitions and pending requests to drive interactive behaviors.
+	 * Returns a resolved object containing the essential reactive properties designed to constrain changes during processing.
+	 *
+	 * @since 11 March 2026
+	 * @author Rahul Kundu
+	 */
+	protected readonly operationState = computed<IOperationState>(() => {
+		// Retrieves the transitioning status needed for computed state resolution
+		const transitioning = this.transitioning();
+
+		// Retrieves the pending status from the snapshot for the state resolution
+		const { pending } = this.requestSnapshot();
+
+		// Determines the combined processing outcome from all contributing values
+		const processing = pending || transitioning;
+
+		// Returns the resolved state derived from the combined processing outcome
+		return { loading: processing, disabled: processing };
+	});
 
 	/**
 	 * Attempts the initial authentication procedure by intercepting incoming submission events to inspect access credentials.
@@ -74,6 +98,9 @@ export class SignIn implements OnInit {
 		// Checks if the form is invalid and prevents submission and returns early
 		if (this.signInForm().invalid()) return;
 
+		// Updates transitioning to begin tracking the complete submission process
+		this.transitioning.set(true);
+
 		// Executes sign in by dispatching collected form values to the auth store
 		this.authStore.signIn(this.signInModel());
 	}
@@ -82,7 +109,7 @@ export class SignIn implements OnInit {
 	 * Restores previously secured authentication credentials by extracting an encrypted string from persistent local storage.
 	 * Processes decryption and parsing of recovered values to directly update the internal form model for immediate bindings.
 	 *
-	 * @since 10 March 2026
+	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
 	private restoreCredentials(): void {
@@ -113,7 +140,7 @@ export class SignIn implements OnInit {
 	 * Watches the reactive request snapshot to track execution phases and coordinate subsequent contextual interface actions.
 	 * Processes the evaluated statuses by resolving target events and extracting typed payloads to manage essential outcomes.
 	 *
-	 * @since 11 March 2026
+	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
 	private readonly watchRequestSnapshot: EffectRef = effect(() => {
@@ -122,20 +149,27 @@ export class SignIn implements OnInit {
 
 		// Executes inner callback without tracking any reactive signal dependency
 		untracked<void>(() => {
-			// Checks if the status remains at idle or pending state and returns early
+			// Checks if the request status is idle or pending state and returns early
 			if (status === 'idle' || status === 'pending') return;
 
 			// Updates the submitted state to reflect the request being fully resolved
 			this.submitted.set(false);
 
-			// Checks if the request has been rejected and notifies with error message
+			// Checks if the request was rejected and notifies with the relevant error
 			if (status === 'rejected') {
+				this.transitioning.set(false);
 				this.toaster.error(message!);
 				return;
 			}
 
 			// Retrieves the form model snapshot to prepare for credential persistence
 			const formModel = this.signInModel();
+
+			// Retrieves current query parameter entries derived from the active route
+			const queryParams = this.routerState.queryParams();
+
+			// Retrieves the redirect path from query params falling back to dashboard
+			const redirectPath = queryParams?.['redirectUrl'] ?? '/dashboard';
 
 			// Encrypts latest credentials into a secure string for further processing
 			const encryptedCredentials = encryption(JSON.stringify(formModel));
@@ -144,12 +178,15 @@ export class SignIn implements OnInit {
 			if (!formModel.rememberMe) localStorage.removeItem(this.rememberMeKey);
 			else localStorage.setItem(this.rememberMeKey, encryptedCredentials);
 
-			// Shows an error notification to inform that the request was unsuccessful
-			// Shows a success notification to confirm that this request was completed
-			this.toaster.success(message!);
-
 			// Navigates toward the designated route after the request fully completes
-			this.router.navigate(['/dashboard']);
+			this.router.navigateByUrl(redirectPath).finally(() => {
+				// Updates transitioning to cease tracking the complete submission process
+				this.transitioning.set(false);
+
+				// Shows an error notification to inform that the request was unsuccessful
+				// Shows a success notification to confirm that this request was completed
+				this.toaster.success(message!);
+			});
 		});
 	});
 }

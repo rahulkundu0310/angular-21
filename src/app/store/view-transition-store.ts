@@ -113,7 +113,7 @@ export const ViewTransitionStore = signalStore(
 		 * @since 01 December 2025
 		 * @author Rahul Kundu
 		 */
-		const _isNavigatingToSameRoute = (): boolean => {
+		const _navigatingToSameRoute = (): boolean => {
 			// Retrieves destination path from current navigation for route comparison
 			const targetUrl = router.currentNavigation()?.finalUrl;
 
@@ -169,13 +169,13 @@ export const ViewTransitionStore = signalStore(
 			resetTransitionMode(-1);
 
 			// Retrieves navigation target to check if it matches current active route
-			const isNavigatingToSameRoute = _isNavigatingToSameRoute();
+			const navigatingToSameRoute = _navigatingToSameRoute();
 
 			// Destructures the provided source object to extract necessary properties
 			const { transition, from: sourceRoute, to: targetRoute } = transitionInfo;
 
 			// Checks if transition is invalid and resets store state to initial value
-			if (!sourceRoute || !targetRoute || isNavigatingToSameRoute) {
+			if (!sourceRoute || !targetRoute || navigatingToSameRoute) {
 				patchState(store, initialState);
 				return;
 			}
