@@ -1,0 +1,107 @@
+@let accountSummary = userDetails();
+@let requestLoading = requestSnapshot().pending;
+
+<!-- add comemnt -->
+<div class="account-summary">
+	<button
+		type="button"
+		aria-haspopup="menu"
+		aria-label="Profile menu"
+		class="account-summary-button"
+		aria-controls="account-overlay"
+		(click)="toggleAccountOverlay()"
+		[attr.aria-expanded]="accountOverlayVisible()"
+		[class.account-overlay-visible]="accountOverlayVisible()"
+	>
+		<div class="account-avatar">
+			<!-- add comemnt -->
+			@if (!!accountSummary?.image) {
+				<img
+					alt=""
+					imageFallback
+					loading="lazy"
+					class="account-image"
+					[src]="accountSummary?.image"
+					[fallback]="'images/fallback-avatar.svg'"
+				/>
+			} @else {
+				<span class="account-initials">
+					{{ nameInitials() }}
+				</span>
+			}
+
+			<!-- add comemnt -->
+			@if (requestLoading) {
+				<div class="account-avatar-mask">
+					<p-progressSpinner
+						[strokeWidth]="'4'"
+						[class]="'account-spinner'"
+						[animationDuration]="'2.5s'"
+					/>
+				</div>
+			}
+		</div>
+		<div class="account-meta">
+			<h6 class="account-name">
+				{{ accountSummary?.first_name }}
+			</h6>
+			<p class="account-role">
+				{{ accountSummary?.role }}
+			</p>
+		</div>
+		<span class="account-caret" aria-hidden="true">
+			<lucide-icon [name]="'chevrons-up-down'" [size]="15" />
+		</span>
+	</button>
+</div>
+
+<!-- add comemnt -->
+<p-overlay
+	[target]="'@prev'"
+	[appendTo]="'body'"
+	[styleClass]="'account-overlay'"
+	[(visible)]="accountOverlayVisible"
+	[contentStyleClass]="'account-overlay-content'"
+>
+	<ng-template #content>
+		<div class="account-overlay-header">
+			<h6>{{ accountSummary?.first_name }} {{ accountSummary?.last_name }}</h6>
+			<p>{{ accountSummary?.email }}</p>
+		</div>
+		<nav class="account-overlay-navbar">
+			<ul class="menu-items" role="menu" aria-label="User account menu">
+				<li
+					class="menu-item"
+					[routerLinkActive]="'menu-item-active'"
+					[routerLinkActiveOptions]="{ exact: true }"
+				>
+					<a
+						tabindex="-1"
+						role="menuitem"
+						class="menu-link"
+						[routerLink]="['/account-settings']"
+					>
+						<span class="menu-icon">
+							<lucide-icon [size]="24" [name]="'user-pen'" [strokeWidth]="2.5" />
+						</span>
+						<span class="menu-label">My Profile</span>
+					</a>
+				</li>
+				<li class="menu-item">
+					<button
+						type="button"
+						tabindex="-1"
+						role="menuitem"
+						class="menu-link"
+						(click)="attemptSignOut()"
+					>
+						<span class="menu-icon">
+							<lucide-icon [size]="22" [name]="'log-out'" [strokeWidth]="2.5" />
+						</span>
+						<span class="menu-label">Sign Out</span>
+					</button>
+				</li>
+			</ul>
+		</nav>
+	</ng-template>
+</p-overlay>

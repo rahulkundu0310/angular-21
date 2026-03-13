@@ -1,8 +1,7 @@
-import { Session } from './session';
+import { map, timer } from 'rxjs';
 import type { Observable } from 'rxjs';
-import { map, tap, timer } from 'rxjs';
+import { HttpAgent } from '@core/http';
 import { inject, Injectable } from '@angular/core';
-import { HttpAgent, isSuccessResponse } from '@core/http';
 import type {
 	IResponse,
 	IAuthSession,
@@ -16,7 +15,6 @@ import type {
 export class Auth {
 	// Dependency injections providing direct access to services and injectors
 	private readonly http = inject(HttpAgent);
-	private readonly session = inject(Session);
 
 	// Public and private class member variables reflecting state and behavior
 	private readonly authBaseUrl: string = 'auth';
@@ -41,14 +39,7 @@ export class Auth {
 		// };
 
 		// // Executes the resource request and returns an observable response stream
-		// return this.http.post<IResponse<IAuthSession>>(requestUrl, payload, requestOptions).pipe(
-		// 	tap((response) => {
-		// 		// If response is successful store authentication session details
-		// 		if (isSuccessResponse(response)) {
-		// 			this.session.persistAuthSession(response.dataset!);
-		// 		}
-		// 	})
-		// );
+		// return this.http.post<IResponse<IAuthSession>>(requestUrl, payload, requestOptions);
 
 		return timer(5000).pipe(
 			map(() => {
@@ -67,6 +58,7 @@ export class Auth {
 						access_token: 'mock_jwt_token_xy782_secure_hash_9921',
 						user_details: {
 							id: 101,
+							image: null,
 							role: 'admin',
 							is_verified: true,
 							last_name: 'Kundu',
@@ -77,12 +69,6 @@ export class Auth {
 					}
 				};
 				return mockedResponse;
-			}),
-			tap((response) => {
-				// If response is successful store authentication session details
-				if (isSuccessResponse(response)) {
-					this.session.persistAuthSession(response.dataset!);
-				}
 			})
 		);
 	}
@@ -152,10 +138,6 @@ export class Auth {
 		};
 
 		// Executes the resource request and returns an observable response stream
-		return this.http.post<IResponse>(requestUrl, null, requestOptions).pipe(
-			tap(() => {
-				this.session.clearAuthSession();
-			})
-		);
+		return this.http.post<IResponse>(requestUrl, null, requestOptions);
 	}
 }

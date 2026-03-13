@@ -69,11 +69,11 @@
 						"production": {
 							"aot": true,
 							"sourceMap": false,
-							"namedChunks": false,
+							"namedChunks": true,
 							"optimization": true,
+							"outputHashing": "all",
 							"extractLicenses": true,
 							"deleteOutputPath": true,
-							"outputHashing": "bundles",
 							"budgets": [
 								{
 									"type": "initial",
@@ -100,11 +100,11 @@
 						"staging": {
 							"aot": true,
 							"sourceMap": false,
-							"namedChunks": false,
+							"namedChunks": true,
 							"optimization": true,
+							"outputHashing": "all",
 							"extractLicenses": true,
 							"deleteOutputPath": true,
-							"outputHashing": "bundles",
 							"budgets": [
 								{
 									"type": "initial",

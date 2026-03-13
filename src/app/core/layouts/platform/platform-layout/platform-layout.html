@@ -1,18 +1,22 @@
+@let transitionMuted = initialLoading();
 @let compactLayout = layoutContext().compact;
 @let extendedLayout = layoutContext().extended;
+@let collapsedLayout = layoutContext().collapsed;
 @let transitionName = transitionNames().platformOutlet;
 
 <div
-	class="platform-layout"
+	class="layout"
 	[class]="{
-		'platform-layout-compact': compactLayout,
-		'platform-layout-extended': extendedLayout
+		'layout-muted': transitionMuted,
+		'layout-compact': compactLayout,
+		'layout-extended': extendedLayout,
+		'layout-collapsed': collapsedLayout
 	}"
 >
 	<platform-header />
-	<platform-drawer />
-	<div class="platform-layout-content">
-		<div class="platform-layout-outlet" [style.view-transition-name]="transitionName">
+	<platform-sidebar />
+	<div class="layout-content">
+		<div class="layout-outlet" [style.view-transition-name]="transitionName">
 			<router-outlet />
 		</div>
 	</div>

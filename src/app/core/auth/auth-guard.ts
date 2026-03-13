@@ -22,10 +22,10 @@ export const authGuard: CanActivateFn = (route, state) => {
 	const authStore = inject(AuthStore);
 
 	// Retrieves session validity status from the authentication store context
-	const isAuthenticated = authStore.isAuthenticated();
+	const authenticated = authStore.authenticated();
 
 	// Checks if session is unverified and validates visitor navigation access
-	if (isAuthenticated) return true;
+	if (authenticated) return true;
 
 	// Captures the error message if an unauthenticated session is encountered
 	logger.error('Unauthenticated access detected redirecting to sign in');

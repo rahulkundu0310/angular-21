@@ -74,7 +74,7 @@ export const AuthStore = signalStore(
 		 * @since 01 December 2025
 		 * @author Rahul Kundu
 		 */
-		const isAuthenticated = computed<boolean>(() => {
+		const authenticated = computed<boolean>(() => {
 			return session.hasValidAuthSession(store.session());
 		});
 
@@ -101,7 +101,7 @@ export const AuthStore = signalStore(
 		});
 
 		// Returns signals collection exposing calculated values for public access
-		return { isAuthenticated, accessToken, userDetails };
+		return { authenticated, accessToken, userDetails };
 	}),
 
 	// Provides store methods enabling state updates and reactive interactions
@@ -122,6 +122,18 @@ export const AuthStore = signalStore(
 		};
 
 		/**
+		 * Clears the active authentication session by executing targeted strategies to eliminate credentials and reset the state.
+		 * Processes cookie deletion and storage modification commands to ensure complete identity detachment and avoid conflicts.
+		 *
+		 * @since 01 December 2025
+		 * @author Rahul Kundu
+		 */
+		const clearSession = (): void => {
+			session.clearAuthSession();
+			patchState(store, { session: null });
+		};
+
+		/**
 		 * Dispatches sign-in request by initiating request tracking and synchronizing the stored session state on authentication.
 		 * Processes credentials by invoking the auth service, storing results and updating request status in validation contexts.
 		 *
@@ -139,16 +151,26 @@ export const AuthStore = signalStore(
 				switchMap((payload) =>
 					auth.signIn(payload).pipe(
 						tap((result) => {
+							// Retrieves essential response properties to process the operation result
+							const { dataset, message } = result;
+
+							// Persists the authentication session extracted from the response dataset
+							session.persistAuthSession(dataset);
+
+							// Marks the current operation as fulfilled and commits the resolved state
 							store.markFulfilled(AuthEvent.SIGN_IN, {
-								data: result.dataset,
-								message: result.message,
-								session: result.dataset
+								data: dataset,
+								message: message,
+								session: dataset
 							});
 						}),
 						catchError((error) => {
+							// Marks the current operation as rejected and commits the exception state
 							store.markRejected(AuthEvent.SIGN_IN, {
 								message: error.message
 							});
+
+							// Returns an empty observable to cancel the stream execution upon failure
 							return EMPTY;
 						})
 					)
@@ -174,14 +196,18 @@ export const AuthStore = signalStore(
 				switchMap((payload) =>
 					auth.forgotPassword(payload).pipe(
 						tap((result) => {
+							// Marks the current operation as fulfilled and commits the resolved state
 							store.markFulfilled(AuthEvent.FORGOT_PASSWORD, {
 								message: result.message
 							});
 						}),
 						catchError((error) => {
+							// Marks the current operation as rejected and commits the exception state
 							store.markRejected(AuthEvent.FORGOT_PASSWORD, {
 								message: error.message
 							});
+
+							// Returns an empty observable to cancel the stream execution upon failure
 							return EMPTY;
 						})
 					)
@@ -207,14 +233,18 @@ export const AuthStore = signalStore(
 				switchMap((payload) =>
 					auth.resetPassword(payload).pipe(
 						tap((result) => {
+							// Marks the current operation as fulfilled and commits the resolved state
 							store.markFulfilled(AuthEvent.RESET_PASSWORD, {
 								message: result.message
 							});
 						}),
 						catchError((error) => {
+							// Marks the current operation as rejected and commits the exception state
 							store.markRejected(AuthEvent.RESET_PASSWORD, {
 								message: error.message
 							});
+
+							// Returns an empty observable to cancel the stream execution upon failure
 							return EMPTY;
 						})
 					)
@@ -239,14 +269,22 @@ export const AuthStore = signalStore(
 				switchMap(() =>
 					auth.signOut().pipe(
 						tap((result) => {
+							// Clears the authentication session extracted from the persistent storage
+							session.clearAuthSession();
+
+							// Marks the current operation as fulfilled and commits the resolved state
 							store.markFulfilled(AuthEvent.SIGN_OUT, {
+								session: null,
 								message: result.message
 							});
 						}),
 						catchError((error) => {
+							// Marks the current operation as rejected and commits the exception state
 							store.markRejected(AuthEvent.SIGN_OUT, {
 								message: error.message
 							});
+
+							// Returns an empty observable to cancel the stream execution upon failure
 							return EMPTY;
 						})
 					)
@@ -255,7 +293,14 @@ export const AuthStore = signalStore(
 		);
 
 		// Returns methods collection exposing callable features for public access
-		return { signIn, signOut, resetPassword, forgotPassword, _restoreSessionFromCookie };
+		return {
+			signIn,
+			signOut,
+			clearSession,
+			resetPassword,
+			forgotPassword,
+			_restoreSessionFromCookie
+		};
 	}),
 
 	// Provides lifecycle hooks executing side effects during store operations

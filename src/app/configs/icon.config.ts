@@ -8,11 +8,15 @@ import {
 	Check,
 	Users,
 	Search,
+	LogOut,
 	EyeOff,
+	UserPen,
 	ChartBar,
 	Settings,
+	ListFilter,
 	ChevronDown,
 	ChevronRight,
+	ChevronsUpDown,
 	LayoutDashboard
 } from 'lucide-angular';
 
@@ -32,10 +36,14 @@ export const iconConfig: LucideIcons = {
 	Check,
 	Users,
 	Search,
+	LogOut,
 	EyeOff,
+	UserPen,
 	ChartBar,
 	Settings,
+	ListFilter,
 	ChevronDown,
 	ChevronRight,
+	ChevronsUpDown,
 	LayoutDashboard
 } as const;

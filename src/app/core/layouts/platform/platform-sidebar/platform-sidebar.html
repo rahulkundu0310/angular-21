@@ -1,0 +1,62 @@
+@let transitionMuted = initialLoading();
+@let compactLayout = layoutContext().compact;
+@let extendedLayout = layoutContext().extended;
+@let mobileViewport = viewportContext().deviceType === 'mobile';
+
+<!-- Renders the broad sidebar used when the layout context is in extended view -->
+<aside
+	class="sidebar sidebar-extended"
+	[class]="{
+		'sidebar-muted': transitionMuted,
+		'sidebar-active': extendedLayout
+	}"
+>
+	<header class="sidebar-header">
+		<brand-logo [width]="160" [height]="39" [variant]="'standard'" />
+	</header>
+	<div class="sidebar-content">
+		<platform-navigation [layout]="'extended'" />
+	</div>
+</aside>
+
+<!-- Renders the narrow sidebar used when the layout context is in compact view -->
+<aside
+	class="sidebar sidebar-compact"
+	[class]="{
+		'sidebar-active': compactLayout,
+		'sidebar-muted': transitionMuted
+	}"
+>
+	<header class="sidebar-header">
+		<brand-logo [width]="50" [height]="53" variant="compact" />
+	</header>
+	<div class="sidebar-content">
+		<platform-navigation [layout]="'compact'" />
+	</div>
+</aside>
+
+<!-- Renders the slide drawer used when the layout context is in collapsed view -->
+<p-drawer
+	[draggable]="false"
+	[appendTo]="'body'"
+	[blockScroll]="true"
+	[position]="'right'"
+	[dismissible]="false"
+	[closeOnEscape]="false"
+	[styleClass]="'drawer'"
+	[showCloseIcon]="false"
+	[visible]="navigationDrawerVisible()"
+	[style]="{ width: mobileViewport ? '90%' : '450px' }"
+>
+	<ng-template #headless>
+		<div class="drawer-header">
+			<brand-logo [width]="160" [height]="39" [variant]="'standard'" />
+			<button type="button" class="drawer-close-button" (click)="closeNavigationDrawer()">
+				<lucide-icon name="x" [size]="20" [strokeWidth]="2.5" />
+			</button>
+		</div>
+		<div class="drawer-content">
+			<platform-navigation [layout]="'extended'" />
+		</div>
+	</ng-template>
+</p-drawer>

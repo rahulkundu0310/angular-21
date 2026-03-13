@@ -1,1 +1,35 @@
-<p>platform-header works!</p>
+@let transitionMuted = initialLoading();
+@let compactLayout = layoutContext().compact;
+@let extendedLayout = layoutContext().extended;
+@let collapsedLayout = layoutContext().collapsed;
+
+<div
+	class="header"
+	[class]="{
+		'header-muted': transitionMuted,
+		'header-compact': compactLayout,
+		'header-extended': extendedLayout,
+		'header-collapsed': collapsedLayout
+	}"
+>
+	<div class="header-content">
+		<div class="header-toggle">
+			@let buttonAriaLabel =
+				compactLayout ? 'Expand navigation menu' : 'Collapse navigation menu';
+
+			<button
+				type="button"
+				(click)="toggleLayoutMode()"
+				class="header-hamburger-button"
+				aria-controls="platform-drawer"
+				[attr.aria-label]="buttonAriaLabel"
+				[attr.aria-expanded]="!collapsedLayout"
+			>
+				<lucide-icon [size]="16" [name]="'list-filter'"></lucide-icon>
+			</button>
+		</div>
+		<div class="header-controls">
+			<platform-account />
+		</div>
+	</div>
+</div>

@@ -16,7 +16,7 @@ export class BrandLogo {
 	// Input and output properties reflecting shared state and emitting events
 	public readonly mode = input<'light' | 'dark' | 'color'>('color');
 	public readonly width = input.required<number>({ alias: 'width' });
-	public readonly variant = input<'compact' | 'expanded'>('expanded');
+	public readonly variant = input<'compact' | 'standard'>('standard');
 	public readonly height = input.required<number>({ alias: 'height' });
 	public readonly interactive = input<boolean>(true, { alias: 'interactive' });
 	public readonly destination = input<string | UrlTree>('/', { alias: 'destination ' });
