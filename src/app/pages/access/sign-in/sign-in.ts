@@ -88,9 +88,12 @@ export class SignIn implements OnInit {
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
-	public attemptSignIn(event: Event): void {
+	protected attemptSignIn(event: Event): void {
 		// Prevents default event behavior to stop unwanted browser page reloading
 		event.preventDefault();
+
+		// Checks if the dispatched operation status is disabled and returns early
+		if (this.operationState().disabled) return;
 
 		// Updates submitted state to mark the form as ready for validation errors
 		this.submitted.set(true);
@@ -138,7 +141,7 @@ export class SignIn implements OnInit {
 
 	/**
 	 * Watches the reactive request snapshot to track execution phases and coordinate subsequent contextual interface actions.
-	 * Processes the evaluated statuses by resolving target events and extracting typed payloads to manage essential outcomes.
+	 * Processes the evaluated statuses by resolving target events and extracting typed payloads to manage dependent outcomes.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu

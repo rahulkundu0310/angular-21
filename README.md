@@ -1,64 +1,108 @@
-# Angular21
+# Angular 21
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version
-21.0.1.
+An enterprise-grade Angular 21 application built with a strict standalone-first architecture, highly
+optimized reactive state management via `@ngrx/signals`, and comprehensive code quality automation.
 
-## Development server
+## 🚀 Architectural Overview
 
-To start a local development server, run:
+This project is structured for high scalability, enforcing strict domain boundaries and a clear
+separation of concerns.
 
-```bash
-ng serve
+- **Framework:** [Angular 21](https://angular.dev/) (Strict Standalone Components)
+- **State Management:** `@ngrx/signals` (Custom Feature & Shared Domain pattern)
+- **Styling:** SCSS (Modular ITCSS-inspired architecture)
+- **Code Quality:** ESLint, Prettier, Husky, and `lint-staged`
+
+## 📂 Project Structure
+
+```text
+angular-21/
+├─ .husky/                # Git hooks for automated pre-commit linting/formatting
+├─ docs/                  # Internal architectural standards and style guides
+├─ public/                # Static assets (fonts, images, SCSS architecture)
+│  └─ scss/               # Global styles, variables, mixins, themes, layout grids
+├─ src/
+│  ├─ app/
+│  │  ├─ configs/         # Environment-agnostic app configurations
+│  │  ├─ core/            # Singleton services, interceptors, guards, strategies
+│  │  ├─ pages/           # Routable feature modules and their respective stores
+│  │  ├─ shared/          # Reusable UI components, pipes, directives, utilities
+│  │  └─ store/           # Root-provided shared domain stores (e.g., Layout, Viewport)
+│  ├─ environments/       # Environment-specific configuration variables
+│  └─ types/              # Global TypeScript declaration files
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The
-application will automatically reload whenever you modify any of the source files.
+### Directory Roles
 
-## Code scaffolding
+| Directory | Purpose                                                                                                                            |
+| :-------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| `core/`   | Framework-level implementations. Contains HTTP interceptors, global error handlers, route strategies, and foundational singletons. |
+| `pages/`  | Feature domains. Each page manages its own route-scoped NgRx Signal Store, ensuring state is created and destroyed with the route. |
+| `shared/` | Highly reusable, stateless presentation logic. Subdivided into `composites`, `fallbacks`, `skeletons`, and `widgets`.              |
+| `store/`  | Root-scoped state management. Strictly reserved for data shared across multiple domains (e.g., `viewport-store`, `layout-store`).  |
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📖 Developer Standards & Documentation
 
-```bash
-ng generate component component-name
-```
+Before contributing to this repository, please review the strict architectural guidelines located in
+the `docs/` directory. **Adherence to these standards is required for all PR approvals.**
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- [File Naming Conventions](docs/file-naming.md) — Naming rules for standalone components,
+  configurations, and barrel exports.
+- [Access Modifiers](docs/access-modifiers.md) — Strict encapsulation rules (`public`, `protected`,
+  `private`) for template vs. class usage.
+- [State Management Architecture](docs/store-patterns.md) — Rules for cross-store communication,
+  snapshot actions, and the `patchState` boundary.
+- [Loading UX Patterns](docs/loading-ux-patterns.md) — Implementation guides for View Transitions,
+  skeleton loaders, and localized spinners.
 
-```bash
-ng generate --help
-```
+## 🛠️ Getting Started
 
-## Building
+### Prerequisites
 
-To build the project run:
+- Node.js (v20.x or higher)
+- npm (v10.x or higher)
+- Angular CLI (`npm install -g @angular/cli`)
 
-```bash
-ng build
-```
+### Installation
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default,
-the production build optimizes your application for performance and speed.
+1. Clone the repository:
 
-## Running unit tests
+    ```bash
+    git clone <repository-url>
+    cd angular-21
+    ```
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+2. Install dependencies (this automatically registers Husky Git hooks):
 
-```bash
-ng test
-```
+    ```bash
+    npm install
+    ```
 
-## Running end-to-end tests
+3. Start the development server:
+    ```bash
+    npm start
+    ```
+    Navigate to `http://localhost:4200/`. The application will automatically reload if you change
+    any of the source files.
 
-For end-to-end (e2e) testing, run:
+## 📜 CLI Commands
 
-```bash
-ng e2e
-```
+| Command          | Description                                                         |
+| :--------------- | :------------------------------------------------------------------ |
+| `npm start`      | Starts the local development server.                                |
+| `npm run build`  | Compiles the application into the `dist/` directory for production. |
+| `npm run lint`   | Runs ESLint to identify code quality issues.                        |
+| `npm run format` | Runs Prettier to automatically format code across the workspace.    |
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that
-suits your needs.
+## 🛡️ Code Quality & Git Hooks
 
-## Additional Resources
+This project enforces code quality automatically via **Husky** and **lint-staged**.
 
-For more information on using the Angular CLI, including detailed command references, visit the
-[Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+When executing `git commit`, the pre-commit hook intercepts the action and automatically runs:
+
+1. `eslint --fix` on all staged `.ts` and `.html` files.
+2. `prettier --write` on all staged `.scss`, `.css`, `.json`, and `.md` files.
+
+If linting errors cannot be automatically resolved, the commit will be aborted until the developer
+manually fixes the highlighted issues. If the `.git` directory is ever recreated, run `npx husky` to
+restore the hooks.

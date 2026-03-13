@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { Session } from '../auth';
+import { AuthStore } from '../auth';
 import { Logger } from '../services';
 import { Exception } from '../errors';
 import { inject } from '@angular/core';
@@ -17,7 +17,7 @@ import { HttpErrorResponse as ErrorResponse } from '@angular/common/http';
 interface IInterceptorProviders {
 	router: Router;
 	logger: Logger;
-	session: Session;
+	authStore: InstanceType<typeof AuthStore>;
 }
 
 /**
@@ -35,7 +35,7 @@ export const requestExceptionInterceptor: HttpInterceptorFn = (request, next) =>
 	// Dependency injections providing direct access to services and injectors
 	const router = inject(Router);
 	const logger = inject(Logger);
-	const session = inject(Session);
+	const authStore = inject(AuthStore);
 
 	// Retrieves timeout from specific request or defaults to transport config
 	const requestTimeout = request.timeout ?? transportConfig.timeout;
@@ -68,7 +68,7 @@ export const requestExceptionInterceptor: HttpInterceptorFn = (request, next) =>
 				dispatchExceptionActions(message, statusCode, {
 					router,
 					logger,
-					session
+					authStore
 				});
 			}
 
@@ -79,8 +79,8 @@ export const requestExceptionInterceptor: HttpInterceptorFn = (request, next) =>
 };
 
 /**
- * Dispatches targeted commands based on status codes to manage environment state for the consistent exception resolution.
- * Processes specific conditions to remove session and redirect routes ensuring optimal resolution in validation contexts.
+ * Dispatches targeted commands based on status codes to manage operational state for the consistent exception resolution.
+ * Processes specific conditions to clear the authentication store and redirect pathways ensuring proper execution stages.
  *
  * @param message - The explicit text string clarifying the nature of the exception for the standard logging and feedback.
  * @param statusCode - The numeric value identifier representing the status code used to evaluate the correct side effect.
@@ -95,13 +95,13 @@ function dispatchExceptionActions(
 	providers: IInterceptorProviders
 ): void {
 	// Destructures the provided source object to extract necessary properties
-	const { router, logger, session } = providers;
+	const { router, logger, authStore } = providers;
 
 	// Evaluates the status code to orchestrate the appropriate error protocol
 	switch (statusCode) {
 		// Permits logout and redirect to handle the unauthorized access exception
 		case StatusCodes.UNAUTHORIZED:
-			session.clearAuthSession();
+			authStore.clearSession();
 			router.navigate(['/sign-in'], {
 				queryParams: { redirectUrl: router.url }
 			});

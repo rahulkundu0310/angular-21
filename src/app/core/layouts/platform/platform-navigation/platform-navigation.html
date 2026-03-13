@@ -1,0 +1,190 @@
+@let transitionMuted = initialLoading();
+
+<!-- Renders the extended navbar with expandable menu items and nested submenus -->
+@if (layout() === 'extended') {
+	<nav [class.navbar-muted]="transitionMuted" class="navbar navbar-extended">
+		<ul class="menu-items" aria-label="Primary navigation" role="menubar">
+			@for (menuItem of menuItems(); track menuItem.id) {
+				@let subMenuItems = menuItem.items ?? [];
+				@if (!subMenuItems.length) {
+					<li
+						class="menu-item"
+						[class]="menuItem.styleClass ?? ''"
+						[routerLinkActive]="'menu-item-active'"
+						[routerLinkActiveOptions]="
+							menuItem.routerLinkActiveOptions || { exact: false }
+						"
+					>
+						<a
+							role="menuitem"
+							class="menu-link"
+							[state]="menuItem.state"
+							[attr.aria-label]="menuItem.label"
+							[routerLink]="menuItem.routerLink"
+							[queryParams]="menuItem.queryParams"
+							[queryParamsHandling]="menuItem.queryParamsHandling"
+						>
+							<span class="menu-icon">
+								<lucide-angular
+									[name]="menuItem.icon"
+									[size]="menuItem.iconSize"
+									[strokeWidth]="menuItem.iconWeight"
+								/>
+							</span>
+							<span class="menu-label">
+								{{ menuItem.label }}
+							</span>
+						</a>
+					</li>
+				} @else {
+					<li
+						class="menu-item"
+						[class]="[
+							menuItem.styleClass ?? '',
+							menuItem.expanded ? 'menu-item-expanded' : ''
+						]"
+					>
+						<button
+							type="button"
+							class="menu-toggle"
+							aria-haspopup="true"
+							[attr.aria-expanded]="menuItem.expanded"
+							(click)="toggleMenuExpansion(menuItem.id)"
+						>
+							<span class="menu-icon">
+								<lucide-angular
+									[name]="menuItem.icon"
+									[size]="menuItem.iconSize"
+									[strokeWidth]="menuItem.iconWeight"
+								/>
+							</span>
+							<span class="menu-label">
+								{{ menuItem.label }}
+							</span>
+							<lucide-icon
+								[size]="16"
+								[strokeWidth]="2.2"
+								name="chevron-right"
+								class="menu-toggle-icon"
+							></lucide-icon>
+						</button>
+						@if (menuItem.expanded) {
+							<div class="submenu-panel">
+								<ul
+									role="menu"
+									class="submenu-items"
+									[attr.aria-label]="`${menuItem.label} submenu`"
+								>
+									@for (subMenuItem of subMenuItems; track $index) {
+										<li
+											class="submenu-item"
+											[class]="subMenuItem.styleClass ?? ''"
+											[routerLinkActive]="'submenu-item-active'"
+											[routerLinkActiveOptions]="
+												subMenuItem.routerLinkActiveOptions || {
+													exact: false
+												}
+											"
+										>
+											<a
+												role="menuitem"
+												class="submenu-link"
+												[state]="subMenuItem.state"
+												[routerLink]="subMenuItem.routerLink"
+												[attr.aria-label]="subMenuItem.label"
+												[queryParams]="subMenuItem.queryParams"
+												[queryParamsHandling]="
+													subMenuItem.queryParamsHandling
+												"
+											>
+												<span class="submenu-label">
+													{{ subMenuItem.label }}
+												</span>
+											</a>
+										</li>
+									}
+								</ul>
+							</div>
+						}
+					</li>
+				}
+			}
+		</ul>
+	</nav>
+}
+
+<!-- Renders the compact navbar with icon only items and toggled popup submenus -->
+@if (layout() === 'compact') {
+	<nav [class.navbar-muted]="transitionMuted" class="navbar navbar-compact">
+		<ul class="menu-items" aria-label="Primary navigation" role="menubar">
+			@for (menuItem of menuItems(); track menuItem.id) {
+				@let subMenuItems = menuItem.items ?? [];
+				@if (!subMenuItems.length) {
+					<li
+						class="menu-item"
+						[class]="menuItem.styleClass ?? ''"
+						[routerLinkActive]="'menu-item-active'"
+						[routerLinkActiveOptions]="
+							menuItem.routerLinkActiveOptions || { exact: false }
+						"
+					>
+						<a
+							role="menuitem"
+							class="menu-link"
+							[state]="menuItem.state"
+							[tooltipPosition]="'right'"
+							[pTooltip]="menuItem.label"
+							[tooltipStyleClass]="'tooltip'"
+							[attr.aria-label]="menuItem.label"
+							[routerLink]="menuItem.routerLink"
+							[queryParams]="menuItem.queryParams"
+							[queryParamsHandling]="menuItem.queryParamsHandling"
+						>
+							<span class="menu-icon">
+								<lucide-angular
+									[name]="menuItem.icon"
+									[size]="menuItem.iconSize"
+									[strokeWidth]="menuItem.iconWeight"
+								/>
+							</span>
+						</a>
+					</li>
+				} @else {
+					<li
+						class="menu-item"
+						[class]="[
+							menuItem.styleClass ?? '',
+							menuItem.expanded ? 'menu-item-expanded' : ''
+						]"
+					>
+						<button
+							type="button"
+							role="menuitem"
+							class="menu-toggle"
+							tooltipPosition="right"
+							tooltipStyleClass="tooltip"
+							[pTooltip]="menuItem.label"
+							[attr.aria-label]="menuItem.label"
+							(click)="subMenuPopup.toggle($event)"
+						>
+							<span class="menu-icon">
+								<lucide-angular
+									[name]="menuItem.icon"
+									[size]="menuItem.iconSize"
+									[strokeWidth]="menuItem.iconWeight"
+								/>
+							</span>
+						</button>
+						<p-menu
+							#subMenuPopup
+							[popup]="true"
+							[styleClass]="'submenu-popup'"
+							[ariaLabel]="`${menuItem.label} submenu`"
+							[model]="subMenuItems | cast: asMenuItems"
+						/>
+					</li>
+				}
+			}
+		</ul>
+	</nav>
+}

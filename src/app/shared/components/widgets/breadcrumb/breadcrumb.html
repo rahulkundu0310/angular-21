@@ -70,12 +70,7 @@
 
 	<!-- Renders the icon and binds a position style class when the icon is defined -->
 	@if (!!breadcrumbIcon) {
-		<lucide-icon
-			role="img"
-			class="breadcrumb-icon"
-			[name]="breadcrumbIcon"
-			[size]="breadcrumb.iconSize ?? 16"
-		/>
+		<lucide-icon role="img" [name]="breadcrumbIcon" [size]="breadcrumb.iconSize ?? 16" />
 	}
 
 	<!-- Renders the breadcrumb label span and identifies the current page position -->

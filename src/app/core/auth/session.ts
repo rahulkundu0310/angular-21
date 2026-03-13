@@ -18,14 +18,18 @@ export class Session {
 
 	/**
 	 * Persists the user authentication session into strict cookies to preserve current sign-in state across page navigations.
-	 * Processes session serialization and encryption to write protected cookie data for reliable uses in validation contexts.
+	 * Processes session serialization and encryption to write protected cookie strings ensuring seamless future verification.
 	 *
 	 * @param session - The auth session object to be serialized and encrypted and stored in client cookie for safe retrieval.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
-	public persistAuthSession(session: IAuthSession): void {
+	public persistAuthSession(session: IAuthSession | null): void {
+		// Checks if the provided session is null before storing and returns early
+		if (!session) return;
+
+		// Wraps execution in a try block to catch and handle any thrown exception
 		try {
 			// Removes the existing authentication session from cookies at root access
 			this.clearAuthSession();

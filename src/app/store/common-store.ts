@@ -100,7 +100,11 @@ export const CommonStore = signalStore(
 					const initialLoading = store.initialLoading();
 
 					// Checks if loading persists in state and deactivates it before rendering
-					if (initialLoading) patchState(store, { initialLoading: false });
+					if (initialLoading) {
+						requestAnimationFrame(() => {
+							patchState(store, { initialLoading: false });
+						});
+					}
 				});
 			});
 		};

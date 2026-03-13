@@ -1,5 +1,4 @@
 import { isEmpty } from 'lodash-es';
-import { withRouterState } from '../router-state';
 import { Navigation, RouterState } from '@core/services';
 import { computed, inject, linkedSignal, untracked } from '@angular/core';
 import type { IBreadcrumb, IMenuItem, INavigationEnd } from '@shared/types';
@@ -18,9 +17,6 @@ export function withNavigation() {
 	return signalStoreFeature(
 		// Provides type constraint defining required structure for state instance
 		{ state: type<{ _menuItems: IMenuItem[] }>() },
-
-		// Provides router integration exposing navigation events and state stream
-		withRouterState(),
 
 		// Provides custom properties extending store instance with static members
 		withProps((store) => {

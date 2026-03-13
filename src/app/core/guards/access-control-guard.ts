@@ -23,7 +23,7 @@ export const accessControlGuard: CanActivateFn = (route, state) => {
 	const authStore = inject(AuthStore);
 
 	// Retrieves session validity status from the authentication store context
-	const isAuthenticated = authStore.isAuthenticated();
+	const authenticated = authStore.authenticated();
 
 	// Retrieves access constraint from route snapshot and defaults to general
 	const accessConstraint = (route.data as IRouteData)?.['scope'] ?? 'general';
@@ -34,7 +34,7 @@ export const accessControlGuard: CanActivateFn = (route, state) => {
 	// Checks if access constraint is visitor and validates navigation context
 	if (accessConstraint === 'visitor') {
 		// Checks if session is unverified and validates visitor navigation access
-		if (!isAuthenticated) return true;
+		if (!authenticated) return true;
 
 		// Returns url tree redirecting to dashboard for the authenticated session
 		return router.createUrlTree(['/dashboard']);
@@ -43,7 +43,7 @@ export const accessControlGuard: CanActivateFn = (route, state) => {
 	// Checks if access constraint is private and validates navigation context
 	if (accessConstraint === 'private') {
 		// Checks if session is authorized and validates private navigation access
-		if (isAuthenticated) return true;
+		if (authenticated) return true;
 
 		// Returns url tree redirecting to sign in page to validate session access
 		return router.createUrlTree(['/sign-in'], {

@@ -12,23 +12,23 @@ import {
 	withComputed
 } from '@ngrx/signals';
 
-type TAccessLayoutMode = 'compact' | 'extended';
+export type TAccessLayoutMode = 'compact' | 'extended';
 
-type TPlatformLayoutMode = 'compact' | 'extended' | 'collapsed';
+export type TPlatformLayoutMode = 'compact' | 'extended' | 'collapsed';
 
-interface IAccessLayoutContext {
+export interface IAccessLayoutContext {
 	compact: boolean;
 	extended: boolean;
 }
 
-interface IPlatformLayoutContext {
+export interface IPlatformLayoutContext {
 	compact: boolean;
 	extended: boolean;
 	collapsed: boolean;
 }
 
-interface ILayoutState {
-	isNavigationDrawerVisible: boolean;
+export interface ILayoutState {
+	navigationDrawerVisible: boolean;
 	accessLayoutMode: TAccessLayoutMode;
 	platformLayoutMode: TPlatformLayoutMode;
 }
@@ -43,7 +43,7 @@ interface ILayoutState {
 const initialState: ILayoutState = {
 	accessLayoutMode: 'extended',
 	platformLayoutMode: 'extended',
-	isNavigationDrawerVisible: false
+	navigationDrawerVisible: false
 };
 
 /**
@@ -146,7 +146,7 @@ export const LayoutStore = signalStore(
 		const setPlatformLayoutMode = (mode: TPlatformLayoutMode): void => {
 			patchState(store, {
 				platformLayoutMode: mode,
-				isNavigationDrawerVisible: false
+				navigationDrawerVisible: false
 			});
 		};
 
@@ -160,7 +160,7 @@ export const LayoutStore = signalStore(
 		 * @author Rahul Kundu
 		 */
 		const setNavigationDrawerVisibility = (visible: boolean): void => {
-			patchState(store, { isNavigationDrawerVisible: visible });
+			patchState(store, { navigationDrawerVisible: visible });
 		};
 
 		/**
@@ -173,13 +173,13 @@ export const LayoutStore = signalStore(
 		const toggleNavigationDrawerVisibility = (): void => {
 			patchState(store, (state) => {
 				// Retrieves the navigation drawer visible property from the store context
-				const { isNavigationDrawerVisible } = state;
+				const { navigationDrawerVisible } = state;
 
 				// Computes the inverse visibility state to determine the alternate output
-				const alternateDrawerVisibility = !isNavigationDrawerVisible;
+				const alternateDrawerVisibility = !navigationDrawerVisible;
 
 				// Returns the updated visibility state to modify the layout configuration
-				return { isNavigationDrawerVisible: alternateDrawerVisibility };
+				return { navigationDrawerVisible: alternateDrawerVisibility };
 			});
 		};
 

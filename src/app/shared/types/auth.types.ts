@@ -6,6 +6,7 @@ export interface IAuthUser {
 	first_name: string;
 	is_verified: boolean;
 	phone_number: string;
+	image: string | null;
 }
 
 export interface IAuthSession {

@@ -1,8 +1,9 @@
+import type { MenuItem } from 'primeng/api';
 import type { TRecord } from './toolkit.types';
 import type { Params, QueryParamsHandling } from '@angular/router';
 import type { IRouteBreadcrumb, TActiveLinkOptions } from './router.types';
 
-export interface IMenuItem {
+export interface IMenuItem extends Omit<MenuItem, 'id'> {
 	id: number;
 	label: string;
 	icon?: string;
