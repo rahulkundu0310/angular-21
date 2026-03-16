@@ -20,6 +20,8 @@ export type TSeverity =
 	| 'contrast'
 	| 'secondary';
 
+export type TFieldSize = 'small' | 'medium' | 'large';
+
 export interface IOperationState {
 	loading: boolean;
 	disabled: boolean;

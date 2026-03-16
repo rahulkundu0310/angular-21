@@ -11,7 +11,6 @@ import { resolveOverlayOptions } from '@shared/utilities';
  */
 export const primeNgConfig: IPrimeNGConfig = {
 	ripple: false,
-	unstyled: true,
 	overlayOptions: resolveOverlayOptions(),
 	zIndex: {
 		menu: 1000,

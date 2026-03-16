@@ -6,4 +6,4 @@ export { menuItemsConfig } from './menu-items.config';
 export { fileUploadConfig } from './file-upload.config';
 export { ngProgressConfig } from './ng-progress.config';
 export { applicationConfig } from './application.config';
-export { signalFormsConfig, fieldStateConfig } from './signal-forms.config';
+export { signalFormsConfig, fieldStateConfig } from './signal-form.config';

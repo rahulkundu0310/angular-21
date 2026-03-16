@@ -5,7 +5,13 @@
 	"editor.formatOnSave": true,
 	"editor.formatOnPaste": true,
 	"editor.cursorBlinking": "expand",
-	"github.copilot.enable": { "*": false },
+	"github.copilot.enable": {
+		"*": false,
+		"plaintext": false,
+		"markdown": false,
+		"scminput": false,
+		"typescript": true
+	},
 	"editor.cursorSmoothCaretAnimation": "on",
 
 	// Applies Prettier formatting rules to produce reliably consistent output

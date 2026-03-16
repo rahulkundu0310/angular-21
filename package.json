@@ -3,7 +3,11 @@
 	"type": "module",
 	"version": "1.0.0",
 	"name": "angular-21",
-	"packageManager": "npm@11.6.4",
+	"packageManager": "npm@11.7.0",
+	"engines": {
+		"npm": ">=11.11.1",
+		"node": ">=24.14.0"
+	},
 	"scripts": {
 		"ng": "ng",
 		"test": "ng test",

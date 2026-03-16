@@ -1,0 +1,15 @@
+@use 'sass:math';
+@use 'variables' as variables;
+@use 'functions' as functions;
+
+@mixin media-breakpoint-up($breakpoint, $breakpoints: variables.$breakpoints) {
+	$min-width: functions.get-breakpoint($breakpoint, $breakpoints);
+
+	@if $min-width == 0 {
+		@content;
+	} @else {
+		@media (min-width: $min-width) {
+			@content;
+		}
+	}
+}

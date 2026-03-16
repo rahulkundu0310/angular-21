@@ -1,14 +1,73 @@
-import { disabled } from '@angular/forms/signals';
-import { isSignal, type Signal } from '@angular/core';
-import type { TFactory, TRecord } from '@shared/types';
+import { isPromise } from './data-type-utils';
+import { firstValueFrom, isObservable } from 'rxjs';
+import type { WritableSignal } from '@angular/core';
+import { disabled, form } from '@angular/forms/signals';
+import type { IFormOptions, TFactory, TRecord } from '@shared/types';
 import { entries, isBoolean, isFunction, isNil, isEmpty } from 'lodash-es';
-import type { FieldState, SchemaPath, SchemaPathTree } from '@angular/forms/signals';
+import { assertInInjectionContext, isSignal, signal } from '@angular/core';
+import type { FieldState, TreeValidationResult } from '@angular/forms/signals';
+import type {
+	IForm,
+	IFormState,
+	TFormSchemaPath,
+	TFieldPredicate,
+	TFieldPredicates,
+	TFormStateAction,
+	IFormStateOptions
+} from '../types';
 
-type TFieldPredicate = boolean | Signal<boolean> | TFactory<boolean>;
+const nativeForm = form as unknown as IForm;
 
-type TFieldPredicates<TValue> = Partial<Record<keyof TValue, TFieldPredicate>>;
+export function formState<TModel>(
+	model: WritableSignal<TModel>,
+	options?: IFormStateOptions<TModel>
+): IFormState<TModel> {
+	assertInInjectionContext(formState);
 
-type TFormSchemaPath<TValue> = SchemaPathTree<TValue> & TRecord<SchemaPath<unknown>>;
+	const submitted = signal<boolean>(false);
+
+	const {
+		name,
+		schema,
+		action,
+		injector,
+		onInvalid,
+		ignoreValidators,
+		focusInvalidField = false
+	} = options ?? {};
+
+	const formOptions: IFormOptions<TModel> = {
+		name,
+		injector,
+		submission: {
+			ignoreValidators,
+			onInvalid: (field, context) => {
+				submitted.set(true);
+
+				if (focusInvalidField) {
+					let focusOptions: FocusOptions | undefined = undefined;
+
+					if (!isBoolean(focusInvalidField)) focusOptions = focusInvalidField;
+
+					const initialError = field().errorSummary().at(0);
+					initialError?.fieldTree().focusBoundControl(focusOptions);
+				}
+
+				onInvalid?.(field, context);
+			},
+			action: (field, context) => {
+				submitted.set(false);
+				return normalizeAction(action?.(field, context));
+			}
+		}
+	};
+
+	const formTree = !schema
+		? nativeForm<TModel>(model, formOptions)
+		: nativeForm<TModel>(model, schema, formOptions);
+
+	return { form: formTree, submitted: submitted.asReadonly() };
+}
 
 /**
  * Manages conditional field disabling across form schema by applying predicate-based assessment to specified field paths.
@@ -85,4 +144,13 @@ function normalizePredicate(predicate: TFieldPredicate): TFactory<boolean> {
 
 	// Returns factory function resolving false as fallback for invalid inputs
 	return () => false;
+}
+
+function normalizeAction<TModel>(
+	action: ReturnType<TFormStateAction<TModel>> | undefined
+): Promise<TreeValidationResult> {
+	if (isNil(action)) return Promise.resolve<TreeValidationResult>(undefined);
+	if (isPromise<TreeValidationResult>(action)) return action;
+	if (isObservable(action)) return firstValueFrom(action);
+	return Promise.resolve<TreeValidationResult>(action);
 }

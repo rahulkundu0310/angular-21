@@ -1,4 +1,14 @@
-import { isArray, isEmpty, isNumber, isString, isFinite, isNaN, isObject } from 'lodash-es';
+import {
+	isNaN,
+	isNil,
+	isArray,
+	isEmpty,
+	isNumber,
+	isString,
+	isFinite,
+	isObject,
+	isFunction
+} from 'lodash-es';
 
 /**
  * Determines whether a string represents a finite number by testing numeric formatting and rejecting NaN/Infinity values.
@@ -83,4 +93,18 @@ export function isEmptyString(value: string): boolean {
  */
 export function isPrecise(value: number, limit = 2): boolean {
 	return String(value).split('.').at(0)?.length === limit;
+}
+
+/**
+ * Determines whether an unknown input represents a promise instance by verifying the presence of a callable method chain.
+ * Processes type checking using object method inspections to ensure proper asynchronous detection in validation contexts.
+ *
+ * @param value - The unknown source input containing possible promise value to be tested for validation or type checking.
+ * @returns A boolean indicating whether the input represents a valid promise instance suitable for concurrent executions.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+export function isPromise<TValue>(value: unknown): value is Promise<TValue> {
+	return !isNil(value) && isFunction(Reflect.get(value, 'then'));
 }
