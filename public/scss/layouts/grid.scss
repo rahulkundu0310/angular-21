@@ -1,0 +1,107 @@
+@use 'sass:math';
+@use 'abstracts' as *;
+
+.container,
+.container-fluid {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: calc(#{$gutter-x} / 2);
+	padding-right: calc(#{$gutter-x} / 2);
+}
+
+@each $breakpoint, $container-width in $container-widths {
+	@include media-breakpoint-up($breakpoint) {
+		.container {
+			max-width: $container-width;
+		}
+	}
+}
+
+// Base grid row
+.row {
+	display: grid;
+	gap: $gutter-y $gutter-x;
+	grid-template-columns: repeat($grid-columns, 1fr);
+
+	&.row-cols-auto {
+		grid-template-columns: repeat(auto-fit, minmax(0, auto));
+	}
+}
+
+// Default columns
+.col {
+	grid-column: span $grid-columns;
+}
+
+.col-auto {
+	grid-column: auto;
+	justify-self: start;
+}
+
+// Base (unprefixed) explicit column spans (.col-1 to .col-12)
+@for $index from 1 through $grid-columns {
+	.col-#{$index} {
+		grid-column: span #{$index};
+	}
+}
+
+// Responsive column spans per breakpoint
+// We skip 'xs' because it's mobile-first (no prefix).
+@each $breakpoint, $min-width in $breakpoints {
+	@if $breakpoint != xs {
+		@include media-breakpoint-up($breakpoint) {
+			@for $index from 1 through $grid-columns {
+				.col-#{$breakpoint}-#{$index} {
+					grid-column: span #{$index};
+				}
+			}
+
+			// Optional: breakpoint-specific .col-<bp> that behaves like Bootstrap's .col-md
+			.col-#{$breakpoint} {
+				grid-column: span $grid-columns;
+			}
+		}
+	}
+}
+
+// LTR offsets
+[dir='ltr'] {
+	.row {
+		direction: ltr;
+	}
+
+	@for $index from 1 through ($grid-columns - 1) {
+		.offset-#{$index} {
+			margin-left: math.percentage(math.div($index, $grid-columns));
+		}
+	}
+}
+
+// RTL offsets
+[dir='rtl'] {
+	.row {
+		direction: rtl;
+	}
+
+	@for $index from 1 through ($grid-columns - 1) {
+		.offset-#{$index} {
+			margin-left: 0;
+			margin-right: math.percentage(math.div($index, $grid-columns));
+		}
+	}
+}
+
+// Ordering
+@for $index from 0 through 5 {
+	.order-#{$index} {
+		order: #{$index};
+	}
+}
+
+.order-first {
+	order: -1;
+}
+.order-last {
+	order: 6;
+}

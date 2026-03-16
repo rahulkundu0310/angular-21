@@ -1,7 +1,9 @@
 @let operation = operationState();
+@let signInForm = signInFormState.form;
 @let formInvalid = signInForm().invalid();
+@let submitted = signInFormState.submitted;
 
-<form novalidate (submit)="attemptSignIn($event)">
+<form [formRoot]="signInForm">
 	<field-group
 		[submitted]="submitted()"
 		[field]="signInForm.email"

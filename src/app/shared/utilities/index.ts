@@ -1,8 +1,8 @@
 export { encryption, decryption } from './crypto-utils';
 export { resolveOverlayOptions } from './overlay-options-utils';
 export { suppressViewTransitionAbortError } from './console-utils';
-export { disableFields, focusInvalidField } from './signal-form-utils';
 export { generateNumericId, generateObjectId } from './identifier-utils';
+export { disableFields, focusInvalidField, formState } from './signal-form-utils';
 export { formatTime, isTimestamp, isValidDate, formatDate } from './date-time-utils';
 export { getFileType, validateFiles, formatFileSize, generateBase64FromFile } from './file-utils';
 export {
@@ -17,6 +17,7 @@ export {
 export {
 	isNumeric,
 	isPrecise,
+	isPromise,
 	isEmptyArray,
 	isEmptyString,
 	isNumericZero,

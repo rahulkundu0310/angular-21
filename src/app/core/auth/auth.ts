@@ -41,7 +41,7 @@ export class Auth {
 		// // Executes the resource request and returns an observable response stream
 		// return this.http.post<IResponse<IAuthSession>>(requestUrl, payload, requestOptions);
 
-		return timer(5000).pipe(
+		return timer(3000).pipe(
 			map(() => {
 				const mockedResponse: IResponse<IAuthSession> = {
 					success: true,
@@ -129,15 +129,35 @@ export class Auth {
 	 * @author Rahul Kundu
 	 */
 	public signOut(): Observable<IResponse> {
-		// Constructs the assembled url string for processing the resource request
-		const requestUrl = `${this.authBaseUrl}/sign-out`;
+		// // Constructs the assembled url string for processing the resource request
+		// const requestUrl = `${this.authBaseUrl}/sign-out`;
 
-		// Configures the execution parameters for processing the resource request
-		const requestOptions: TRequestOptions = {
-			version: 'v1'
-		};
+		// // Configures the execution parameters for processing the resource request
+		// const requestOptions: TRequestOptions = {
+		// 	version: 'v1'
+		// };
 
-		// Executes the resource request and returns an observable response stream
-		return this.http.post<IResponse>(requestUrl, null, requestOptions);
+		// // Executes the resource request and returns an observable response stream
+		// return this.http.post<IResponse>(requestUrl, null, requestOptions);
+
+		return timer(3000).pipe(
+			map(() => {
+				const mockedResponse: IResponse = {
+					dataset: null,
+					success: true,
+					message: 'You have been successfully signed out',
+					status: {
+						status_code: 200,
+						status_info: 'OK'
+					},
+					publish: {
+						version: 'v1.0.0',
+						developer: 'Rahul Kundu'
+					}
+				};
+
+				return mockedResponse;
+			})
+		);
 	}
 }

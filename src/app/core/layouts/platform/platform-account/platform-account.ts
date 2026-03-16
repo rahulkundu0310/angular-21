@@ -49,7 +49,7 @@ export class PlatformAccount {
 		const userDetails = this.userDetails();
 
 		// Destructures the provided source object to extract necessary properties
-		const { first_name, last_name } = userDetails!;
+		const { first_name, last_name } = userDetails ?? {};
 
 		// Returns an initials string assembled by mapping over both name segments
 		return [first_name, last_name].map(flow(upperFirst, head)).join('');

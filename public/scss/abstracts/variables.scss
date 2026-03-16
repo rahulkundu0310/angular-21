@@ -1,0 +1,20 @@
+$gutter-y: 0;
+$gutter-x: 1.5rem;
+$grid-columns: 12;
+
+$breakpoints: (
+	xs: 0,
+	sm: 640px,
+	md: 768px,
+	lg: 1024px,
+	xl: 1280px,
+	xxl: 1536px
+);
+
+$container-widths: (
+	sm: 640px,
+	md: 768px,
+	lg: 1024px,
+	xl: 1280px,
+	xxl: 1536px
+);

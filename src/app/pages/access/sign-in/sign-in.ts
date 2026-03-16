@@ -5,13 +5,13 @@ import { Router, RouterLink } from '@angular/router';
 import type { TSignInModel } from './sign-in.schema';
 import type { IOperationState } from '@shared/types';
 import type { EffectRef, OnInit } from '@angular/core';
-import { decryption, encryption } from '@shared/utilities';
 import { Logger, RouterState, Toaster } from '@core/services';
 import { selectRequestSnapshot } from '@store/request-status';
 import { PreventAutofill, TrimInput } from '@shared/directives';
 import { initialSignInModel, signInSchema } from './sign-in.schema';
+import { decryption, encryption, formState } from '@shared/utilities';
 import { FieldGroup, PasswordField } from '@shared/components/composites';
-import { form, FormField, validateStandardSchema } from '@angular/forms/signals';
+import { FormField, FormRoot, validateStandardSchema } from '@angular/forms/signals';
 import {
 	effect,
 	inject,
@@ -27,7 +27,16 @@ import {
 	styleUrl: './sign-in.scss',
 	templateUrl: './sign-in.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [FieldGroup, FormField, TrimInput, PreventAutofill, RouterLink, PasswordField, Action]
+	imports: [
+		Action,
+		FormRoot,
+		TrimInput,
+		FormField,
+		RouterLink,
+		FieldGroup,
+		PasswordField,
+		PreventAutofill
+	]
 })
 export class SignIn implements OnInit {
 	// Dependency injections providing direct access to services and injectors
@@ -38,13 +47,23 @@ export class SignIn implements OnInit {
 	private readonly routerState = inject(RouterState);
 
 	// Public and private class member variables reflecting state and behavior
-	protected readonly submitted = signal<boolean>(false);
+	// protected readonly submitted = signal<boolean>(false);
 	protected readonly transitioning = signal<boolean>(false);
 	private readonly rememberMeKey = applicationConfig.rememberMeKey;
 	protected readonly signInModel = signal<TSignInModel>(initialSignInModel);
 	protected readonly requestSnapshot = selectRequestSnapshot(this.authStore, AuthEvent.SIGN_IN);
-	protected readonly signInForm = form<TSignInModel>(this.signInModel, (schema) => {
-		validateStandardSchema(schema, signInSchema);
+	protected readonly signInFormState = formState<TSignInModel>(this.signInModel, {
+		schema: (schema) => validateStandardSchema(schema, signInSchema),
+		action: () => {
+			// Checks if the dispatched operation status is disabled and returns early
+			if (this.operationState().disabled) return;
+
+			// Updates transitioning to begin tracking the complete submission process
+			this.transitioning.set(true);
+
+			// Executes sign in by dispatching collected form values to the auth store
+			this.authStore.signIn(this.signInModel());
+		}
 	});
 
 	/**
@@ -78,35 +97,6 @@ export class SignIn implements OnInit {
 		// Returns the resolved state derived from the combined processing outcome
 		return { loading: processing, disabled: processing };
 	});
-
-	/**
-	 * Attempts the initial authentication procedure by intercepting incoming submission events to inspect access credentials.
-	 * Processes checking the current form validity before dispatching collected authentication models into an assigned store.
-	 *
-	 * @param event - The generic interaction object containing the target element reference to block default browser reloads.
-	 *
-	 * @since 01 December 2025
-	 * @author Rahul Kundu
-	 */
-	protected attemptSignIn(event: Event): void {
-		// Prevents default event behavior to stop unwanted browser page reloading
-		event.preventDefault();
-
-		// Checks if the dispatched operation status is disabled and returns early
-		if (this.operationState().disabled) return;
-
-		// Updates submitted state to mark the form as ready for validation errors
-		this.submitted.set(true);
-
-		// Checks if the form is invalid and prevents submission and returns early
-		if (this.signInForm().invalid()) return;
-
-		// Updates transitioning to begin tracking the complete submission process
-		this.transitioning.set(true);
-
-		// Executes sign in by dispatching collected form values to the auth store
-		this.authStore.signIn(this.signInModel());
-	}
 
 	/**
 	 * Restores previously secured authentication credentials by extracting an encrypted string from persistent local storage.
@@ -154,9 +144,6 @@ export class SignIn implements OnInit {
 		untracked<void>(() => {
 			// Checks if the request status is idle or pending state and returns early
 			if (status === 'idle' || status === 'pending') return;
-
-			// Updates the submitted state to reflect the request being fully resolved
-			this.submitted.set(false);
 
 			// Checks if the request was rejected and notifies with the relevant error
 			if (status === 'rejected') {
