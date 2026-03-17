@@ -22,6 +22,9 @@ export const accessControlGuard: CanActivateFn = (route, state) => {
 	const logger = inject(Logger);
 	const authStore = inject(AuthStore);
 
+	// Retrieves ongoing sign out status from the authentication store context
+	const signingOut = authStore.signingOut();
+
 	// Retrieves session validity status from the authentication store context
 	const authenticated = authStore.authenticated();
 
@@ -33,8 +36,8 @@ export const accessControlGuard: CanActivateFn = (route, state) => {
 
 	// Checks if access constraint is visitor and validates navigation context
 	if (accessConstraint === 'visitor') {
-		// Checks if session is unverified and validates visitor navigation access
-		if (!authenticated) return true;
+		// Checks if the session is missing or signing out to allow visitor access
+		if (!authenticated || signingOut) return true;
 
 		// Returns url tree redirecting to dashboard for the authenticated session
 		return router.createUrlTree(['/dashboard']);

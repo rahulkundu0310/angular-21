@@ -7,7 +7,7 @@ import { withResetState } from '@store/reset-state';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { withRequestStatus } from '@store/request-status';
 import { AuthEvent, type TAuthEvents } from './auth-events';
-import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, pipe, switchMap, tap, timer } from 'rxjs';
 import {
 	withHooks,
 	withState,
@@ -25,6 +25,7 @@ import type {
 } from '@shared/types';
 
 interface IAuthState {
+	signingOut: boolean;
 	session: IAuthSession | null;
 }
 
@@ -36,7 +37,8 @@ interface IAuthState {
  * @author Rahul Kundu
  */
 const initialState: IAuthState = {
-	session: null
+	session: null,
+	signingOut: false
 };
 
 /**
@@ -146,6 +148,7 @@ export const AuthStore = signalStore(
 		const signIn = rxMethod<ISignInPayload>(
 			pipe(
 				tap(() => {
+					// Marks the current operation as pending and commits the transition state
 					store.markPending(AuthEvent.SIGN_IN);
 				}),
 				switchMap((payload) =>
@@ -191,6 +194,7 @@ export const AuthStore = signalStore(
 		const forgotPassword = rxMethod<IForgotPasswordPayload>(
 			pipe(
 				tap(() => {
+					// Marks the current operation as pending and commits the transition state
 					store.markPending(AuthEvent.FORGOT_PASSWORD);
 				}),
 				switchMap((payload) =>
@@ -228,6 +232,7 @@ export const AuthStore = signalStore(
 		const resetPassword = rxMethod<IResetPasswordPayload>(
 			pipe(
 				tap(() => {
+					// Marks the current operation as pending and commits the transition state
 					store.markPending(AuthEvent.RESET_PASSWORD);
 				}),
 				switchMap((payload) =>
@@ -264,23 +269,33 @@ export const AuthStore = signalStore(
 		const signOut = rxMethod<void>(
 			pipe(
 				tap(() => {
-					store.markPending(AuthEvent.SIGN_OUT);
+					// Marks the current operation as pending and commits the transition state
+					store.markPending(AuthEvent.SIGN_OUT, {
+						signingOut: true
+					});
 				}),
 				switchMap(() =>
 					auth.signOut().pipe(
-						tap((result) => {
+						switchMap((result) => {
 							// Clears the authentication session extracted from the persistent storage
 							session.clearAuthSession();
 
 							// Marks the current operation as fulfilled and commits the resolved state
 							store.markFulfilled(AuthEvent.SIGN_OUT, {
-								session: null,
 								message: result.message
 							});
+
+							// Returns a timed observable to pause stream teardown by 400 milliseconds
+							return timer(400);
+						}),
+						tap(() => {
+							// Patches the store with revised state values once an operation concludes
+							patchState(store, { session: null, signingOut: false });
 						}),
 						catchError((error) => {
 							// Marks the current operation as rejected and commits the exception state
 							store.markRejected(AuthEvent.SIGN_OUT, {
+								signingOut: false,
 								message: error.message
 							});
 
