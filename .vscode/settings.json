@@ -10,7 +10,7 @@
 		"plaintext": false,
 		"markdown": false,
 		"scminput": false,
-		"typescript": true
+		"typescript": false
 	},
 	"editor.cursorSmoothCaretAnimation": "on",
 

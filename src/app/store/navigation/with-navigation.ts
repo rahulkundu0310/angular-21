@@ -27,6 +27,9 @@ export function withNavigation() {
 			/**
 			 * Declares a navigation menu items structure using router events updating item expansion and active status configuration.
 			 * Returns an array of menu items representing resolved active state and expansion source with query persistence strategy.
+			 *
+			 * @since 01 December 2025
+			 * @author Rahul Kundu
 			 */
 			const menuItems = linkedSignal<INavigationEnd | null, IMenuItem[]>({
 				source: routerState.navigationEnd,

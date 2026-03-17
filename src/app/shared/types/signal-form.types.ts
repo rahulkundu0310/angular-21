@@ -8,6 +8,8 @@ import type {
 	TreeValidationResult
 } from '@angular/forms/signals';
 
+export type TFieldPath = string | number;
+
 export type TFormIgnoreValidators = 'pending' | 'none' | 'all';
 
 export type TFieldPredicate = boolean | Signal<boolean> | TFactory<boolean>;
@@ -18,32 +20,38 @@ export type TFormStateSchema<TModel> = object | ((schema: TFormSchemaPath<TModel
 
 export type TFormSchemaPath<TValue> = SchemaPathTree<TValue> & TRecord<SchemaPath<unknown>>;
 
+export type TFormConfiguration<TModel> = TFormStateSchema<TModel> | IFormInstanceOptions<TModel>;
+
 export type TFieldTree<TValue = unknown, TNullable extends boolean = false> = TNullable extends true
-	? TMaybe<FieldTree<TValue>>
-	: FieldTree<TValue>;
+	? TMaybe<FieldTree<TValue, TFieldPath>>
+	: FieldTree<TValue, TFieldPath>;
 
-export interface IFormContext<TModel> {
-	readonly root: FieldTree<TModel>;
-	readonly submitted: FieldTree<TModel>;
-}
+export type IFormContext<TRootModel, TSubmittedModel = unknown> = {
+	readonly root: FieldTree<TRootModel, TFieldPath>;
+	readonly submitted: FieldTree<TSubmittedModel, TFieldPath>;
+} & {};
 
-export type TFormSubmitHandler<TModel, TReturn = void> = TCallback<
-	[FieldTree<TModel>, IFormContext<TModel>],
+export type TFormSubmitHandler<TRootModel, TSubmittedModel = unknown, TReturn = void> = TCallback<
+	[
+		fieldTree: FieldTree<TRootModel & TSubmittedModel, TFieldPath>,
+		context: IFormContext<TRootModel, TSubmittedModel>
+	],
 	TReturn
 >;
 
 export type TFormStateAction<TModel> = TFormSubmitHandler<
 	TModel,
+	unknown,
 	void | TreeValidationResult | Promise<TreeValidationResult> | Observable<TreeValidationResult>
 >;
 
 export interface IFormSubmissionOptions<TModel> {
-	onInvalid?: TFormSubmitHandler<TModel>;
+	onInvalid?: TFormSubmitHandler<TModel, unknown>;
 	ignoreValidators?: TFormIgnoreValidators;
-	action: TFormSubmitHandler<TModel, Promise<TreeValidationResult>>;
+	action: TFormSubmitHandler<TModel, unknown, Promise<TreeValidationResult>>;
 }
 
-export interface IFormOptions<TModel> {
+export interface IFormInstanceOptions<TModel> {
 	name?: string;
 	injector?: Injector;
 	submission?: IFormSubmissionOptions<TModel>;
@@ -51,21 +59,21 @@ export interface IFormOptions<TModel> {
 
 export type IForm = <TModel>(
 	model: WritableSignal<TModel>,
-	schemaOrOptions?: TFormStateSchema<TModel> | IFormOptions<TModel>,
-	options?: IFormOptions<TModel>
-) => FieldTree<TModel>;
+	schemaOrOptions?: TFormConfiguration<TModel>,
+	options?: IFormInstanceOptions<TModel> | undefined
+) => FieldTree<TModel, TFieldPath>;
 
 export interface IFormStateOptions<TModel> {
 	name?: string;
 	injector?: Injector;
 	schema?: TFormStateSchema<TModel>;
 	action?: TFormStateAction<TModel>;
-	onInvalid?: TFormSubmitHandler<TModel>;
 	ignoreValidators?: TFormIgnoreValidators;
 	focusInvalidField?: boolean | FocusOptions;
+	onInvalid?: TFormSubmitHandler<TModel, unknown>;
 }
 
 export interface IFormState<TModel> {
-	readonly form: FieldTree<TModel>;
+	readonly form: FieldTree<TModel, TFieldPath>;
 	readonly submitted: Signal<boolean>;
 }
