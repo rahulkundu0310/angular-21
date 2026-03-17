@@ -110,11 +110,11 @@ export class PlatformAccount {
 				return;
 			}
 
+			// Shows a success notification to confirm that this request was completed
+			this.toaster.success(message!);
+
 			// Navigates toward the designated route after the request fully completes
-			this.router.navigateByUrl('/sign-in').finally(() => {
-				// Shows a success notification to confirm that this request was completed
-				this.toaster.success(message!);
-			});
+			this.router.navigateByUrl('/sign-in');
 		});
 	});
 }

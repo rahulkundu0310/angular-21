@@ -151,12 +151,13 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 			 * Processes the event identifier by executing loading status mutations through state patching in asynchronous operations.
 			 *
 			 * @param event - The event identifier string used to track and update the corresponding request status in store contexts.
+			 * @param overrides - The optional state object containing store properties used for binding related fields on initiation.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
 			 */
-			const markPending = (event: TEventsKey<TEvents>): void => {
-				patchState(store, setPending(event));
+			const markPending = (event: TEventsKey<TEvents>, overrides?: Partial<TState>): void => {
+				patchState(store, setPending(event), overrides ?? {});
 			};
 
 			/**
@@ -164,16 +165,16 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 			 * Processes the event identifier by executing success status mutations through state patching in asynchronous operations.
 			 *
 			 * @param event - The event identifier string used to track and update the corresponding request status in store contexts.
-			 * @param result - The optional payload object containing data and message used for updating related fields on completion.
+			 * @param payload - The optional payload object containing data and message used for binding related fields on completion.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
 			 */
 			const markFulfilled = <TEvent extends TEventsKey<TEvents>>(
 				event: TEvent,
-				result?: IRequestStatusPayload<TState, TEvents[TEvent]>
+				payload?: IRequestStatusPayload<TState, TEvents[TEvent]>
 			): void => {
-				markResolved(event, 'fulfilled', result);
+				markResolved(event, 'fulfilled', payload);
 			};
 
 			/**
@@ -181,16 +182,16 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 			 * Processes the event identifier by executing failure status mutations through state patching in asynchronous operations.
 			 *
 			 * @param event - The event identifier string used to track and update the corresponding request status in store contexts.
-			 * @param result - The optional payload object containing data and message used for updating related fields on completion.
+			 * @param payload - The optional payload object containing data and message used for binding related fields on completion.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
 			 */
 			const markRejected = <TEvent extends TEventsKey<TEvents>>(
 				event: TEvent,
-				result?: IRequestStatusPayload<TState, TEvents[TEvent]>
+				payload?: IRequestStatusPayload<TState, TEvents[TEvent]>
 			): void => {
-				markResolved(event, 'rejected', result);
+				markResolved(event, 'rejected', payload);
 			};
 
 			/**
@@ -199,7 +200,7 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 			 *
 			 * @param event - The event identifier string used to track and update the corresponding request status in store contexts.
 			 * @param status - The completion status type, indicating whether the request was fulfilled or rejected during settlement.
-			 * @param result - The optional payload object containing data and message used for updating related fields on completion.
+			 * @param payload - The optional payload object containing data and message used for binding related fields on completion.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
@@ -207,13 +208,13 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 			const markResolved = <TEvent extends TEventsKey<TEvents>>(
 				event: TEvent,
 				status: 'fulfilled' | 'rejected',
-				result?: IRequestStatusPayload<TState, TEvents[TEvent]>
+				payload?: IRequestStatusPayload<TState, TEvents[TEvent]>
 			): void => {
 				// Retrieves the data entity from result or defaults to the null reference
-				const data = result?.data ?? null;
+				const data = payload?.data ?? null;
 
 				// Retrieves the message entity from result or defaults to an empty string
-				const message = result?.message ?? '';
+				const message = payload?.message ?? '';
 
 				// Retrieves the active state source from store context using the accessor
 				const stateSource = getStateSource<TState>(store);
@@ -222,7 +223,7 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 				const stateKeys = keys(stateSource) as TKeys<TState>[];
 
 				// Normalizes the result object by picking only available state properties
-				const normalizedState = pick<Partial<TState>>(result, stateKeys);
+				const normalizedState = pick<Partial<TState>>(payload, stateKeys);
 
 				// Determines the status updater based on the outcome of the passed action
 				const statusUpdater =
