@@ -47,7 +47,6 @@ export class SignIn implements OnInit {
 	private readonly routerState = inject(RouterState);
 
 	// Public and private class member variables reflecting state and behavior
-	// protected readonly submitted = signal<boolean>(false);
 	protected readonly transitioning = signal<boolean>(false);
 	private readonly rememberMeKey = applicationConfig.rememberMeKey;
 	protected readonly signInModel = signal<TSignInModel>(initialSignInModel);
@@ -81,7 +80,7 @@ export class SignIn implements OnInit {
 	 * Computes the current operation state by merging active transitions and pending requests to drive interactive behaviors.
 	 * Returns a resolved object containing the essential reactive properties designed to constrain changes during processing.
 	 *
-	 * @since 11 March 2026
+	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
 	protected readonly operationState = computed<IOperationState>(() => {

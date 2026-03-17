@@ -9,7 +9,8 @@ import type {
 } from 'primeng/api';
 
 /**
- * A WeakMap storing resize event listeners for overlay elements to track window resize callbacks and prevent memory leak.
+ * Defines a mapped reference storing specific resize event listeners against internal overlay targets capturing handlers.
+ * Processes registered element relationships allowing seamless extraction during teardown phases preventing memory leaks.
  *
  * @since 01 December 2025
  * @author Rahul Kundu
