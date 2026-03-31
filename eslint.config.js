@@ -91,9 +91,9 @@ export default defineConfig([
 		}
 	},
 
-	// Enables console restrictions exclusively for the dedicated service file
+	// Enables console restrictions exclusively for dedicated logger utilities
 	{
-		files: ['**/services/logger.ts'],
+		files: ['**/services/logger.ts', '**/store/logger/with-logger.ts'],
 		rules: {
 			'no-console': [
 				'warn',
