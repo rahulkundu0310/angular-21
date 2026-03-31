@@ -1,3 +1,5 @@
+@use 'abstracts' as *;
+
 *,
 *::after,
 *::before {
@@ -9,15 +11,54 @@
 	padding: 0;
 }
 
+html {
+	font-size: 62.5%;
+	scroll-behavior: smooth;
+	text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+
 html,
 body {
 	height: 100%;
 }
 
-body {
-	line-height: 1.5;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+hr {
+	border: none;
+}
+
+legend {
+	padding: 0;
+}
+
+ul,
+ol {
+	list-style: none;
+}
+
+input,
+button,
+select,
+textarea {
+	font: inherit;
+}
+
+a,
+input,
+button,
+select,
+textarea {
+	touch-action: manipulation;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
 }
 
 img,
@@ -29,19 +70,57 @@ picture {
 	max-width: 100%;
 }
 
-input,
-button,
-select,
-textarea {
-	font: inherit;
+button {
+	border: none;
+	cursor: pointer;
+	background: none;
+	appearance: none;
+	-webkit-appearance: none;
 }
 
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	overflow-wrap: break-word;
+pre {
+	overflow-x: auto;
+	white-space: pre-wrap;
+}
+
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+abbr[title] {
+	cursor: help;
+	text-decoration: underline dotted;
+}
+
+:focus,
+:focus-visible {
+	outline: none;
+	outline-offset: 0px;
+}
+
+.transitions-muted {
+	*,
+	*::before,
+	*::after {
+		animation: none !important;
+		transition: none !important;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+	}
 }

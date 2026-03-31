@@ -1,7 +1,7 @@
 import type { TPlatformLayoutMode } from '@store';
 import { HostModifier } from '@shared/directives';
+import { LayoutStore, ViewportStore } from '@store';
 import { LucideAngularModule } from 'lucide-angular';
-import { CommonStore, LayoutStore, ViewportStore } from '@store';
 import { PlatformAccount } from '../platform-account/platform-account';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
@@ -15,12 +15,10 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 })
 export class PlatformHeader {
 	// Dependency injections providing direct access to services and injectors
-	private readonly commonStore = inject(CommonStore);
 	private readonly layoutStore = inject(LayoutStore);
 	private readonly viewportStore = inject(ViewportStore);
 
 	// Public and private class member variables reflecting state and behavior
-	protected readonly initialLoading = this.commonStore.initialLoading;
 	private readonly viewportContext = this.viewportStore.viewportContext;
 	protected readonly layoutContext = this.layoutStore.platformLayoutContext;
 

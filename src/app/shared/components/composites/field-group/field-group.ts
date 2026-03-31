@@ -30,10 +30,9 @@ import {
 })
 export class FieldGroup<TValue = unknown> {
 	// Input and output properties reflecting shared state and emitting events
-	public readonly submitted = input<boolean>(false, { alias: 'submitted' });
-	public readonly field = input<TFieldTree<TValue, true>>(null, { alias: 'field' });
+	public readonly submitted = input<boolean>(false);
+	public readonly field = input<TFieldTree<TValue, true>>(null);
 	public readonly config = input.required<IDerivedFieldGroupConfig, IFieldGroupConfig>({
-		alias: 'config',
 		transform: deriveFieldGroupConfig
 	});
 

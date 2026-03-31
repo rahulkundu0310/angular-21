@@ -6,9 +6,9 @@ export class ImageFallback {
 	private readonly elementRef = inject(ElementRef<HTMLImageElement>);
 
 	// Input and output properties reflecting shared state and emitting events
-	public readonly sourceLoaded = output<void>({ alias: 'sourceLoaded' });
-	public readonly fallbackUsed = output<void>({ alias: 'fallbackUsed' });
-	public readonly fallback = input.required<string>({ alias: 'fallback' });
+	public readonly sourceLoaded = output<void>();
+	public readonly fallbackUsed = output<void>();
+	public readonly fallback = input.required<string>();
 
 	// Public and private class member variables reflecting state and behavior
 	private fallbackApplied: boolean = false;

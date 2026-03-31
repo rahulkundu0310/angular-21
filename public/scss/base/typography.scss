@@ -1,0 +1,149 @@
+@use 'abstracts' as *;
+
+body {
+	@include font(
+		$size: sm,
+		$weight: 400,
+		$color: gray 900,
+		$family: montserrat,
+		$line-height: normal
+	);
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1 {
+	@include font(
+		$size: 5xl,
+		$weight: 700,
+		$color: gray 900,
+		$line-height: tight,
+		$family: montserrat
+	);
+}
+
+h2 {
+	@include font(
+		$size: 4xl,
+		$weight: 700,
+		$color: gray 900,
+		$line-height: tight,
+		$family: montserrat
+	);
+}
+
+h3 {
+	@include font(
+		$size: 3xl,
+		$weight: 600,
+		$color: gray 900,
+		$line-height: snug,
+		$family: montserrat
+	);
+}
+
+h4 {
+	@include font(
+		$size: 2xl,
+		$weight: 600,
+		$color: gray 900,
+		$line-height: snug,
+		$family: montserrat
+	);
+}
+
+h5 {
+	@include font(
+		$size: xl,
+		$weight: 500,
+		$color: gray 900,
+		$family: montserrat,
+		$line-height: normal
+	);
+}
+
+h6 {
+	@include font(
+		$size: lg,
+		$weight: 500,
+		$color: gray 900,
+		$family: montserrat,
+		$line-height: normal
+	);
+}
+
+p {
+	@include font(
+		$size: md,
+		$weight: 400,
+		$color: gray 900,
+		$family: montserrat,
+		$line-height: relaxed
+	);
+}
+
+small {
+	@include font(
+		$size: sm,
+		$weight: 400,
+		$color: gray 900,
+		$family: montserrat,
+		$line-height: normal
+	);
+}
+
+strong {
+	font-style: normal;
+	font-weight: font-weight(700);
+	font-family: font-family(montserrat);
+}
+
+em {
+	font-style: italic;
+	font-weight: font-weight(400);
+	font-family: font-family(montserrat);
+}
+
+blockquote {
+	@include font(
+		$size: lg,
+		$weight: 400,
+		$color: gray 600,
+		$family: montserrat,
+		$line-height: relaxed
+	);
+	font-style: italic;
+	padding-left: 1.6rem;
+	border-left: 2px solid color(primary, 500);
+}
+
+label {
+	@include font(
+		$size: sm,
+		$weight: 500,
+		$color: gray 700,
+		$family: montserrat,
+		$line-height: normal
+	);
+}
+
+a {
+	text-decoration: none;
+	@include transition(color);
+	@include font(
+		$size: md,
+		$weight: 400,
+		$color: gray 900,
+		$family: montserrat,
+		$line-height: normal
+	);
+
+	&:hover {
+		color: color(primary, 500);
+	}
+}
+
+::selection {
+	color: $color-white;
+	background-color: color(primary, 500);
+}

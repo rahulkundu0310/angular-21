@@ -1,0 +1,11 @@
+<error-state
+	title="oooops!!"
+	status="Page Not Found"
+	styleClass="page-not-found"
+	message="The page you're looking for doesn't exist or has been moved."
+	[actionConfig]="{
+		label: 'Back To Home',
+		ariaLabel: 'Navigate to home',
+		router: { routerLink: [authenticated() ? '/dashboard' : '/sign-in'] }
+	}"
+></error-state>

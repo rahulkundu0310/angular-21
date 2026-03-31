@@ -286,7 +286,7 @@ export const AuthStore = signalStore(
 							});
 
 							// Returns a timed observable to pause stream teardown by 400 milliseconds
-							return timer(400);
+							return timer(500);
 						}),
 						tap(() => {
 							// Patches the store with revised state values once an operation concludes

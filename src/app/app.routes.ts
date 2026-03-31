@@ -53,5 +53,15 @@ export const appRoutes: IRoute[] = [
 					)
 			}
 		]
+	},
+	{
+		path: '',
+		data: { preload: true, topbar: false },
+		loadChildren: () =>
+			import('./pages/exceptions/exceptions.routes').then((m) => m.exceptionsRoutes)
+	},
+	{
+		path: '**',
+		redirectTo: '/page-not-found'
 	}
 ];

@@ -32,7 +32,7 @@ export interface IActionRouterConfig {
 	state?: TRecord<unknown>;
 	preserveFragment?: boolean;
 	skipLocationChange?: boolean;
-	routerLink: string | unknown[];
+	routerLink: string | string[];
 	queryParamsHandling?: QueryParamsHandling;
 	routerLinkActiveOptions?: TActiveLinkOptions;
 }
@@ -92,7 +92,7 @@ export interface IDerivedActionRouterConfig {
 	preserveFragment?: boolean;
 	fragment: string | undefined;
 	skipLocationChange?: boolean;
-	routerLink: string | unknown[];
+	routerLink: string | string[];
 	queryParamsHandling?: QueryParamsHandling;
 	routerLinkActiveOptions: TActiveLinkOptions;
 }

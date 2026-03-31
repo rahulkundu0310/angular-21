@@ -1,6 +1,187 @@
 @use 'sass:map';
+@use 'sass:list';
+@use 'sass:meta';
 @use 'variables' as variables;
 
-@function get-breakpoint($breakpoint, $breakpoints: variables.$breakpoints) {
-	@return map.get($breakpoints, $breakpoint);
+/*
+ * Retrieves the requested animation delay timings from assigned variables synchronizing motion speeds.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function delay($amount) {
+	@return resolve(variables.$delay, $amount, '$delay');
+}
+
+/*
+ * Retrieves the requested transition easing curves from designated variables defining motion patterns.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function easing($curve) {
+	@return resolve(variables.$easing, $curve, '$easing');
+}
+
+/*
+ * Retrieves the designated stacking layer indices from defined variables organizing depth hierarchies.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function z-index($layer) {
+	@return resolve(variables.$z-index, $layer, '$z-index');
+}
+
+/*
+ * Retrieves the requested elevation shadow properties from designated variables defining layer depths.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function shadow($size) {
+	@return resolve(variables.$shadows, $size, '$shadows');
+}
+
+/*
+ * Retrieves the requested transition duration measures from designated variables executing animations.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function duration($speed) {
+	@return resolve(variables.$duration, $speed, '$duration');
+}
+
+/*
+ * Retrieves the requested typographic dimension values from defined variables enforcing sizing scales.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function font-size($size) {
+	@return resolve(variables.$font-sizes, $size, '$font-sizes');
+}
+
+/*
+ * Retrieves the requested typographic thickness property from designated variables specifying weights.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function font-weight($weight) {
+	@return resolve(variables.$font-weights, $weight, '$font-weights');
+}
+
+/*
+ * Retrieves the requested typographic family stacks from configurations retaining the text appearance.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function font-family($name) {
+	@return resolve(variables.$font-families, $name, '$font-families');
+}
+
+/*
+ * Retrieves the accurate text spacing measurements from designated variables defining line dimensions.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function line-height($height) {
+	@return resolve(variables.$line-heights, $height, '$line-heights');
+}
+
+/*
+ * Retrieves the requested shade from the provided design palettes ensuring accurate color definitions.
+ * Validates the targeted map extraction and throws an explicit compiler error upon a missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function color($palette-name, $shade) {
+	// Constructs the internal palette registry mapping stored design palettes
+	$palettes: (
+		info: variables.$color-info,
+		gray: variables.$color-gray,
+		zinc: variables.$color-zinc,
+		danger: variables.$color-danger,
+		primary: variables.$color-primary,
+		success: variables.$color-success,
+		warning: variables.$color-warning,
+		tertiary: variables.$color-tertiary,
+		secondary: variables.$color-secondary
+	);
+
+	// Resolves the requested palette group from the compiled palette registry
+	$palette: resolve($palettes, $palette-name, '$color palettes');
+
+	// Resolves the specific numeric shade target within the extracted palette
+	$color: resolve($palette, $shade, $palette-name);
+
+	// Returns the designated resolved hex value ensuring uniform presentation
+	@return $color;
+}
+
+/*
+ * Retrieves structural layout constraints yielding strict responsive size boundary values for styling.
+ * Processes the sequential numerical indices returning expected dimension strings targeting viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function breakpoint($name, $upper-bound: false, $breakpoints: variables.$breakpoints) {
+	// Retrieves the available keys from provided responsive lookup registries
+	$keys: map.keys($breakpoints);
+
+	// Retrieves the numeric position matching the requested breakpoint string
+	$index: list.index($keys, $name);
+
+	// Checks if the numeric index is missing and throws a compilation failure
+	@if not $index {
+		@error "Breakpoint `#{$name}` not found in `$breakpoints` map";
+	}
+
+	// Checks if upper bound requirement is false returning normal token value
+	@if not $upper-bound {
+		@return resolve($breakpoints, $name, '$breakpoints');
+	}
+
+	// Checks if the index matches maximum length returning null automatically
+	@if $index == list.length($keys) {
+		@return null;
+	}
+
+	// Returns the resolved property value matching the upcoming sizing target
+	@return resolve($breakpoints, list.nth($keys, $index + 1), '$breakpoints');
+}
+
+/*
+ * Retrieves the specific design token from the provided dictionary ensuring precise style extractions.
+ * Validates the target mapping structures and throws an explicit compiler error upon missing property.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@function resolve($map, $key, $label) {
+	// Retrieves the designated token value from configuration using given key
+	$value: map.get($map, $key);
+
+	// Evaluates missing property throwing explicit compiler error upon lookup
+	@if $value == null {
+		@error "`#{$key}` not found in `#{$label}`";
+	}
+
+	// Returns the successfully resolved property confirming strict extraction
+	@return $value;
 }

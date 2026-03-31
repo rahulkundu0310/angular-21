@@ -1,14 +1,371 @@
-@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:list';
 @use 'variables' as variables;
 @use 'functions' as functions;
 
-@mixin media-breakpoint-up($breakpoint, $breakpoints: variables.$breakpoints) {
-	$min-width: functions.get-breakpoint($breakpoint, $breakpoints);
+/*
+ * Defines text truncation properties concealing overflowed content beyond the enforced outer boundary.
+ * Applies overflow constraints preventing word wrapping and appending an ellipsis on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin truncate() {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
 
-	@if $min-width == 0 {
-		@content;
+/*
+ * Defines text truncation properties concealing overflowed content beyond the requested line boundary.
+ * Registers webkit constraints directing vertical box orientation with clamp rule on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin line-clamp($lines) {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+}
+
+/*
+ * Obscures the scroll indicator by excluding the width property and display state within the viewport.
+ * Overrides the webkit pseudo element and removes the scrollbar width declaration on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin scrollbar-hidden() {
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+/*
+ * Establishes targeted dimension constraints enforcing strict layout restraints for the bounding area.
+ * Assigns predefined width and height values while evaluating the radius property on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin size($width, $height, $radius: null) {
+	width: $width;
+	height: $height;
+
+	// Checks if target radius values exist applying valid rounding properties
+	@if $radius {
+		border-radius: $radius;
+	}
+}
+
+/*
+ * Establishes base pseudo element properties enforcing strict boundaries within the containing blocks.
+ * Assigns requested content strings and positional values while generating layers on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin pseudo($display: block, $position: absolute, $content: '') {
+	content: $content;
+	display: $display;
+	position: $position;
+}
+
+/*
+ * Defines the scroll behavior and gutter spacing constraining the clipping within intended boundaries.
+ * Evaluates the direction value and assigns the matching axis overflow properties on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin scrollable($direction: y, $behavior: smooth, $gutter: stable) {
+	scrollbar-gutter: $gutter;
+	scroll-behavior: $behavior;
+
+	// Checks if specified conditions demand universal or axis specific styles
+	@if $direction == both {
+		overflow: auto;
 	} @else {
-		@media (min-width: $min-width) {
+		overflow-#{$direction}: auto;
+	}
+}
+
+/*
+ * Assigns the transition property duration and easing behavior to render clean and refined animations.
+ * Processes the requested timing curve and registers an optional sequential delay on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin transition($property, $duration: 300ms, $easing: in-out, $delay: null) {
+	transition-property: $property;
+	transition-duration: $duration;
+	transition-timing-function: functions.easing($easing);
+
+	// Checks if custom delay attributes exist applying proper timing controls
+	@if $delay {
+		transition-delay: $delay;
+	}
+}
+
+/*
+ * Constructs the desired styling properties which configure the overall visual aspect for backgrounds.
+ * Iterates through the mapped collection applying requested decorative properties on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin background($image: null, $color: null, $size: null, $position: null, $repeat: null) {
+	// Constructs mapped registries containing assigned background constraints
+	$props: (
+		background-size: $size,
+		background-color: $color,
+		background-image: $image,
+		background-repeat: $repeat,
+		background-position: $position
+	);
+
+	// Iterates through mapped registries assigning visual background features
+	@each $prop, $value in $props {
+		@if $value {
+			#{$prop}: $value;
+		}
+	}
+}
+
+/*
+ * Defines the positional context and predefined boundary offsets anchoring blocks within the viewport.
+ * Iterates through the mapped collection applying requested placement constraints on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin position($type, $top: null, $right: null, $bottom: null, $left: null) {
+	// Retrieves the requested positioning type and assigns the proper context
+	position: $type;
+
+	// Constructs mapped records tracking predefined boundary placement values
+	$sides: (
+		top: $top,
+		left: $left,
+		right: $right,
+		bottom: $bottom
+	);
+
+	// Iterates through mapped registries rendering valid styling declarations
+	@each $side, $value in $sides {
+		@if $value {
+			#{$side}: $value;
+		}
+	}
+}
+
+/*
+ * Establishes the responsive flex layout allocating the placement and orientation within the viewport.
+ * Iterates through the mapped collection applying requested alignment constraints on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin flex($align-items, $justify-content, $direction: null, $wrap: null, $gap: null) {
+	display: flex;
+	align-items: $align-items;
+	justify-content: $justify-content;
+
+	// Constructs mapped record groups holding internal flex layout properties
+	$props: (
+		gap: $gap,
+		flex-wrap: $wrap,
+		flex-direction: $direction
+	);
+
+	// Iterates through mapped registries rendering strict styling assignments
+	@each $prop, $value in $props {
+		@if $value {
+			#{$prop}: $value;
+		}
+	}
+}
+
+/*
+ * Establishes the responsive grid layout organizing the column and row dimensions within the viewport.
+ * Iterates through the mapped collection applying requested placement and spacing on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin grid($columns, $gap: null, $rows: null, $align-items: null, $justify-items: null) {
+	display: grid;
+	grid-template-columns: $columns;
+
+	// Constructs mapped record groups holding internal grid layout properties
+	$props: (
+		gap: $gap,
+		grid-template-rows: $rows,
+		align-items: $align-items,
+		justify-items: $justify-items
+	);
+
+	// Iterates through mapped registries rendering strict spacing assignments
+	@each $prop, $value in $props {
+		@if $value {
+			#{$prop}: $value;
+		}
+	}
+}
+
+/*
+ * Configures the typographic properties covering font size weight line height family and color shades.
+ * Iterates through the mapped collection applying designated text property values on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin font($size, $weight: 400, $line-height: normal, $color: null, $family: null) {
+	// Constructs mapped records grouping the requested typographic properties
+	$props: (
+		font-size: functions.font-size($size),
+		font-weight: functions.font-weight($weight),
+		line-height: functions.line-height($line-height),
+		font-family: $family and functions.font-family($family) or $font-montserrat
+	);
+
+	// Iterates through mapped registries assigning proper sizing declarations
+	@each $prop, $value in $props {
+		#{$prop}: $value;
+	}
+
+	// Checks if custom color definitions exist applying accurate shade ranges
+	@if $color {
+		// Retrieves the primary palette name from the requested color list inputs
+		$palette-name: list.nth($color, 1);
+
+		// Retrieves the targeted numeric shade from provided color list arguments
+		$shade: list.nth($color, 2);
+
+		// Assigns the fully resolved color value ensuring consistent text visuals
+		color: functions.color($palette-name, $shade);
+	}
+}
+
+/*
+ * Defines precise positional alignments enforcing strict placement coordinates across layout surfaces.
+ * Evaluates requested origin plane properties assigning transformation placements on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin center($position: absolute, $axis: both) {
+	position: $position;
+
+	// Checks if requested axis alignment strictly demands the vertical center
+	@if $axis == y {
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	// Checks if requested axis alignment strictly demands a horizontal center
+	@else if $axis == x {
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	// Assigns both horizontal and vertical placements as the default behavior
+	@else {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+/*
+ * Generates necessary layout properties specifying the desired visual appearance of native scrollbars.
+ * Overrides the default webkit pseudo elements assigning dimensions and colors to the track and thumb.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin scrollbar(
+	$size: 1.2rem,
+	$thumb-color: null,
+	$track-color: null,
+	$thumb-radius: 1.2rem,
+	$thumb-hover-color: null
+) {
+	$track: $track-color or variables.$color-white;
+	$thumb: $thumb-color or functions.color(gray, 200);
+	$thumb-hover: $thumb-hover-color or functions.color(gray, 300);
+
+	&::-webkit-scrollbar {
+		width: $size;
+		height: $size;
+	}
+
+	&::-webkit-scrollbar-corner {
+		background-color: $track;
+	}
+
+	&::-webkit-scrollbar-track {
+		cursor: pointer;
+		background-color: $track;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: $thumb;
+		border: 0.4rem solid $track;
+		border-radius: $thumb-radius;
+
+		&:hover {
+			background-color: $thumb-hover;
+		}
+	}
+}
+
+/*
+ * Constructs responsive media queries generating explicit dimension constraints targeting the devices.
+ * Evaluates the designated breakpoint boundaries and generates responsive rules for matched viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin media($lower, $upper: null, $breakpoints: variables.$breakpoints) {
+	// Retrieves the specified boundary dimensions preserving baseline styling
+	$min: $lower;
+
+	// Retrieves the predefined boundary constraints restricting maximum sizes
+	$max: $upper;
+
+	// Checks if the provided minimum constraint is mapped resolving correctly
+	@if meta.type-of($lower) == string {
+		$min: functions.breakpoint($lower);
+	}
+
+	// Checks if the provided maximum constraint is mapped resolving correctly
+	@if meta.type-of($upper) == string {
+		$max: functions.breakpoint($upper, true);
+	}
+
+	// Checks if the dimension requirement is absent returning direct contents
+	@if $min == 0 and not $max {
+		@content;
+	}
+	// Checks if the boundary restricts upper dimensions evaluating conditions
+	@else if $min == 0 {
+		@media (width < #{$max}) {
+			@content;
+		}
+	}
+	// Checks if the boundary demands minimum dimensions evaluating conditions
+	@else if not $max {
+		@media (width >= #{$min}) {
+			@content;
+		}
+	}
+	// Checks if the specified dimensions enforce strict bounded media queries
+	@else {
+		@media (width >= #{$min}) and (width < #{$max}) {
 			@content;
 		}
 	}

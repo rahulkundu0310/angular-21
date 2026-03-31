@@ -1,4 +1,3 @@
-@let transitionMuted = initialLoading();
 @let compactLayout = layoutContext().compact;
 @let extendedLayout = layoutContext().extended;
 @let collapsedLayout = layoutContext().collapsed;
@@ -6,7 +5,6 @@
 <div
 	class="header"
 	[class]="{
-		'header-muted': transitionMuted,
 		'header-compact': compactLayout,
 		'header-extended': extendedLayout,
 		'header-collapsed': collapsedLayout

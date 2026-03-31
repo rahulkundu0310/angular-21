@@ -15,6 +15,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class Breadcrumb {
 	// Input and output properties reflecting shared state and emitting events
-	public readonly requireMultiple = input<boolean>(true, { alias: 'multiple' });
-	public readonly breadcrumbs = input.required<IBreadcrumb[]>({ alias: 'breadcrumbs' });
+	public readonly multiple = input<boolean>(true);
+	public readonly breadcrumbs = input.required<IBreadcrumb[]>();
 }

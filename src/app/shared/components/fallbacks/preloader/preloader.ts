@@ -12,7 +12,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class Preloader {
 	// Input and output properties reflecting shared state and emitting events
-	public readonly branding = input<boolean>(true, { alias: 'branding' });
-	public readonly label = input<string>('Loading...', { alias: 'label' });
-	public readonly animation = input<boolean>(false, { alias: 'animation' });
+	public readonly branding = input<boolean>(true);
+	public readonly animation = input<boolean>(false);
+	public readonly label = input<string>('Loading...');
 }

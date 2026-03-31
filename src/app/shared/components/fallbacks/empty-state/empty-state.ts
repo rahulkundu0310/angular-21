@@ -12,8 +12,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class EmptyState {
 	// Input and output properties reflecting shared state and emitting events
-	public readonly iconSize = input<number>(20, { alias: 'iconSize' });
-	public readonly icon = input<string | null>(null, { alias: 'icon' });
-	public readonly message = input.required<string>({ alias: 'message' });
-	public readonly iconStrokeWidth = input<number>(2, { alias: 'iconStrokeWidth' });
+	public readonly iconSize = input<number>(20);
+	public readonly icon = input<string | null>(null);
+	public readonly message = input.required<string>();
+	public readonly iconStrokeWidth = input<number>(2);
 }

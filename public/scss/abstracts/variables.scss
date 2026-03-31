@@ -1,3 +1,10 @@
+/*
+ * Defines fundamental spacing variables determining static container boundaries within bound viewport.
+ * Applies breakpoint references retaining element widths consistent throughout responsive adaptations.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 $gutter-y: 0;
 $gutter-x: 1.5rem;
 $grid-columns: 12;
@@ -17,4 +24,283 @@ $container-widths: (
 	lg: 1024px,
 	xl: 1280px,
 	xxl: 1536px
+);
+
+/*
+ * Defines essential color variables providing consistent theme palettes within bound element contexts.
+ * Assigns precise hexadecimal values ensuring standard contrast references across targeted interfaces.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+$color-white: #ffffff;
+$color-black: #000000;
+$color-transparent: transparent;
+
+$color-primary: (
+	50: #ffdfdb,
+	100: #ffbfb9,
+	200: #ff9e97,
+	300: #ff7b77,
+	400: #fc5458,
+	500: #f3113b,
+	600: #c71b32,
+	700: #9d1d29,
+	800: #741c20,
+	900: #4e1818,
+	950: #2b110f
+);
+
+$color-secondary: (
+	50: #f1e0ff,
+	100: #e2c0ff,
+	200: #d1a1ff,
+	300: #bf82ff,
+	400: #aa61ff,
+	500: #923dff,
+	600: #7935d0,
+	700: #612da2,
+	800: #4a2477,
+	900: #331c4f,
+	950: #1e122a
+);
+
+$color-tertiary: (
+	50: #ffe5ff,
+	100: #fecbff,
+	200: #fbb0ff,
+	300: #f794ff,
+	400: #f275ff,
+	500: #ec51ff,
+	600: #c146d0,
+	700: #973aa2,
+	800: #702e77,
+	900: #4a224f,
+	950: #281629
+);
+
+$color-success: (
+	50: #f0fdf4,
+	100: #dcfce7,
+	200: #bbf7d0,
+	300: #86efac,
+	400: #4ade80,
+	500: #22c55e,
+	600: #16a34a,
+	700: #15803d,
+	800: #166534,
+	900: #14532d,
+	950: #052e16
+);
+
+$color-warning: (
+	50: #fffbeb,
+	100: #fef3c7,
+	200: #fde68a,
+	300: #fcd34d,
+	400: #fbbf24,
+	500: #f59e0b,
+	600: #d97706,
+	700: #b45309,
+	800: #92400e,
+	900: #78350f,
+	950: #451a03
+);
+
+$color-danger: (
+	50: #fef2f2,
+	100: #fee2e2,
+	200: #fecaca,
+	300: #fca5a5,
+	400: #f87171,
+	500: #ef4444,
+	600: #dc2626,
+	700: #b91c1c,
+	800: #991b1b,
+	900: #7f1d1d,
+	950: #450a0a
+);
+
+$color-info: (
+	50: #eff6ff,
+	100: #dbeafe,
+	200: #bfdbfe,
+	300: #93c5fd,
+	400: #60a5fa,
+	500: #3b82f6,
+	600: #2563eb,
+	700: #1d4ed8,
+	800: #1e40af,
+	900: #1e3a8a,
+	950: #172554
+);
+
+$color-gray: (
+	50: #f9fafb,
+	100: #f3f4f6,
+	200: #e5e7eb,
+	300: #d1d5db,
+	400: #9ca3af,
+	500: #6b7280,
+	600: #4b5563,
+	700: #374151,
+	800: #1f2937,
+	900: #111827,
+	950: #030712
+);
+
+$color-zinc: (
+	50: #fafafa,
+	100: #f4f4f5,
+	200: #e4e4e7,
+	300: #d4d4d8,
+	400: #a1a1aa,
+	500: #71717a,
+	600: #52525b,
+	700: #3f3f46,
+	800: #27272a,
+	900: #18181b,
+	950: #09090b
+);
+
+/*
+ * Defines primary typography variables providing distinct font families and standard content defaults.
+ * Allocates applicable type measurements maintaining consistent text sizing across targeted viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+$font-serif: Georgia, 'Times New Roman', serif;
+$font-montserrat: 'Montserrat', system-ui, sans-serif;
+$font-mono: 'Courier New', Consolas, Monaco, monospace;
+
+$font-families: (
+	mono: $font-mono,
+	serif: $font-serif,
+	montserrat: $font-montserrat
+);
+
+$font-sizes: (
+	xs: 1.2rem,
+	sm: 1.4rem,
+	md: 1.6rem,
+	lg: 1.8rem,
+	xl: 2rem,
+	2xl: 2.4rem,
+	3xl: 3rem,
+	4xl: 3.6rem,
+	5xl: 4.8rem,
+	6xl: 6rem,
+	7xl: 7.2rem
+);
+
+$font-weights: (
+	100: 100,
+	200: 200,
+	300: 300,
+	400: 400,
+	500: 500,
+	600: 600,
+	700: 700,
+	900: 900
+);
+
+$line-heights: (
+	3: 1.2rem,
+	4: 1.6rem,
+	5: 2rem,
+	6: 2.4rem,
+	7: 2.8rem,
+	8: 3.2rem,
+	9: 3.6rem,
+	10: 4rem,
+	none: 1,
+	tight: 1.25,
+	snug: 1.375,
+	normal: 1.5,
+	relaxed: 1.625,
+	loose: 2
+);
+
+/*
+ * Defines primary stacking variables providing standard depth levels across target interface sections.
+ * Assigns specific ordering values ensuring consistent surface positioning resolving element overlaps.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+$shadows: (
+	none: 0 0 #0000,
+	sm: 0 1px 2px 0 rgb(0 0 0 / 0.05),
+	base: (
+		0 1px 3px 0 rgb(0 0 0 / 0.1),
+		0 1px 2px -1px rgb(0 0 0 / 0.1)
+	),
+	md: (
+		0 4px 6px -1px rgb(0 0 0 / 0.1),
+		0 2px 4px -2px rgb(0 0 0 / 0.1)
+	),
+	lg: (
+		0 10px 15px -3px rgb(0 0 0 / 0.1),
+		0 4px 6px -4px rgb(0 0 0 / 0.1)
+	),
+	xl: (
+		0 20px 25px -5px rgb(0 0 0 / 0.1),
+		0 8px 10px -6px rgb(0 0 0 / 0.1)
+	),
+	2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25),
+	inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05)
+);
+
+$z-index: (
+	-1: -1,
+	0: 0,
+	10: 10,
+	20: 20,
+	30: 30,
+	40: 40,
+	50: 50,
+	100: 100,
+	200: 200,
+	300: 300,
+	400: 400,
+	500: 500,
+	auto: auto
+);
+
+/*
+ * Defines essential transition variables providing consistent motion timings during interface updates.
+ * Assigns applicable easing curves maintaining standard animation sequences through triggered actions.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+$duration: (
+	75: 75ms,
+	100: 100ms,
+	150: 150ms,
+	200: 200ms,
+	300: 300ms,
+	500: 500ms,
+	700: 700ms,
+	1000: 1000ms
+);
+
+$delay: (
+	0: 0s,
+	75: 75ms,
+	100: 100ms,
+	150: 150ms,
+	200: 200ms,
+	300: 300ms,
+	500: 500ms,
+	700: 700ms,
+	1000: 1000ms
+);
+
+$easing: (
+	linear: linear,
+	in: cubic-bezier(0.4, 0, 1, 1),
+	out: cubic-bezier(0, 0, 0.2, 1),
+	in-out: cubic-bezier(0.4, 0, 0.2, 1)
 );

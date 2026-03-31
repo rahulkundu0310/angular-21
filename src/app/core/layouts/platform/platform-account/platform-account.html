@@ -1,7 +1,7 @@
 @let accountSummary = userDetails();
 @let requestLoading = requestSnapshot().pending;
 
-<!-- add comemnt -->
+<!-- Renders the account summary button which toggles the profile overlay panel -->
 <div class="account-summary">
 	<button
 		type="button"
@@ -14,7 +14,7 @@
 		[class.account-overlay-visible]="accountOverlayVisible()"
 	>
 		<div class="account-avatar">
-			<!-- add comemnt -->
+			<!-- Renders the avatar image when defined or falls back to an initials display -->
 			@if (!!accountSummary?.image) {
 				<img
 					alt=""
@@ -30,7 +30,7 @@
 				</span>
 			}
 
-			<!-- add comemnt -->
+			<!-- Overlays the avatar with a spinner while the account request is processing -->
 			@if (requestLoading) {
 				<div class="account-avatar-mask">
 					<p-progressSpinner
@@ -55,7 +55,7 @@
 	</button>
 </div>
 
-<!-- add comemnt -->
+<!-- Renders the profile overlay panel with the account navigation link options -->
 <p-overlay
 	[target]="'@prev'"
 	[appendTo]="'body'"
