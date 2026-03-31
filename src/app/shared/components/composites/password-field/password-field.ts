@@ -39,7 +39,6 @@ export class PasswordField implements FormValueControl<string> {
 	public readonly value = model<string>('');
 	public readonly disabled = input<boolean>(false);
 	public readonly config = input.required<IDerivedPasswordFieldConfig, IPasswordFieldConfig>({
-		alias: 'config',
 		transform: derivePasswordFieldConfig
 	});
 

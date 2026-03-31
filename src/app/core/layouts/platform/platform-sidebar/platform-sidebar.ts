@@ -1,9 +1,9 @@
 import { DrawerModule } from 'primeng/drawer';
 import { PlatformStore } from '../platform-store';
 import { HostModifier } from '@shared/directives';
+import { LayoutStore, ViewportStore } from '@store';
 import { LucideAngularModule } from 'lucide-angular';
 import { BrandLogo } from '@shared/components/widgets';
-import { CommonStore, LayoutStore, ViewportStore } from '@store';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { PlatformNavigation } from '../platform-navigation/platform-navigation';
 
@@ -17,14 +17,12 @@ import { PlatformNavigation } from '../platform-navigation/platform-navigation';
 })
 export class PlatformSidebar {
 	// Dependency injections providing direct access to services and injectors
-	private readonly commonStore = inject(CommonStore);
 	private readonly layoutStore = inject(LayoutStore);
 	private readonly platformStore = inject(PlatformStore);
 	private readonly viewportStore = inject(ViewportStore);
 
 	// Public and private class member variables reflecting state and behavior
 	protected readonly menuItems = this.platformStore.menuItems;
-	protected readonly initialLoading = this.commonStore.initialLoading;
 	protected readonly viewportContext = this.viewportStore.viewportContext;
 	protected readonly layoutContext = this.layoutStore.platformLayoutContext;
 	protected readonly navigationDrawerVisible = this.layoutStore.navigationDrawerVisible;

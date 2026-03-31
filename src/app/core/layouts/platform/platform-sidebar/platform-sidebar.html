@@ -1,16 +1,9 @@
-@let transitionMuted = initialLoading();
 @let compactLayout = layoutContext().compact;
 @let extendedLayout = layoutContext().extended;
 @let mobileViewport = viewportContext().deviceType === 'mobile';
 
 <!-- Renders the broad sidebar used when the layout context is in extended view -->
-<aside
-	class="sidebar sidebar-extended"
-	[class]="{
-		'sidebar-muted': transitionMuted,
-		'sidebar-active': extendedLayout
-	}"
->
+<aside class="sidebar sidebar-extended" [class]="{ 'sidebar-active': extendedLayout }">
 	<header class="sidebar-header">
 		<brand-logo [width]="160" [height]="39" [variant]="'standard'" />
 	</header>
@@ -20,13 +13,7 @@
 </aside>
 
 <!-- Renders the narrow sidebar used when the layout context is in compact view -->
-<aside
-	class="sidebar sidebar-compact"
-	[class]="{
-		'sidebar-active': compactLayout,
-		'sidebar-muted': transitionMuted
-	}"
->
+<aside class="sidebar sidebar-compact" [class]="{ 'sidebar-active': compactLayout }">
 	<header class="sidebar-header">
 		<brand-logo [width]="50" [height]="53" variant="compact" />
 	</header>

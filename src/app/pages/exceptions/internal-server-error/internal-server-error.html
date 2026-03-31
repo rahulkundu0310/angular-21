@@ -1,0 +1,11 @@
+<error-state
+	title="oooops!!"
+	status="Internal Server Error"
+	styleClass="internal-server-error"
+	message="Something went wrong on our end, Please attempt again later."
+	[actionConfig]="{
+		label: 'Back To Home',
+		ariaLabel: 'Navigate to home',
+		router: { routerLink: [authenticated() ? '/dashboard' : '/sign-in'] }
+	}"
+></error-state>

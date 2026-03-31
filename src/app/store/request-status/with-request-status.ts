@@ -151,13 +151,13 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 			 * Processes the event identifier by executing loading status mutations through state patching in asynchronous operations.
 			 *
 			 * @param event - The event identifier string used to track and update the corresponding request status in store contexts.
-			 * @param overrides - The optional state object containing store properties used for binding related fields on initiation.
+			 * @param payload - The optional payload object containing store properties used for binding related fields on initiation.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
 			 */
-			const markPending = (event: TEventsKey<TEvents>, overrides?: Partial<TState>): void => {
-				patchState(store, setPending(event), overrides ?? {});
+			const markPending = (event: TEventsKey<TEvents>, payload?: Partial<TState>): void => {
+				patchState(store, setPending(event), payload ?? {});
 			};
 
 			/**

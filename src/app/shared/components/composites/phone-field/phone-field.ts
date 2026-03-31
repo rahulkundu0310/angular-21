@@ -51,7 +51,6 @@ export class PhoneField implements FormValueControl<IPhoneFieldValue | null> {
 	public readonly disabled = input<boolean>(false);
 	public readonly value = model<IPhoneFieldValue | null>(null);
 	public readonly config = input.required<IDerivedPhoneFieldConfig, IPhoneFieldConfig>({
-		alias: 'config',
 		transform: derivePhoneFieldConfig
 	});
 

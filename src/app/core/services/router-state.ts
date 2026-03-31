@@ -1,9 +1,14 @@
-import { resolveEvent } from '@shared/utilities';
-import { inject, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { distinctUntilChanged, map, startWith } from 'rxjs';
+import { computed, inject, Injectable } from '@angular/core';
+import { resolveActiveSnapshot, resolveEvent } from '@shared/utilities';
 import type { Event, ParamMap, Params, RouterStateSnapshot } from '@angular/router';
-import type { INavigationEnd, INavigationFailed, INavigationStart } from '@shared/types';
+import type {
+	IRouteData,
+	INavigationEnd,
+	INavigationStart,
+	INavigationFailed
+} from '@shared/types';
 import {
 	Router,
 	NavigationEnd,
@@ -155,4 +160,22 @@ export class RouterState {
 		),
 		{ initialValue: null }
 	);
+
+	/**
+	 * Computes the assigned route mapping properties derived within the current navigation state by evaluating root snapshot.
+	 * Returns a resolved configuration record extracted from the focused matching segment providing an empty fallback object.
+	 *
+	 * @since 01 December 2025
+	 * @author Rahul Kundu
+	 */
+	public readonly routeData = computed<IRouteData>(() => {
+		// Retrieves the active router snapshot state directly from store instance
+		const routerSnapshot = this.routerSnapshot();
+
+		// Retrieves nested child route snapshot using the active root tree source
+		const resolvedSnapshot = resolveActiveSnapshot(routerSnapshot.root);
+
+		// Returns route data extracted from the resolved snapshot or empty object
+		return (resolvedSnapshot.data satisfies IRouteData) ?? Object.create(null);
+	});
 }

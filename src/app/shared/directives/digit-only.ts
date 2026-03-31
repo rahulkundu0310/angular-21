@@ -70,6 +70,9 @@ export class DigitOnly {
 	 */
 	@HostListener('beforeinput', ['$event'])
 	protected filterInvalidCharacters(event: InputEvent): void {
+		// Checks if the event type does not represent insertion and returns early
+		if (event.inputType && !event.inputType.startsWith('insert')) return;
+
 		// Extracts character being inserted from the input event or as nil string
 		const inputCharacter = event.data ?? '';
 
@@ -178,7 +181,7 @@ export class DigitOnly {
 		}
 
 		// Checks if the inputted key is a single character for further validation
-		const isSingleCharacter = event.key.length === 1;
+		const isSingleCharacter = (event.key?.length ?? 0) === 1;
 
 		// Determines if a single character key is non-numeric for input restraint
 		const isNonNumericSingleChar = isNaN(Number(event.key)) && isSingleCharacter;

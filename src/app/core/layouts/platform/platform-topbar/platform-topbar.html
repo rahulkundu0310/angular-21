@@ -1,0 +1,13 @@
+<div class="topbar" [attr.aria-labelledby]="caption() ? 'page-caption' : null">
+	<!-- Renders the page title container when the caption is defined and not empty -->
+	@if (caption()) {
+		<div class="topbar-caption">
+			<h1 id="page-caption">{{ caption() }}</h1>
+		</div>
+	}
+
+	<!-- Renders the navigation trail constructed from the resolved route hierarchy -->
+	<div class="topbar-breadcrumbs">
+		<breadcrumb [breadcrumbs]="breadcrumbs()" />
+	</div>
+</div>

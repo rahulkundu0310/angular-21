@@ -1,2 +1,3 @@
-export { Preloader } from './preloader/preloader';
-export { EmptyState } from './empty-state/empty-state';
+export * from './preloader';
+export * from './error-state';
+export * from './empty-state';

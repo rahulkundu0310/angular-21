@@ -1,13 +1,12 @@
-@let transitionMuted = initialLoading();
 @let compactLayout = layoutContext().compact;
 @let extendedLayout = layoutContext().extended;
 @let collapsedLayout = layoutContext().collapsed;
 @let transitionName = transitionNames().platformOutlet;
 
+<!-- Renders the layout host with modifier classes tied to the resolved context -->
 <div
 	class="layout"
 	[class]="{
-		'layout-muted': transitionMuted,
 		'layout-compact': compactLayout,
 		'layout-extended': extendedLayout,
 		'layout-collapsed': collapsedLayout
@@ -16,6 +15,12 @@
 	<platform-header />
 	<platform-sidebar />
 	<div class="layout-content">
+		<!-- Renders the top navigation bar when the layout context marks it as visible -->
+		@if (topbarVisible()) {
+			<platform-topbar />
+		}
+
+		<!-- Renders the outlet container that hosts all routed content and transitions -->
 		<div class="layout-outlet" [style.view-transition-name]="transitionName">
 			<router-outlet />
 		</div>

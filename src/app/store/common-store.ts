@@ -3,9 +3,10 @@ import type { Observable } from 'rxjs';
 import type { ICountry } from '@shared/types';
 import { withResetState } from './reset-state';
 import { Common, RouterState } from '@core/services';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { effect, inject, untracked } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { catchError, filter, tap, throwError } from 'rxjs';
+import { catchError, filter, tap, throwError, pipe, delay } from 'rxjs';
 import {
 	withHooks,
 	withState,
@@ -80,6 +81,22 @@ export const CommonStore = signalStore(
 		const routerState = inject(RouterState);
 
 		/**
+		 * Finalizes the initial loading status by confirming the navigation completion derived from the router transition events.
+		 * Processes a short execution delay to safely update the state property and prevent synchronous value mutation conflicts.
+		 *
+		 * @since 01 December 2025
+		 * @author Rahul Kundu
+		 */
+		const _finalizeInitialLoading = rxMethod<void>(
+			pipe(
+				delay(0),
+				tap(() => {
+					patchState(store, { initialLoading: false });
+				})
+			)
+		);
+
+		/**
 		 * Watches the router navigation events to track active routing completions and update initial interface loading contexts.
 		 * Processes the evaluated conditions by verifying transition endpoints and applying required overall state modifications.
 		 *
@@ -100,11 +117,7 @@ export const CommonStore = signalStore(
 					const initialLoading = store.initialLoading();
 
 					// Checks if loading persists in state and deactivates it before rendering
-					if (initialLoading) {
-						requestAnimationFrame(() => {
-							patchState(store, { initialLoading: false });
-						});
-					}
+					if (initialLoading) _finalizeInitialLoading();
 				});
 			});
 		};

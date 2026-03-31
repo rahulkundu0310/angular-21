@@ -27,12 +27,11 @@ import {
 })
 export class Action {
 	// Input and output properties reflecting shared state and emitting events
-	public readonly blurred = output<FocusEvent>({ alias: 'blurred' });
-	public readonly clicked = output<MouseEvent>({ alias: 'clicked' });
-	public readonly focused = output<FocusEvent>({ alias: 'focused' });
-	public readonly formId = input<string | null>(null, { alias: 'formId' });
+	public readonly blurred = output<FocusEvent>();
+	public readonly clicked = output<MouseEvent>();
+	public readonly focused = output<FocusEvent>();
+	public readonly formId = input<string | null>(null);
 	public readonly config = input.required<IDerivedActionConfig, IActionConfig>({
-		alias: 'config',
 		transform: deriveActionConfig
 	});
 

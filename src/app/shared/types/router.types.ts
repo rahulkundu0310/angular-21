@@ -24,9 +24,10 @@ export interface IMatchRouteOptions extends IsActiveMatchOptions {
 
 export interface IRouteData {
 	cache?: boolean;
+	topbar?: boolean;
+	caption?: string;
 	preload?: boolean;
 	moduleId?: number;
-	pageTitle?: string;
 	scope?: TRouteScope;
 	shouldDelay?: boolean;
 	preloadDelay?: number;
