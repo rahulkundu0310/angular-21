@@ -1,5 +1,12 @@
 @use 'abstracts' as *;
 
+/*
+ * Configures layout sizing properties overriding inherited native rendering across targeted selectors.
+ * Establishes standard coordinate measurements enforcing strict box dimensions within bound viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 *,
 *::after,
 *::before {
@@ -23,6 +30,13 @@ body {
 	height: 100%;
 }
 
+/*
+ * Eliminates predefined native styling correcting inconsistent presentation across targeted selectors.
+ * Overrides assigned typography measurements enforcing strict layout alignment within bound viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 hr {
 	border: none;
 }
@@ -105,6 +119,13 @@ abbr[title] {
 	outline-offset: 0px;
 }
 
+/*
+ * Suspends declared animation properties enabling reduced motion compliance across targeted selectors.
+ * Intercepts registered transition mechanisms enforcing immediate terminations within bound viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 .transitions-muted {
 	*,
 	*::before,

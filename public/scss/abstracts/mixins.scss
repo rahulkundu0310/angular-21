@@ -370,3 +370,32 @@
 		}
 	}
 }
+
+/*
+ * Establishes animation properties controlling keyframe sequences and rendering dynamic state changes.
+ * Processes the specified timeline arguments calculating complex motion sequences on desired elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin animation(
+	$name,
+	$delay: null,
+	$duration: 300,
+	$easing: in-out,
+	$fill-mode: both,
+	$direction: normal,
+	$iteration-count: 1
+) {
+	animation-name: $name;
+	animation-fill-mode: $fill-mode;
+	animation-direction: $direction;
+	animation-iteration-count: $iteration-count;
+	animation-duration: functions.duration($duration);
+	animation-timing-function: functions.easing($easing);
+
+	// Checks if custom animation delays exist assigning designated timeframes
+	@if $delay {
+		animation-delay: functions.delay($delay);
+	}
+}

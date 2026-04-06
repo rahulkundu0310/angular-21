@@ -1,0 +1,253 @@
+@use 'sass:map';
+@use '../abstracts' as *;
+
+/*
+ * Defines primary view transition variables providing distinct outlet bounds across rendered contexts.
+ * Assigns specific selector identifiers ensuring consistent layout morphing between navigation states.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+$view-transition-outlets: ('access-outlet', 'platform-outlet');
+
+/*
+ * Defines primary translation variables providing consistent motion timings across specified elements.
+ * Assigns applicable easing curves maintaining standard animation behaviors through triggered actions.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+$translation-timings: (
+	in: (
+		duration: 300,
+		ease: out-quint
+	),
+	out: (
+		duration: 200,
+		ease: in-cubic
+	)
+);
+
+/*
+ * Defines primary opacity variables providing measured visibility sequences across specified elements.
+ * Assigns precise numerical intervals generating fluid transparency progressions during render phases.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+$opacity-motions: (
+	in: (
+		end: 1,
+		start: 0,
+		duration: 300,
+		ease: out-sine
+	),
+	out: (
+		end: 0,
+		start: 1,
+		duration: 200,
+		ease: in-sine
+	)
+);
+
+/*
+ * Defines primary dimension variables providing precise expansion mechanics across specified elements.
+ * Assigns controlled height and opacity aspects managing parallel appearance during layout variations.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+$dimension-motions: (
+	expand-in: (
+		duration: 300,
+		end-opacity: 1,
+		start-height: 0,
+		start-opacity: 0,
+		ease: in-out-quint,
+		end-height: calc-size(auto, size)
+	),
+	collapse-out: (
+		duration: 300,
+		end-height: 0,
+		end-opacity: 0,
+		start-opacity: 1,
+		ease: in-out-quint,
+		start-height: calc-size(auto, size)
+	)
+);
+
+/*
+ * Defines primary translation variables providing directional offset limits across specified elements.
+ * Assigns aligned sequential dimensions resolving calculated content positioning during slide actions.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+$translation-motions: (
+	up: (
+		axis: Y,
+		offset: 0.6rem
+	),
+	down: (
+		axis: Y,
+		offset: -0.6rem
+	),
+	left: (
+		axis: X,
+		offset: -0.6rem
+	),
+	right: (
+		axis: X,
+		offset: 0.6rem
+	)
+);
+
+/*
+ * Constructs matching keyframe rules and modifier classes directing assigned element render sequences.
+ * Iterates through bound opacity variables applying extracted property ranges across animation phases.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@each $state, $motion in $opacity-motions {
+	// Generates designated keyframe rules interpolating mapped opacity values
+	@keyframes fade-#{$state} {
+		from {
+			opacity: map.get($motion, start);
+		}
+		to {
+			opacity: map.get($motion, end);
+		}
+	}
+
+	// Attaches calculated visibility sequence properties onto bound selectors
+	.fade-#{$state} {
+		@include animation(
+			$name: fade-#{$state},
+			$easing: map.get($motion, ease),
+			$duration: map.get($motion, duration)
+		);
+	}
+}
+
+/*
+ * Constructs matching keyframe rules and modifier classes directing assigned element render sequences.
+ * Iterates through bound dimension variables applying derived property ranges across animation phases.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@each $state, $motion in $dimension-motions {
+	// Generates designated keyframe rules determining mapped dimension values
+	@keyframes #{$state} {
+		from {
+			overflow: hidden;
+			height: map.get($motion, start-height);
+			opacity: map.get($motion, start-opacity);
+		}
+		to {
+			overflow: hidden;
+			height: map.get($motion, end-height);
+			opacity: map.get($motion, end-opacity);
+		}
+	}
+
+	// Attaches calculated layout expansion properties onto targeted selectors
+	.#{$state} {
+		@include animation(
+			$name: #{$state},
+			$easing: map.get($motion, ease),
+			$duration: map.get($motion, duration)
+		);
+	}
+}
+
+/*
+ * Constructs matching keyframe rules and modifier classes directing assigned element render sequences.
+ * Iterates through bound sliding variables applying extracted property ranges across animation phases.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@each $direction, $motion in $translation-motions {
+	// Retrieves the axis plane and positional distance from registered values
+	$axis: map.get($motion, axis);
+	$offset: map.get($motion, offset);
+
+	// Retrieves matched entrance and exit timing intervals from mapped values
+	$in-timing: map.get($translation-timings, in);
+	$out-timing: map.get($translation-timings, out);
+
+	// Generates designated keyframe rules interpolating mapped sliding values
+	@keyframes slide-in-#{$direction} {
+		from {
+			opacity: 0;
+			transform: translate#{$axis }(#{$offset});
+		}
+		to {
+			opacity: 1;
+			transform: translate#{$axis }(0);
+		}
+	}
+
+	// Generates designated keyframe rules interpolating mapped sliding values
+	@keyframes slide-out-#{$direction} {
+		from {
+			opacity: 1;
+			transform: translate#{$axis }(0);
+		}
+		to {
+			opacity: 0;
+			transform: translate#{$axis }(#{-$offset});
+		}
+	}
+
+	// Attaches calculated sliding sequence properties onto assigned selectors
+	.slide-in-#{$direction} {
+		@include animation(
+			$name: slide-in-#{$direction},
+			$easing: map.get($in-timing, ease),
+			$duration: map.get($in-timing, duration)
+		);
+	}
+
+	// Attaches calculated sliding sequence properties onto assigned selectors
+	.slide-out-#{$direction} {
+		@include animation(
+			$name: slide-out-#{$direction},
+			$easing: map.get($out-timing, ease),
+			$duration: map.get($out-timing, duration)
+		);
+	}
+}
+
+/*
+ * Constructs matching view transition pseudo element sets directing assigned element render sequences.
+ * Iterates through bound routing variables applying extracted property ranges across animation phases.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@each $outlet in $view-transition-outlets {
+	// Retrieves matched entrance and exit timing intervals from mapped values
+	$in-timing: map.get($translation-timings, in);
+	$out-timing: map.get($translation-timings, out);
+
+	// Attaches calculated exiting sequence properties against pseudo elements
+	::view-transition-old(#{$outlet}) {
+		@include animation(
+			$name: slide-out-left,
+			$easing: map.get($out-timing, ease),
+			$duration: map.get($out-timing, duration)
+		);
+	}
+
+	// Attaches calculated sliding sequence properties against pseudo elements
+	::view-transition-new(#{$outlet}) {
+		@include animation(
+			$name: slide-in-right,
+			$easing: map.get($in-timing, ease),
+			$duration: map.get($in-timing, duration)
+		);
+	}
+}

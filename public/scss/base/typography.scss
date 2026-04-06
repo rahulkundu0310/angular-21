@@ -1,5 +1,12 @@
 @use 'abstracts' as *;
 
+/*
+ * Configures document typography properties sizing baseline text appearance across targeted selectors.
+ * Establishes standard font measurements delivering consistent content scaling within bound viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 body {
 	@include font(
 		$size: sm,
@@ -12,6 +19,13 @@ body {
 	-webkit-font-smoothing: antialiased;
 }
 
+/*
+ * Generates sequential hierarchy properties shaping heading text appearance across targeted selectors.
+ * Establishes semantic scale increments enforcing strict typographic alignment within bound viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 h1 {
 	@include font(
 		$size: 5xl,
@@ -72,6 +86,13 @@ h6 {
 	);
 }
 
+/*
+ * Integrates semantic element modifiers optimizing baseline text formatting across targeted selectors.
+ * Assigns applicable inline spacing properties establishing content separation within bound viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 p {
 	@include font(
 		$size: md,
@@ -143,6 +164,13 @@ a {
 	}
 }
 
+/*
+ * Overrides assigned highlight properties formatting chosen text appearance across targeted selectors.
+ * Integrates required highlighted colors establishing accessible text contrast within bound viewports.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 ::selection {
 	color: $color-white;
 	background-color: color(primary, 500);

@@ -1,6 +1,13 @@
 @use 'sass:math';
 @use 'abstracts' as *;
 
+/*
+ * Defines primary container constraints providing precise outer measurements across matched viewports.
+ * Iterates through mapped widths assigning maximum dimension restraints anchoring designated elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 .container,
 .container-fluid {
 	width: 100%;
@@ -10,14 +17,23 @@
 	padding-right: math.div($gutter-x, 2);
 }
 
+// Iterates through mapped container widths evaluating viewport restraints
 @each $breakpoint, $container-width in $container-widths {
 	@include media($breakpoint) {
+		// Attaches calculated maximum dimension limits anchoring matched elements
 		.container {
 			max-width: $container-width;
 		}
 	}
 }
 
+/*
+ * Constructs essential grid foundations calculating fractional subdivisions within allocated contexts.
+ * Establishes repeating layout templates assigning computed spanning behaviors across target elements.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 .row {
 	@include grid($columns: repeat($grid-columns, 1fr), $gap: $gutter-y $gutter-x);
 
@@ -35,21 +51,31 @@
 	justify-self: start;
 }
 
+/*
+ * Generates calculated column classes evaluating baseline placement properties across bound viewports.
+ * Processes listed breakpoint variables allocating specific element widths inside rendered interfaces.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 @for $index from 1 through $grid-columns {
 	.col-#{$index} {
 		grid-column: span #{$index};
 	}
 }
 
+// Iterates through assigned breakpoint constraints checking media queries
 @each $breakpoint, $min-width in $breakpoints {
 	@if $breakpoint != xs {
 		@include media($breakpoint) {
+			// Iterates through fractional column indices applying bound media layouts
 			@for $index from 1 through $grid-columns {
 				.col-#{$breakpoint}-#{$index} {
 					grid-column: span #{$index};
 				}
 			}
 
+			// Attaches absolute column spanning values surpassing defined breakpoints
 			.col-#{$breakpoint} {
 				grid-column: span $grid-columns;
 			}
@@ -57,11 +83,20 @@
 	}
 }
 
+/*
+ * Configures specific viewport directions assigning computed margin offsets across designated columns.
+ * Calculates fractional percentage metrics establishing aligned positioning inside bounded perimeters.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 [dir='ltr'] {
+	// Attaches standard reading directions regulating aligned element content
 	.row {
 		direction: ltr;
 	}
 
+	// Iterates through computed distance metrics applying left margin offsets
 	@for $index from 1 through ($grid-columns - 1) {
 		.offset-#{$index} {
 			margin-left: math.percentage(math.div($index, $grid-columns));
@@ -70,10 +105,12 @@
 }
 
 [dir='rtl'] {
+	// Attaches inverted reading directions regulating aligned element content
 	.row {
 		direction: rtl;
 	}
 
+	// Iterates through computed distance values applying right margin offsets
 	@for $index from 1 through ($grid-columns - 1) {
 		.offset-#{$index} {
 			margin-left: 0;
@@ -82,16 +119,24 @@
 	}
 }
 
-@for $index from 0 through 5 {
-	.order-#{$index} {
-		order: #{$index};
-	}
-}
-
+/*
+ * Determines display ordering properties overriding standard browser rendering across parent elements.
+ * Evaluates sequential numeric values distributing specific placement positions inside defined blocks.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
 .order-first {
 	order: -1;
 }
 
 .order-last {
 	order: 6;
+}
+
+// Iterates through numeric ordering measures assigning designated layouts
+@for $index from 0 through 5 {
+	.order-#{$index} {
+		order: #{$index};
+	}
 }

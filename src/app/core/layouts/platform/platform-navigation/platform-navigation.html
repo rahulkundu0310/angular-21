@@ -67,7 +67,11 @@
 							></lucide-icon>
 						</button>
 						@if (menuItem.expanded) {
-							<div class="submenu-panel">
+							<div
+								class="submenu-panel"
+								[animate.enter]="'expand-in'"
+								[animate.leave]="'collapse-out'"
+							>
 								<ul
 									role="menu"
 									class="submenu-items"

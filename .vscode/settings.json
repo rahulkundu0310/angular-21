@@ -5,14 +5,29 @@
 	"editor.formatOnSave": true,
 	"editor.formatOnPaste": true,
 	"editor.cursorBlinking": "expand",
+	"editor.cursorSmoothCaretAnimation": "on",
+
+	// Disables GitHub Copilot predictive suggestions across various languages
 	"github.copilot.enable": {
 		"*": false,
-		"plaintext": false,
 		"markdown": false,
 		"scminput": false,
+		"plaintext": false,
 		"typescript": false
 	},
-	"editor.cursorSmoothCaretAnimation": "on",
+
+	// Overrides Better Comments asterisk tags ensuring readable grey coloring
+	"better-comments.tags": [
+		{
+			"tag": "*",
+			"bold": false,
+			"italic": false,
+			"color": "#7F848E",
+			"underline": false,
+			"strikethrough": false,
+			"backgroundColor": "transparent"
+		}
+	],
 
 	// Applies Prettier formatting rules to produce reliably consistent output
 	"prettier.semi": true,

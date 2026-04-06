@@ -1,7 +1,7 @@
 <div
 	class="preloader"
-	[animate.enter]="animation() ? 'fade-in' : ''"
-	[animate.leave]="animation() ? 'fade-out' : ''"
+	[animate.enter]="animation() ? 'fade-in' : null"
+	[animate.leave]="animation() ? 'fade-out' : null"
 >
 	<div class="preloader-content">
 		<!-- Lazily renders the brand logo wrapper when the branding option is provided -->

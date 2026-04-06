@@ -67,6 +67,8 @@
 			role="alert"
 			class="field-feedback"
 			[attr.id]="fieldError.id"
+			[animate.enter]="'fade-in'"
+			[animate.leave]="'fade-out'"
 			[attr.aria-live]="fieldError.ariaLive"
 		>
 			<p>{{ fieldError.message }}</p>
@@ -80,7 +82,7 @@
 
 	<!-- Overlays a progress spinner when the async field validation is in progress -->
 	@if (fieldInstance?.()?.pending()) {
-		<div class="field-pending">
+		<div class="field-pending" [animate.enter]="'fade-in'" [animate.leave]="'fade-out'">
 			<p-progressSpinner
 				[strokeWidth]="'4'"
 				[class]="'field-spinner'"

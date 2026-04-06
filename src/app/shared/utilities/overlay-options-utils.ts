@@ -180,7 +180,12 @@ export function resolveOverlayOptions(overlayOptions: OverlayOptions = {}): Over
 		mode: 'overlay',
 		autoZIndex: true,
 		target: '@parent',
-		hideOnEscape: true
+		hideOnEscape: true,
+		motionOptions: {
+			type: 'animation',
+			enterClass: { active: 'slide-in-up' },
+			leaveClass: { active: 'slide-out-down' }
+		}
 	};
 
 	// Combines defaults and custom options adding all required event handlers
