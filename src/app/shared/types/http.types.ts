@@ -1,9 +1,17 @@
 import type { TRecord } from './toolkit.types';
 import type { HttpParams, HttpContext, HttpHeaders } from '@angular/common/http';
 
-export type TRequestMethod = 'delete' | 'get' | 'post' | 'patch' | 'put';
+export type TRequestHeaders = HttpHeaders | TRecord<string | string[]>;
+
+export type TRequestQuerySerialization = 'repeat' | 'brackets' | 'comma';
 
 export type TRequestBody = object | File | Blob | ArrayBuffer | FormData | null;
+
+export type TRequestMethod = 'GET' | 'PUT' | 'HEAD' | 'POST' | 'DELETE' | 'PATCH' | 'OPTIONS';
+
+export type TRequestParams =
+	| HttpParams
+	| TRecord<string | number | boolean | readonly (string | number | boolean)[]>;
 
 export interface IBaseRequestOptions {
 	timeout?: number;
@@ -14,20 +22,19 @@ export interface IBaseRequestOptions {
 	keepalive?: boolean;
 	cache?: RequestCache;
 	context?: HttpContext;
+	params?: TRequestParams;
 	reportProgress?: boolean;
 	withCredentials?: boolean;
+	headers?: TRequestHeaders;
 	priority?: RequestPriority;
 	redirect?: RequestRedirect;
 	version?: string | undefined;
 	referrerPolicy?: ReferrerPolicy;
 	useBaseUrl?: boolean | undefined;
 	credentials?: RequestCredentials;
-	headers?: HttpHeaders | TRecord<string | string[]>;
-	observe?: 'body' | 'events' | 'response' | undefined;
-	responseType?: 'json' | 'arraybuffer' | 'blob' | 'text' | undefined;
-	params?:
-		| HttpParams
-		| TRecord<string | number | boolean | readonly (string | number | boolean)[]>;
+	observe?: 'body' | 'events' | 'response';
+	querySerialization?: TRequestQuerySerialization;
+	responseType?: 'json' | 'arraybuffer' | 'blob' | 'text';
 }
 
 export type TRequestOptions<TBody extends TRequestBody | undefined = undefined> =

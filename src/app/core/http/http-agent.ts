@@ -9,7 +9,9 @@ import type {
 	IResponse,
 	TRequestBody,
 	TRequestMethod,
-	TRequestOptions
+	TRequestParams,
+	TRequestOptions,
+	TRequestHeaders
 } from '@shared/types';
 
 @Injectable({ providedIn: 'root' })
@@ -152,6 +154,80 @@ export class HttpAgent {
 	}
 
 	/**
+	 * Invokes an HTTP request using a server URL and provided parameters returning an Observable for asynchronous operations.
+	 * Processes incoming arguments to construct a normalized URL and combines specified options before executing the request.
+	 *
+	 * @param url - The request path string to be properly combined with a base URL for building the complete target endpoint.
+	 * @param method - The request method specifying the particular operation to be performed on the targeted server resource.
+	 * @param options - The configuration object containing headers, query params, context, credentials or additional options.
+	 * @returns An observable stream which emits the HTTP response of the requested generic entity for reactive subscriptions.
+	 *
+	 * @since 01 December 2025
+	 * @author Rahul Kundu
+	 */
+	public request<TResponse = IResponse>(
+		url: string,
+		method: TRequestMethod,
+		options?: TRequestOptions
+	): Observable<TResponse> {
+		// Builds the request URL by processing the provided request path segments
+		const requestUrl = this.buildRequestUrl(url, options);
+
+		// Builds the request configuration object from the provided input options
+		const requestOptions = this.buildRequestOptions(options);
+
+		// Executes the request using the normalized URL and request configuration
+		return this.httpClient.request<TResponse>(method, requestUrl, requestOptions);
+	}
+
+	/**
+	 * Invokes an HTTP request using a server URL and provided parameters returning an Observable for asynchronous operations.
+	 * Processes incoming arguments to construct a normalized URL and combines specified options before executing the request.
+	 *
+	 * @param url - The request path string to be properly combined with a base URL for building the complete target endpoint.
+	 * @param options - The configuration object containing headers, query params, context, credentials or additional options.
+	 * @returns An observable stream which emits the HTTP response of the requested generic entity for reactive subscriptions.
+	 *
+	 * @since 01 December 2025
+	 * @author Rahul Kundu
+	 */
+	public head(url: string, options?: TRequestOptions): Observable<void> {
+		// Builds the request URL by processing the provided request path segments
+		const requestUrl = this.buildRequestUrl(url, options);
+
+		// Builds the request configuration object from the provided input options
+		const requestOptions = this.buildRequestOptions(options);
+
+		// Executes the request using the normalized URL and request configuration
+		return this.httpClient.head<void>(requestUrl, requestOptions);
+	}
+
+	/**
+	 * Invokes an HTTP request using a server URL and provided parameters returning an Observable for asynchronous operations.
+	 * Processes incoming arguments to construct a normalized URL and combines specified options before executing the request.
+	 *
+	 * @param url - The request path string to be properly combined with a base URL for building the complete target endpoint.
+	 * @param options - The configuration object containing headers, query params, context, credentials or additional options.
+	 * @returns An observable stream which emits the HTTP response of the requested generic entity for reactive subscriptions.
+	 *
+	 * @since 01 December 2025
+	 * @author Rahul Kundu
+	 */
+	public options<TResponse = unknown>(
+		url: string,
+		options?: TRequestOptions
+	): Observable<TResponse> {
+		// Builds the request URL by processing the provided request path segments
+		const requestUrl = this.buildRequestUrl(url, options);
+
+		// Builds the request configuration object from the provided input options
+		const requestOptions = this.buildRequestOptions(options);
+
+		// Executes the request using the normalized URL and request configuration
+		return this.httpClient.options<TResponse>(requestUrl, requestOptions);
+	}
+
+	/**
 	 * Invokes JSONP request using a URL and the specified callback param returning an Observable for asynchronous operations.
 	 * Processes incoming arguments to construct a normalized URL and associated callback param before initiating the request.
 	 *
@@ -175,33 +251,6 @@ export class HttpAgent {
 	}
 
 	/**
-	 * Invokes an HTTP request using a server URL and provided parameters returning an Observable for asynchronous operations.
-	 * Processes incoming arguments to construct a normalized URL and combines specified options before executing the request.
-	 *
-	 * @param url - The request path string to be properly combined with a base URL for building the complete target endpoint.
-	 * @param method - The request method specifying the particular operation to be performed on the targeted server resource.
-	 * @param options - The configuration object containing headers, query params, context, credentials or additional options.
-	 * @returns An observable stream which emits the HTTP response of the requested generic entity for reactive subscriptions.
-	 *
-	 * @since 01 December 2025
-	 * @author Rahul Kundu
-	 */
-	public request<TResponse = IResponse>(
-		url: string,
-		method: TRequestMethod,
-		options?: TRequestOptions<TRecord>
-	): Observable<TResponse> {
-		// Builds the request URL by processing the provided request path segments
-		const requestUrl = this.buildRequestUrl(url, options);
-
-		// Builds the request configuration object from the provided input options
-		const requestOptions = this.buildRequestOptions(options);
-
-		// Executes the request using the normalized URL and request configuration
-		return this.httpClient.request<TResponse>(method, requestUrl, requestOptions);
-	}
-
-	/**
 	 * Builds the HTTP request specifications object by adopting the provided outgoing options for proper server transmission.
 	 * Processes incoming requirements including headers, parameters and body structure for accurate network protocol schemas.
 	 *
@@ -219,7 +268,8 @@ export class HttpAgent {
 		const requestHeaders = this.buildRequestHeaders(options);
 
 		// Destructures the provided source object to extract necessary properties
-		const { version, useBaseUrl, body, ...serializedOptions } = options;
+		const { body, version, useBaseUrl, pathPrefix, querySerialization, ...serializedOptions } =
+			options;
 
 		// Returns a final configuration combining options with params and headers
 		return {
@@ -254,7 +304,7 @@ export class HttpAgent {
 		let requestUrl = this.baseUrl;
 
 		// Appends version string to target url if it is provided and is not empty
-		if (!version?.trim()) requestUrl += `/${version}`;
+		if (version?.trim()) requestUrl += `/${version}`;
 
 		// Appends path prefix string to target url if it is present and not empty
 		if (pathPrefix?.trim()) requestUrl += `/${pathPrefix}`;
@@ -273,45 +323,36 @@ export class HttpAgent {
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
-	private buildRequestHeaders(options: TRequestOptions = {}): HttpHeaders {
+	private buildRequestHeaders(options: TRequestOptions = {}): TRequestHeaders {
 		// Destructures the provided source object to extract necessary properties
 		const { headers } = options;
 
-		// Initializes a new HttpHeaders instance to aggregate the default headers
-		let requestHeaders = new HttpHeaders(transportConfig.requestHeaders);
+		// Retrieves headers from specific request or defaults to transport config
+		const defaultHeaders = transportConfig.requestHeaders;
 
 		// Checks for null or undefined headers and returns the predefined headers
-		if (!headers) return requestHeaders;
+		if (!headers) return defaultHeaders;
 
 		// Checks if the headers argument is already an valid HttpHeaders instance
 		if (headers instanceof HttpHeaders) {
+			// Initializes a new HttpHeaders instance to aggregate the default headers
+			let requestHeaders = new HttpHeaders(defaultHeaders);
+
 			// Iterates through every header name stored within the HttpHeaders object
 			for (const key of headers.keys()) {
 				// Retrieves all string values associated with the current HTTP header key
 				const value = headers.getAll(key);
 
 				// Checks if there are values set on the combined header in requestHeaders
-				if (value) requestHeaders = requestHeaders.set(key, value.join(', '));
+				if (value) requestHeaders = requestHeaders.set(key, value);
 			}
 
 			// Returns the fully constructed HttpHeaders instance with updated headers
 			return requestHeaders;
 		}
 
-		// Iterates through every key and value pair from the headers plain object
-		for (const [key, value] of entries(headers)) {
-			// Checks if the header value is an array to join items with comma spacing
-			if (isArray(value)) {
-				requestHeaders = requestHeaders.set(key, value.join(','));
-				continue;
-			}
-
-			// Updates primitive header values, setting the header key with this value
-			requestHeaders = requestHeaders.set(key, value);
-		}
-
-		// Returns the fully constructed HttpHeaders instance with updated headers
-		return requestHeaders;
+		// Returns merged request headers combining defaults with provided entries
+		return { ...defaultHeaders, ...headers };
 	}
 
 	/**
@@ -324,9 +365,9 @@ export class HttpAgent {
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
 	 */
-	private buildRequestParams(options: TRequestOptions = {}): HttpParams {
+	private buildRequestParams(options: TRequestOptions = {}): TRequestParams {
 		// Destructures the provided source object to extract necessary properties
-		const { params } = options;
+		const { params, querySerialization = 'repeat' } = options;
 
 		// Initializes a new HttpParams instance to aggregate the query parameters
 		let requestParams = new HttpParams();
@@ -341,17 +382,36 @@ export class HttpAgent {
 		for (const [key, value] of entries(params)) {
 			// Checks if the value is an array to append its values as separate params
 			if (isArray(value)) {
-				value.forEach((entry) => {
-					requestParams = requestParams.append(`${key}[]`, entry);
-				});
+				// Checks if query serialization uses a comma pattern for array parameters
+				if (querySerialization === 'comma') {
+					const serializedValue = value.join(',');
+					requestParams = requestParams.append(key, serializedValue);
+				}
+				// Checks if query serialization uses bracket formats for array parameters
+				else if (querySerialization === 'brackets') {
+					value.forEach((entry) => {
+						requestParams = requestParams.append(`${key}[]`, entry);
+					});
+				}
+				// Checks if query serialization uses repeat patterns for array parameters
+				else {
+					value.forEach((entry) => {
+						requestParams = requestParams.append(key, entry);
+					});
+				}
+
+				// Continues to the next iteration of the loop skipping the remaining part
 				continue;
 			}
 
 			// Checks if the value is an object to append nested key-value definitions
 			if (isObject(value)) {
+				// Iterates through nested object entries appending bracketed query values
 				entries(value).forEach(([nestedKey, nestedValue]) => {
 					requestParams = requestParams.append(`${key}[${nestedKey}]`, nestedValue);
 				});
+
+				// Continues to the next iteration of the loop skipping the remaining part
 				continue;
 			}
 
