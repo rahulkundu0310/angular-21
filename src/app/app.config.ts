@@ -5,7 +5,7 @@ import { Initializer } from '@core/services';
 import { providePrimeNG } from 'primeng/config';
 import type { ApplicationConfig } from '@angular/core';
 import { PreloadModuleStrategy } from '@core/strategies';
-import { primeNgConfig, signalFormsConfig } from '@configs';
+import { primeNgConfig, signalFormsConfig } from '@config';
 import { provideSignalFormsConfig } from '@angular/forms/signals';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';

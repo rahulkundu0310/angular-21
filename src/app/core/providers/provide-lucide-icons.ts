@@ -1,4 +1,4 @@
-import { iconConfig } from '@configs';
+import { iconConfig } from '@config';
 import type { Provider } from '@angular/core';
 import { LUCIDE_ICONS, LucideIconProvider } from 'lucide-angular';
 

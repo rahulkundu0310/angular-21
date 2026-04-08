@@ -1,5 +1,5 @@
 import { Logger } from '../services';
-import { applicationConfig } from '@configs';
+import { applicationConfig } from '@config';
 import { inject, Injectable } from '@angular/core';
 import type { IAuthSession, TRecord } from '@shared/types';
 import { CookieService as Cookie } from 'ngx-cookie-service';

@@ -1,4 +1,4 @@
-import { regexConfig } from '@configs';
+import { regexConfig } from '@config';
 import { sample, shuffle, times } from 'lodash-es';
 import type {
 	IPasswordStrength,
@@ -83,8 +83,8 @@ export function resolvePasswordStrength(password: string): IPasswordStrength {
 
 	// Returns the strength label meter index and three character type results
 	return {
-		label: labels[strengthIndex],
-		meter: meters[strengthIndex],
+		label: labels[strengthIndex] ?? '',
+		meter: meters[strengthIndex] ?? '',
 		hasNumeric: regexConfig.numeric.test(password),
 		hasAlphabet: regexConfig.alphabet.test(password),
 		hasSpecial: regexConfig.specialChars.test(password)

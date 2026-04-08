@@ -4,7 +4,7 @@ import { Logger } from '../services';
 import { Exception } from '../errors';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { transportConfig } from '@configs';
+import { transportConfig } from '@config';
 import { environment } from '@env/environment';
 import { get, isString, omit } from 'lodash-es';
 import { StatusCodes } from 'http-status-codes';

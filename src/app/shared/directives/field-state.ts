@@ -1,5 +1,5 @@
 import { entries } from 'lodash-es';
-import { fieldStateConfig } from '@configs';
+import { fieldStateConfig } from '@config';
 import type { EffectRef } from '@angular/core';
 import { FormField } from '@angular/forms/signals';
 import { Directive, ElementRef, effect, inject } from '@angular/core';

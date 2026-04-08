@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { Logger } from '@core/services';
-import { menuItemsConfig } from '@configs';
+import { menuItemsConfig } from '@config';
 import type { ResolveFn } from '@angular/router';
 import { PlatformStore } from './platform-store';
 import { catchError, of, switchMap, timer } from 'rxjs';

@@ -1,5 +1,5 @@
 import { Toaster } from './toaster';
-import { fileUploadConfig } from '@configs';
+import { fileUploadConfig } from '@config';
 import { inject, Injectable } from '@angular/core';
 import { formatFileSize, validateFiles } from '@shared/utilities';
 import type { IFileValidationError, IFileValidationOptions, TFileType } from '@shared/types';

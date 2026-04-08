@@ -1,4 +1,4 @@
-import { applicationConfig } from '@configs';
+import { applicationConfig } from '@config';
 import { AuthEvent, AuthStore } from '@core/auth';
 import { Action } from '@shared/components/widgets';
 import { Router, RouterLink } from '@angular/router';

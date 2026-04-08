@@ -1,4 +1,4 @@
-import { applicationConfig } from '@configs';
+import { applicationConfig } from '@config';
 import { TitleStrategy } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { inject, Injectable } from '@angular/core';

@@ -1,7 +1,7 @@
 import type { Observable } from 'rxjs';
 import { mergeMap, of, timer } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { applicationConfig } from '@configs';
+import { applicationConfig } from '@config';
 import type { PreloadingStrategy } from '@angular/router';
 import type { TObservableFactory, IRoute } from '@shared/types';
 

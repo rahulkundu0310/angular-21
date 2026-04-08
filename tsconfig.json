@@ -8,7 +8,7 @@
 {
 	"compileOnSave": false,
 	"compilerOptions": {
-		/* JavaScript language and environment options */
+		// Configures javascript language targets and basic execution environments
 		"target": "ES2022",
 		"module": "preserve",
 		"skipLibCheck": true,
@@ -16,8 +16,7 @@
 		"useDefineForClassFields": false,
 		"lib": ["ES2022", "DOM", "DOM.Iterable"],
 
-		/* Module resolution and bundling */
-		"baseUrl": "./",
+		// Establishes module resolution strategies and basic bundling preferences
 		"allowJs": true,
 		"sourceMap": false,
 		"declaration": false,
@@ -26,13 +25,12 @@
 		"resolveJsonModule": true,
 		"moduleResolution": "bundler",
 
-		/* Interop and compatibility */
+		// Defines package interoperability alongside compatibility configurations
 		"esModuleInterop": true,
-		"downlevelIteration": true,
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
 
-		/* Linting and strict checks */
+		// Enforces strict syntax validation rules alongside code quality policies
 		"strict": true,
 		"noImplicitReturns": true,
 		"noErrorTruncation": true,
@@ -40,7 +38,7 @@
 		"noFallthroughCasesInSwitch": true,
 		"noPropertyAccessFromIndexSignature": true,
 
-		/* Advanced type safety and validation */
+		// Enables advanced type safety rules and strict variable usage parameters
 		"alwaysStrict": true,
 		"noImplicitAny": true,
 		"noImplicitThis": true,
@@ -48,28 +46,29 @@
 		"allowUnusedLabels": false,
 		"noUnusedParameters": false,
 		"allowUnreachableCode": false,
+		"noUncheckedIndexedAccess": true,
 
-		/* Alias imports */
+		// Configures internal directory aliases for cleaner file import practices
 		"paths": {
 			"@/*": ["./*"],
-			"@app/*": ["src/app/*"],
-			"@store*": ["src/app/store"],
-			"@core/*": ["src/app/core/*"],
-			"@store/*": ["src/app/store/*"],
-			"@configs": ["src/app/configs"],
-			"@pages/*": ["src/app/pages/*"],
-			"@env/*": ["src/environments/*"],
-			"@shared/*": ["src/app/shared/*"]
+			"@app/*": ["./src/app/*"],
+			"@store": ["./src/app/store"],
+			"@core/*": ["./src/app/core/*"],
+			"@config": ["./src/app/config"],
+			"@store/*": ["./src/app/store/*"],
+			"@pages/*": ["./src/app/pages/*"],
+			"@env/*": ["./src/environments/*"],
+			"@shared/*": ["./src/app/shared/*"]
 		}
 	},
 	"angularCompilerOptions": {
-		/* Angular template and injection strictness */
+		// Enforces strict template compilations and strict dependency preferences
 		"strictTemplates": true,
 		"typeCheckHostBindings": true,
 		"strictInjectionParameters": true,
 		"strictInputAccessModifiers": true,
 
-		/* Angular i18n options */
+		// Configures localization compilation rules and international preferences
 		"enableI18nLegacyMessageIdFormat": false
 	},
 	"files": [],

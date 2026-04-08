@@ -1,7 +1,7 @@
 import { withLogger } from './logger';
 import { withStorage } from './storage';
 import { computed } from '@angular/core';
-import { applicationConfig } from '@configs';
+import { applicationConfig } from '@config';
 import { withResetState } from './reset-state';
 import {
 	withHooks,

@@ -1,5 +1,5 @@
 import type { Observable } from 'rxjs';
-import { transportConfig } from '@configs';
+import { transportConfig } from '@config';
 import { environment } from '@env/environment';
 import { Injectable, inject } from '@angular/core';
 import { isArray, isObject, entries } from 'lodash-es';

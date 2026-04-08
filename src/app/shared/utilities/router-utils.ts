@@ -137,6 +137,9 @@ export function resolveActiveSnapshot(route: ActivatedRouteSnapshot): ActivatedR
 		// Retrieves current child object from available list using tracking index
 		const childSnapshot = routeSnapshot.children[childIndex];
 
+		// Checks if current child snapshot is missing to break the loop iteration
+		if (!childSnapshot) break;
+
 		// Checks if the outlet matches primary target allowing deep route finding
 		if (childSnapshot.outlet === PRIMARY_OUTLET) {
 			// Updates the route snapshot value using target object for next iteration
@@ -264,7 +267,7 @@ export function normalizePathSegments(path: string | undefined): string[] {
 	if (!path) return [];
 
 	// Retrieves the base path string by separating connected query parameters
-	const [pathWithoutQuery] = path.split('?');
+	const [pathWithoutQuery = ''] = path.split('?');
 
 	// Updates the variable to store the path string aligned for normalization
 	let normalizedPath: string = pathWithoutQuery;

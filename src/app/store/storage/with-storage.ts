@@ -1,4 +1,4 @@
-import { applicationConfig } from '@configs';
+import { applicationConfig } from '@config';
 import { getStateSource } from '../accessors';
 import { isPlatformServer } from '@angular/common';
 import { effect, inject, PLATFORM_ID } from '@angular/core';
