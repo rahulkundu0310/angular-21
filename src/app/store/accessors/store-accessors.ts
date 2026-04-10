@@ -1,5 +1,7 @@
+import { DateTime } from 'luxon';
 import { isObject } from 'lodash-es';
 import { getState } from '@ngrx/signals';
+import { Exception } from '@core/errors';
 import type { StateSource } from '@ngrx/signals';
 
 /**
@@ -14,7 +16,9 @@ import type { StateSource } from '@ngrx/signals';
  */
 export function getStateSource<TState extends object>(store: unknown): TState {
 	if (isStateSource<TState>(store)) return getState(store as StateSource<TState>);
-	throw new Error('Cannot get state the store is not configured with withReset or is invalid');
+	throw new Exception('The store is invalid or missing withReset configuration', {
+		context: { timestamp: DateTime.now().toISO() }
+	});
 }
 
 /**

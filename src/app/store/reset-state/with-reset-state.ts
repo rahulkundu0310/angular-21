@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+import { Exception } from '@core/errors';
 import { getStateSource } from '../accessors';
 import type { TCallback } from '@shared/types';
 import type { StateSource } from '@ngrx/signals';
@@ -97,5 +99,8 @@ export function setResetState<TState extends object>(
 		store._setInitialState(state);
 		return;
 	}
-	throw new Error('Cannot set reset state because the store is not configured with withReset');
+
+	throw new Exception('Failed to set reset state missing withReset feature set', {
+		context: { timestamp: DateTime.now().toISO() }
+	});
 }

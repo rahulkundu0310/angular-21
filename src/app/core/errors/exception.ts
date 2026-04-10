@@ -32,10 +32,10 @@ export class Exception extends Error {
 		// Updates the additional specialized metadata excluding stack information
 		this.context = options.context;
 
-		// Restores the prototype hierarchy and ensure proper instance of checking
+		// Updates external tracking preference utilizing provided option fallback
 		this.captureInSentry = options.captureInSentry ?? false;
 
-		// Add inline comment
+		// Restores the prototype hierarchy and ensure proper instance of checking
 		Object.setPrototypeOf(this, Exception.prototype);
 
 		// Checks if a provided stack exists or captures one for precise debugging

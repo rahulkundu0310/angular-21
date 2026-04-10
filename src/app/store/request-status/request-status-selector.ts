@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+import { Exception } from '@core/errors';
 import { isArray, isEmpty } from 'lodash-es';
 import type { TRecord } from '@shared/types';
 import { getEventType } from './with-request-status';
@@ -54,7 +56,9 @@ export function selectRequestSnapshot(
 
 	// Checks if no selectors were collected after full normalization sequence
 	if (isEmpty(selectors)) {
-		throw new Error('No events found please specify at least one event');
+		throw new Exception('No request status events found please provide one event', {
+			context: { timestamp: DateTime.now().toISO() }
+		});
 	}
 
 	// Returns computed signal that provides the first active request snapshot

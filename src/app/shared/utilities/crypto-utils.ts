@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+import { Exception } from '@core/errors';
 import { environment } from '@env/environment';
 import { AES, CBC, Pkcs7, Utf8, Base64, WordArray, CipherParams } from 'crypto-es';
 
@@ -35,7 +37,11 @@ export function encryption(plainText: string, secretKey: string = cryptoSecret):
 	});
 
 	// Validates encryption result and throw an error if ciphertext is missing
-	if (!ciphertext) throw new Error('Encryption failed: ciphertext is undefined');
+	if (!ciphertext) {
+		throw new Exception('The encryption process failed due to missing ciphertext', {
+			context: { timestamp: DateTime.now().toISO() }
+		});
+	}
 
 	// Returns Base64 string containing IV concatenated using ciphertext bytes
 	return initializationVector.concat(ciphertext).toString(Base64);

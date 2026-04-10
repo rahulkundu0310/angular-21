@@ -2,6 +2,7 @@ export type * from './auth.types';
 export type * from './file.types';
 export type * from './http.types';
 export type * from './toast.types';
+export type * from './error.types';
 export type * from './config.types';
 export type * from './router.types';
 export type * from './common.types';

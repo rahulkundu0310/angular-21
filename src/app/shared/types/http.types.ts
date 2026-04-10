@@ -57,12 +57,3 @@ export interface IResponseMetadata {
 	version: string;
 	developer: string;
 }
-
-export interface IPromiseRejection extends Error {
-	rejection?: unknown;
-}
-
-export interface INormalizedError {
-	message: string;
-	statusCode: number;
-}

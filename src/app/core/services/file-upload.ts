@@ -1,4 +1,6 @@
+import { DateTime } from 'luxon';
 import { Toaster } from './toaster';
+import { Exception } from '../errors';
 import { fileUploadConfig } from '@config';
 import { inject, Injectable } from '@angular/core';
 import { formatFileSize, validateFiles } from '@shared/utilities';
@@ -25,7 +27,12 @@ export class FileUpload {
 
 		// Checks if upload rule is present to prevent invalid configuration usage
 		if (!uploadRule) {
-			throw new Error(`Missing validation configuration for file type ${type}`);
+			throw new Exception('Missing validation configuration for provided file type', {
+				context: {
+					fileType: type,
+					timestamp: DateTime.now().toISO()
+				}
+			});
 		}
 
 		// Returns validation options object with size limits and allow extensions

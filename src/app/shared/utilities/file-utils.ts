@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+import { Exception } from '@core/errors';
 import { isEmpty, isString } from 'lodash-es';
 import type { TFileType, IFileValidationError, IFileValidationOptions } from '../types';
 
@@ -122,13 +124,30 @@ export async function generateBase64FromFile(file: File): Promise<string> {
 		// Defines the load completion handler to process read result successfully
 		fileReader.onloadend = () => {
 			// Checks result type to resolve with string or reject with error response
-			if (isString(fileReader.result)) resolve(fileReader.result);
-			else reject(new Error('Failed to convert file to Base64, result is not a string'));
+			if (isString(fileReader.result)) {
+				resolve(fileReader.result);
+			} else {
+				reject(
+					new Exception('Failed to convert file to base64 result is not a string', {
+						context: {
+							fileName: file.name,
+							timestamp: DateTime.now().toISO()
+						}
+					})
+				);
+			}
 		};
 
 		// Defines error handler to manage all file reading failures in processing
 		fileReader.onerror = () => {
-			reject(new Error('Failed to read file content because of a processing error'));
+			reject(
+				new Exception('Failed to read the file content due to processing error', {
+					context: {
+						fileName: file.name,
+						timestamp: DateTime.now().toISO()
+					}
+				})
+			);
 		};
 
 		// Initiates file reading process to convert the content to the Base64 URL

@@ -5,8 +5,8 @@ import { Exception } from '../errors';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { transportConfig } from '@config';
+import { get, isString } from 'lodash-es';
 import { environment } from '@env/environment';
-import { get, isString, omit } from 'lodash-es';
 import { StatusCodes } from 'http-status-codes';
 import type { INormalizedError } from '@shared/types';
 import type { HttpInterceptorFn } from '@angular/common/http';
@@ -50,6 +50,7 @@ export const requestExceptionInterceptor: HttpInterceptorFn = (request, next) =>
 			// Constructs an exception instance using the extracted status and context
 			const exceptionInstance = new Exception(message, {
 				context: {
+					httpException: true,
 					requestUrl: request.url,
 					requestMethod: request.method,
 					timestamp: DateTime.now().toISO()
@@ -59,7 +60,9 @@ export const requestExceptionInterceptor: HttpInterceptorFn = (request, next) =>
 			// Checks if the error was a client side event or connection failure issue
 			if (isClientException(error)) {
 				// Checks if the current environment is development for logging the errors
-				if (!environment.production) logger.log('Client-side error occurred', error);
+				if (!environment.production) {
+					logger.log('A client side exception occurred during request process', error);
+				}
 			}
 
 			// Checks if the error was a server side event or processing failure issue
@@ -73,7 +76,7 @@ export const requestExceptionInterceptor: HttpInterceptorFn = (request, next) =>
 			}
 
 			// Returns an error observable to propagate the exact exception downstream
-			return throwError(() => omit(exceptionInstance, ['type', 'stack']));
+			return throwError(() => exceptionInstance);
 		})
 	);
 };

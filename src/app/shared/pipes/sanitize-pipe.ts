@@ -1,4 +1,6 @@
+import { DateTime } from 'luxon';
 import { Pipe } from '@angular/core';
+import { Exception } from '@core/errors';
 import type { PipeTransform } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { inject, PLATFORM_ID } from '@angular/core';
@@ -51,7 +53,12 @@ export class SanitizePipe implements PipeTransform {
 
 			// Ensures invalid safe type input data fails with an explicit error value
 			default:
-				throw new Error(`Invalid safe type specified: ${safeType}`);
+				throw new Exception('An invalid security sanitization safe type was provided', {
+					context: {
+						safeType,
+						timestamp: DateTime.now().toISO()
+					}
+				});
 		}
 	}
 }

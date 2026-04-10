@@ -13,7 +13,7 @@
 		"plaintext": false,
 		"markdown": false,
 		"scminput": false,
-		"typescript": true
+		"typescript": false
 	},
 
 	// Overrides Better Comments asterisk tags ensuring readable grey coloring
