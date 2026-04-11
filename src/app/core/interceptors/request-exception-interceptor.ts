@@ -8,11 +8,15 @@ import { transportConfig } from '@config';
 import { get, isString } from 'lodash-es';
 import { environment } from '@env/environment';
 import { StatusCodes } from 'http-status-codes';
-import type { INormalizedError } from '@shared/types';
 import type { HttpInterceptorFn } from '@angular/common/http';
 import { isClientException, isServerException } from '../http';
 import { catchError, throwError, timeout, TimeoutError } from 'rxjs';
 import { HttpErrorResponse as ErrorResponse } from '@angular/common/http';
+
+export interface INormalizedError {
+	message: string;
+	statusCode: number;
+}
 
 interface IInterceptorProviders {
 	router: Router;

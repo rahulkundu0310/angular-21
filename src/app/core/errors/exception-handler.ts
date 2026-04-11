@@ -4,7 +4,14 @@ import { Logger, Toaster } from '../services';
 import type { ErrorHandler } from '@angular/core';
 import { inject, Injectable } from '@angular/core';
 import { has, isObject, get, isError } from 'lodash-es';
-import type { IPromiseRejection, IZoneException } from '@shared/types';
+
+interface IZoneException extends Error {
+	ngOriginalError: unknown;
+}
+
+interface IPromiseRejection extends Error {
+	rejection?: unknown;
+}
 
 @Injectable()
 export class ExceptionHandler implements ErrorHandler {
