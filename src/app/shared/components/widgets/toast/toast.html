@@ -11,19 +11,24 @@
 		<div class="toast-icon" [attr.data-icon]="'true'" aria-hidden="true">
 			@switch (type()) {
 				@case ('info') {
-					<span class="material-icons">info</span>
+					<lucide-icon name="info" [size]="20" [strokeWidth]="2"></lucide-icon>
 				}
 				@case ('error') {
-					<span class="material-icons">error</span>
-				}
-				@case ('warning') {
-					<span class="material-icons">warning</span>
+					<lucide-icon name="circle-x" [size]="20" [strokeWidth]="2"></lucide-icon>
 				}
 				@case ('success') {
-					<span class="material-icons">check_circle</span>
+					<lucide-icon name="circle-check" [size]="20" [strokeWidth]="2"></lucide-icon>
+				}
+				@case ('warning') {
+					<lucide-icon name="triangle-alert" [size]="20" [strokeWidth]="2"></lucide-icon>
 				}
 				@case ('loading') {
-					<span class="material-icons">progress_activity</span>
+					<p-progressSpinner
+						[strokeWidth]="'4'"
+						[class]="'toast-spinner'"
+						[animationDuration]="'2.5s'"
+						[attr.aria-label]="'Loading'"
+					/>
 				}
 			}
 		</div>
@@ -48,11 +53,28 @@
 			<button
 				type="button"
 				[attr.data-button]="true"
-				(click)="action.onClick($event)"
-				[attr.aria-label]="action.label"
+				(click)="action.clicked($event)"
+				[tooltipDisabled]="!action.tooltip"
+				[pTooltip]="action.tooltip?.tooltip"
 				class="toast-button toast-button-action"
+				[attr.aria-label]="action.ariaLabel ?? action.label"
+				[tooltipEvent]="action.tooltip?.tooltipEvent ?? 'hover'"
+				[tooltipPosition]="action.tooltip?.tooltipPosition ?? 'top'"
 			>
-				{{ action.label }}
+				<!-- Renders the defined icon element or otherwise outputs the plain text label -->
+				@if (action.icon) {
+					<lucide-icon
+						class="toast-action-icon"
+						[name]="action.icon.name"
+						[size]="action.icon.size"
+						[strokeWidth]="action.icon.strokeWidth ?? 2"
+						[attr.aria-hidden]="action.icon.ariaHidden ?? true"
+						[absoluteStrokeWidth]="action.icon.absoluteStrokeWidth ?? false"
+					>
+					</lucide-icon>
+				} @else {
+					<span class="toast-button-label">{{ action.label }}</span>
+				}
 			</button>
 		}
 
@@ -61,11 +83,28 @@
 			<button
 				type="button"
 				[attr.data-cancel]="true"
-				(click)="cancel.onClick($event)"
-				[attr.aria-label]="cancel.label"
+				(click)="cancel.clicked($event)"
+				[tooltipDisabled]="!cancel.tooltip"
+				[pTooltip]="cancel.tooltip?.tooltip"
 				class="toast-button toast-button-cancel"
+				[attr.aria-label]="cancel.ariaLabel ?? cancel.label"
+				[tooltipEvent]="cancel.tooltip?.tooltipEvent ?? 'hover'"
+				[tooltipPosition]="cancel.tooltip?.tooltipPosition ?? 'top'"
 			>
-				{{ cancel.label }}
+				<!-- Renders the defined icon element or otherwise outputs the plain text label -->
+				@if (cancel.icon) {
+					<lucide-icon
+						class="toast-action-icon"
+						[name]="cancel.icon.name"
+						[size]="cancel.icon.size"
+						[strokeWidth]="cancel.icon.strokeWidth ?? 2"
+						[attr.aria-hidden]="cancel.icon.ariaHidden ?? true"
+						[absoluteStrokeWidth]="cancel.icon.absoluteStrokeWidth ?? false"
+					>
+					</lucide-icon>
+				} @else {
+					<span class="toast-button-label">{{ cancel.label }}</span>
+				}
 			</button>
 		}
 

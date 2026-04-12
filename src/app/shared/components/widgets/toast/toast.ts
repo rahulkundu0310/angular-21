@@ -1,5 +1,8 @@
 import type { toastState } from 'ngx-sonner';
+import { TooltipModule } from 'primeng/tooltip';
 import { HostModifier } from '@shared/directives';
+import { LucideAngularModule } from 'lucide-angular';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import type { IToastAction, TToastId, TToastType } from '@shared/types';
 import { ChangeDetectionStrategy, Component, input, ViewEncapsulation } from '@angular/core';
 
@@ -9,7 +12,8 @@ import { ChangeDetectionStrategy, Component, input, ViewEncapsulation } from '@a
 	templateUrl: './toast.html',
 	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	hostDirectives: [{ directive: HostModifier, inputs: ['behavior'] }]
+	hostDirectives: [{ directive: HostModifier, inputs: ['behavior'] }],
+	imports: [TooltipModule, LucideAngularModule, ProgressSpinnerModule]
 })
 export class Toast {
 	// Input and output properties reflecting shared state and emitting events

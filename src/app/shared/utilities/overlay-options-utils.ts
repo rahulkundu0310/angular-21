@@ -18,12 +18,12 @@ import type {
 const overlayResizeListeners = new WeakMap<HTMLElement, TCallback>();
 
 /**
- * Determines whether a click event occurred outside any overlay by checking the event target against overlay UI elements.
- * Processes node validation and containment checks against target and content to prove the click is outside both regions.
+ * Determines whether a click event occurred outside the overlay by reviewing the target node against measured boundaries.
+ * Processes node validation and containment checks against origin and content to prove the click is outside both extents.
  *
- * @param event - The mouse click event object containing the target node and full event data used for boundary detection.
- * @param overlayPanel - The overlay panel instance containing target and content elements used to evaluate outside click.
- * @returns A boolean indicating whether the click occurred outside the overlay content for consistent visibility control.
+ * @param event - The captured mouse event containing the source node and input details used for accurate boundary checks.
+ * @param overlayPanel - The overlay panel instance containing origin and content sections used for proving outside click.
+ * @returns A boolean indicating whether the trigger occurred outside the panel content for a reliable visibility control.
  *
  * @since 01 December 2025
  * @author Rahul Kundu
@@ -52,11 +52,11 @@ function isClickedOutsideOverlay(event: Event, overlayPanel: Overlay): boolean {
 }
 
 /**
- * Handles overlay listener events by routing event types to the proper overlay action for consistent interaction control.
- * Processes event type checks running overlay alignment for scroll, resize and hiding overlay on outside-click detection.
+ * Handles overlay listener triggers by mapping input types to the proper panel action for consistent interaction control.
+ * Processes structural checks running popup alignment for scroll or resize and hiding targets on outside click detection.
  *
- * @param event - The overlay listener event object containing input event and target details required for event handling.
- * @param options - The overlay listener options containing specific event settings and behaviors used to control overlay.
+ * @param event - The overlay event object containing input actions and target details required for subsequent operations.
+ * @param options - The overlay listener options containing specific rules and core behaviors used to operate the element.
  *
  * @since 01 December 2025
  * @author Rahul Kundu
@@ -89,10 +89,10 @@ function handleOverlayListener(
 }
 
 /**
- * Handles overlay show event by setting up overlay width and minimum width to match the actual target element dimensions.
- * Processes resize listener set up to dynamically adjust overlay widths and minimum width when the window sizing changes.
+ * Handles overlay show event by setting up initial bounds and minimum constraints to match the target element dimensions.
+ * Processes window resize listener to dynamically recalculate layout boundaries and scaling limits when viewport changes.
  *
- * @param event - The overlay event object containing target and overlay elements required for dynamic widths calculation.
+ * @param event - The overlay event object containing target and panel instances required for dynamic metrics calculation.
  *
  * @since 01 December 2025
  * @author Rahul Kundu
@@ -140,9 +140,9 @@ function handleOverlayShow(event?: OverlayOnShowEvent): void {
 
 /**
  * Handles overlay hide event by removing the registered resize listener and cleaning up references to avoid memory leaks.
- * Processes cleanup logic to remove window resize listener and delete the overlay element from the internal tracking map.
+ * Processes cleanup phases to remove cached sizing handler and delete the managed targets from the internal tracking map.
  *
- * @param event - The overlay event object containing the overlay element reference required for listener cleanup actions.
+ * @param event - The overlay event object containing the managed target references required for proper memory management.
  *
  * @since 01 December 2025
  * @author Rahul Kundu
@@ -165,11 +165,11 @@ function handleOverlayHide(event?: OverlayOnHideEvent): void {
 }
 
 /**
- * Resolves overlay options by merging defaults with custom settings into one consistent configuration object for overlay.
- * Processes default and custom values and attaches show, hide, and listener handlers to keep overlay behavior consistent.
+ * Resolves overlay options by merging defaults with custom settings into one consistent configuration object for layouts.
+ * Processes default and custom values and attaches element visibility and event listeners to keep interface state stable.
  *
- * @param overlayOptions - The overlay options object containing values to merge with defaults and overlay event handlers.
- * @returns A merged overlay options object with defaults, client overrides, and handlers applied for consistent behavior.
+ * @param overlayOptions - The overlay options object containing values to combine with defaults and bound event handlers.
+ * @returns A merged overlay options object integrating default properties with custom overrides for predictable behavior.
  *
  * @since 01 December 2025
  * @author Rahul Kundu

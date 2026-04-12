@@ -11,17 +11,34 @@ export type TToastPromiseId = TToastId | undefined;
 
 export type TToastType = Omit<ToastTypes, 'action'>;
 
-export interface IToastOptions extends ExternalToast {}
-
 export type TToastPosition = ToasterProps['position'];
+
+export interface IToastOptions extends ExternalToast {}
 
 export type TToastResolver<TValue> = string | TCallback<[value: TValue], string>;
 
 export type TToastPromise<TValue> = TPromise<TValue> | TFactory<TPromise<TValue>>;
 
+export interface TToastActionIcon {
+	name: string;
+	size: number | string;
+	strokeWidth?: number | string;
+	absoluteStrokeWidth?: boolean;
+	ariaHidden?: boolean | 'true' | 'false';
+}
+
+export interface TToastActionTooltip {
+	tooltip: string;
+	tooltipEvent?: 'focus' | 'hover';
+	tooltipPosition?: 'left' | 'top' | 'bottom' | 'right';
+}
+
 export interface IToastAction {
 	label: string;
-	onClick: TCallback<[event?: MouseEvent]>;
+	ariaLabel?: string;
+	icon?: TToastActionIcon;
+	tooltip?: TToastActionTooltip;
+	clicked: TCallback<[event?: MouseEvent]>;
 }
 
 export type TToastMessagePayload = [message: string, options?: IToastOptions];
