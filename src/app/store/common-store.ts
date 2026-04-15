@@ -61,8 +61,6 @@ export const CommonStore = signalStore(
 		 * Declares a page title segment by converting signal to a stream and filtering null values for title handling operations.
 		 * Processes signal transform excluding null to deliver reactive title segment stream within the browser title management.
 		 *
-		 * @returns An observable containing the page title segment with filtered non-null string value for browser title display.
-		 *
 		 * @since 01 December 2025
 		 * @author Rahul Kundu
 		 */
@@ -186,18 +184,7 @@ export const CommonStore = signalStore(
 			store._watchNavigationEnd();
 		};
 
-		/**
-		 * Handles store destruction by releasing retained resources and dismantling reactive connections to prevent memory leaks.
-		 * Executes cleanup procedures such as cancelling inflight requests, resetting store signals, or clearing computed caches.
-		 *
-		 * @since 01 December 2025
-		 * @author Rahul Kundu
-		 */
-		const onDestroy = (): void => {
-			store.resetState(initialState);
-		};
-
 		// Returns callbacks collection executed during initialization and cleanup
-		return { onInit, onDestroy };
+		return { onInit };
 	})
 );

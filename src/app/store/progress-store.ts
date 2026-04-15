@@ -1,14 +1,7 @@
 import { computed } from '@angular/core';
 import { withResetState } from './reset-state';
 import type { NgProgressRef } from 'ngx-progressbar';
-import {
-	withState,
-	withHooks,
-	patchState,
-	withMethods,
-	signalStore,
-	withComputed
-} from '@ngrx/signals';
+import { withState, patchState, withMethods, signalStore, withComputed } from '@ngrx/signals';
 
 interface TProgressState {
 	_count: number;
@@ -190,22 +183,5 @@ export const ProgressStore = signalStore(
 			complete,
 			increment
 		};
-	}),
-
-	// Provides lifecycle hooks executing side effects during store operations
-	withHooks((store) => {
-		/**
-		 * Handles store destruction by releasing retained resources and dismantling reactive connections to prevent memory leaks.
-		 * Executes cleanup procedures such as cancelling inflight requests, resetting store signals, or clearing computed caches.
-		 *
-		 * @since 01 December 2025
-		 * @author Rahul Kundu
-		 */
-		const onDestroy = (): void => {
-			store.resetState(initialState);
-		};
-
-		// Returns callbacks collection executed during initialization and cleanup
-		return { onDestroy };
 	})
 );

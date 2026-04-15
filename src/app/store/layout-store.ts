@@ -3,31 +3,15 @@ import { withStorage } from './storage';
 import { computed } from '@angular/core';
 import { applicationConfig } from '@config';
 import { withResetState } from './reset-state';
-import {
-	withHooks,
-	withState,
-	patchState,
-	signalStore,
-	withMethods,
-	withComputed
-} from '@ngrx/signals';
+import { withState, patchState, signalStore, withMethods, withComputed } from '@ngrx/signals';
+import type {
+	TAccessLayoutMode,
+	TPlatformLayoutMode,
+	IAccessLayoutContext,
+	IPlatformLayoutContext
+} from '@shared/types';
 
-export type TAccessLayoutMode = 'compact' | 'extended';
-
-export type TPlatformLayoutMode = 'compact' | 'extended' | 'collapsed';
-
-export interface IAccessLayoutContext {
-	compact: boolean;
-	extended: boolean;
-}
-
-export interface IPlatformLayoutContext {
-	compact: boolean;
-	extended: boolean;
-	collapsed: boolean;
-}
-
-export interface ILayoutState {
+interface ILayoutState {
 	navigationDrawerVisible: boolean;
 	accessLayoutMode: TAccessLayoutMode;
 	platformLayoutMode: TPlatformLayoutMode;
@@ -212,22 +196,5 @@ export const LayoutStore = signalStore(
 			setNavigationDrawerVisibility,
 			toggleNavigationDrawerVisibility
 		};
-	}),
-
-	// Provides lifecycle hooks executing side effects during store operations
-	withHooks((store) => {
-		/**
-		 * Handles store destruction by releasing retained resources and dismantling reactive connections to prevent memory leaks.
-		 * Executes cleanup procedures such as cancelling inflight requests, resetting store signals, or clearing computed caches.
-		 *
-		 * @since 01 December 2025
-		 * @author Rahul Kundu
-		 */
-		const onDestroy = (): void => {
-			store.resetState(initialState);
-		};
-
-		// Returns callbacks collection executed during initialization and cleanup
-		return { onDestroy };
 	})
 );

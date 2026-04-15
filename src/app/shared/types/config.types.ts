@@ -1,3 +1,4 @@
+import type { TTheme } from './theme.types';
 import type { IFileValidationRule } from './file.types';
 import type { PrimeNGConfigType } from 'primeng/config';
 import type { NgProgressOptions } from 'ngx-progressbar';
@@ -5,11 +6,14 @@ import type { NgProgressOptions } from 'ngx-progressbar';
 export interface IApplicationConfig {
 	name: string;
 	version: string;
+	themes: TTheme[];
+	themeKey: string;
 	preloadDelay: number;
-	defaultTheme: string;
+	defaultTheme: TTheme;
 	rememberMeKey: string;
 	authSessionKey: string;
 	layoutStateKey: string;
+	themeChannelKey: string;
 	layoutChannelKey: string;
 }
 

@@ -292,9 +292,6 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 				// Iterates through current timeouts ensuring all pending timers are unset
 				eventTimeouts.forEach((timeout) => clearTimeout(timeout));
 
-				// Updates store state by resetting it to the initial default state object
-				patchState(store, initialState(eventTypes));
-
 				// Clears the internal timeout registry removing active tracked references
 				eventTimeouts.clear();
 			};

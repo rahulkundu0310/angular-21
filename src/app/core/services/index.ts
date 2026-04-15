@@ -1,3 +1,4 @@
+export { Theme } from './theme';
 export { Common } from './common';
 export { Logger } from './logger';
 export { Toaster } from './toaster';

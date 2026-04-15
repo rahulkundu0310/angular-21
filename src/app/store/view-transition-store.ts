@@ -1,33 +1,17 @@
 import { Router } from '@angular/router';
 import { withResetState } from './reset-state';
 import { computed, inject } from '@angular/core';
-import type { TRouteLayout } from '@shared/types';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { EMPTY, pipe, switchMap, tap, timer } from 'rxjs';
 import { matchesActivePath, resolveSnapshotData } from '@shared/utilities';
 import type { ViewTransitionInfo, ActivatedRouteSnapshot } from '@angular/router';
-import {
-	withState,
-	withHooks,
-	patchState,
-	withMethods,
-	signalStore,
-	withComputed
-} from '@ngrx/signals';
-
-type TViewTransitionMode = 'cross-layout' | 'intra-layout' | 'none';
-
-type TViewTransitionName = 'none' | 'access-outlet' | 'platform-outlet';
-
-interface ITransitionNames {
-	accessOutlet: TViewTransitionName;
-	platformOutlet: TViewTransitionName;
-}
-
-interface ITransitionContext {
-	mode: TViewTransitionMode;
-	target: TRouteLayout | null;
-}
+import { withState, patchState, withMethods, signalStore, withComputed } from '@ngrx/signals';
+import type {
+	TRouteLayout,
+	ITransitionNames,
+	ITransitionContext,
+	TViewTransitionMode
+} from '@shared/types';
 
 interface IViewTransitionState {
 	_transitionMode: TViewTransitionMode;
@@ -197,23 +181,6 @@ export const ViewTransitionStore = signalStore(
 
 		// Returns methods collection exposing callable features for public access
 		return { handleTransition, setTransitionMode, resetTransitionMode };
-	}),
-
-	// Provides lifecycle hooks executing side effects during store operations
-	withHooks((store) => {
-		/**
-		 * Handles store destruction by releasing retained resources and dismantling reactive connections to prevent memory leaks.
-		 * Executes cleanup procedures such as cancelling inflight requests, resetting store signals, or clearing computed caches.
-		 *
-		 * @since 01 December 2025
-		 * @author Rahul Kundu
-		 */
-		const onDestroy = (): void => {
-			store.resetState(initialState);
-		};
-
-		// Returns callbacks collection executed during initialization and cleanup
-		return { onDestroy };
 	})
 );
 

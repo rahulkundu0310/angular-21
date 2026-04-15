@@ -399,3 +399,22 @@
 		animation-delay: functions.delay($delay);
 	}
 }
+
+/*
+ * Establishes inverted layout representations assigning contextual darkness against matched viewports.
+ * Evaluates encapsulated boundary scopes and top level hooks appending declarations into target nodes.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+@mixin dark() {
+	// Targets bounded encapsulated hosts applying matched modifier properties
+	:host-context(.dark) & {
+		@content;
+	}
+
+	// Appends designated properties against standard top level block elements
+	@at-root .dark & {
+		@content;
+	}
+}

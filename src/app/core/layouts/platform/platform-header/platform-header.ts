@@ -1,7 +1,7 @@
-import type { TPlatformLayoutMode } from '@store';
 import { HostModifier } from '@shared/directives';
 import { LayoutStore, ViewportStore } from '@store';
 import { LucideAngularModule } from 'lucide-angular';
+import type { TPlatformLayoutMode } from '@shared/types';
 import { PlatformAccount } from '../platform-account/platform-account';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 

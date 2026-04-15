@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { NgxSonnerToaster } from 'ngx-sonner';
 import { RouterOutlet } from '@angular/router';
 import { Action } from '@shared/components/widgets';
-import { CommonStore, ProgressStore } from '@store';
+import { CommonStore, ProgressStore, ThemeStore } from '@store';
 import { LucideAngularModule } from 'lucide-angular';
 import { Preloader } from '@shared/components/fallbacks';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -35,6 +35,7 @@ import {
 export class App implements AfterViewInit {
 	// Dependency injections providing direct access to services and injectors
 	private readonly document = inject(DOCUMENT);
+	private readonly theme = inject(ThemeStore);
 	private readonly renderer = inject(Renderer2);
 	private readonly commonStore = inject(CommonStore);
 	private readonly progressStore = inject(ProgressStore);

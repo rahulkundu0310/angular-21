@@ -1,7 +1,7 @@
 import { RouterState } from '@core/services';
 import { RouterOutlet } from '@angular/router';
 import type { EffectRef } from '@angular/core';
-import type { TPlatformLayoutMode } from '@store';
+import type { TPlatformLayoutMode } from '@shared/types';
 import { PlatformHeader } from '../platform-header/platform-header';
 import { PlatformTopbar } from '../platform-topbar/platform-topbar';
 import { PlatformSidebar } from '../platform-sidebar/platform-sidebar';

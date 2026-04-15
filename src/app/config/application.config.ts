@@ -13,8 +13,11 @@ export const applicationConfig: IApplicationConfig = {
 	preloadDelay: 500,
 	name: 'Angular 21',
 	defaultTheme: 'light',
+	themeKey: 'ng-theme-state',
 	rememberMeKey: 'ng-remember-me',
 	layoutStateKey: 'ng-layout-state',
 	authSessionKey: 'ng-auth-session',
+	themes: ['light', 'dark', 'system'],
+	themeChannelKey: 'ng-theme-channel',
 	layoutChannelKey: 'ng-layout-channel'
 } as const;
