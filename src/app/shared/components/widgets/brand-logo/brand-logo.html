@@ -1,9 +1,9 @@
 @let condensed = variant() === 'compact';
 @let imageSummary = `Brand ${condensed ? 'Icon' : 'Logo'}`;
-@let imageName = `${condensed ? 'logo-icon' : 'logo'}-${mode()}.svg`;
+@let imageName = `${condensed ? 'logo-icon' : 'logo'}-${appearance()}.svg`;
 
 <!-- Renders the brand logo figure as either a plain image or a routable anchor -->
-<figure class="brand-logo" [class]="`brand-logo-${variant()} brand-logo-${mode()}`">
+<figure class="brand-logo" [class]="`brand-logo-${variant()} brand-logo-${appearance()}`">
 	@if (!interactive()) {
 		<ng-container [ngTemplateOutlet]="brandImage" />
 	} @else {

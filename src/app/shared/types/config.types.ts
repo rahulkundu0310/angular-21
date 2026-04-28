@@ -6,7 +6,6 @@ import type { NgProgressOptions } from 'ngx-progressbar';
 export interface IApplicationConfig {
 	name: string;
 	version: string;
-	themes: TTheme[];
 	themeKey: string;
 	preloadDelay: number;
 	defaultTheme: TTheme;

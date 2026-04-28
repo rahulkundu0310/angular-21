@@ -29,16 +29,16 @@ const overlayResizeListeners = new WeakMap<HTMLElement, TCallback>();
  * @author Rahul Kundu
  */
 function isClickedOutsideOverlay(event: Event, overlayPanel: Overlay): boolean {
-	// Retrieves the event target which is a valid DOM Node for processing raw
+	// Retrieves the event target validating native node object for processing
 	const targetIsNode = event.target instanceof Node;
 
-	// Retrieves the overlay's target element ensuring valid DOM Node instance
+	// Retrieves current overlay target element ensuring native node structure
 	const targetElementIsNode = overlayPanel.targetEl instanceof Node;
 
-	// Retrieves the overlay's content element as a verified DOM Node instance
+	// Retrieves current overlay content element ensuring native node instance
 	const contentElementIsNode = overlayPanel.contentEl instanceof Node;
 
-	// Returns early if any required element is not a verified DOM Node object
+	// Checks if any required element lacks an expected native node definition
 	if (!targetIsNode || !targetElementIsNode || !contentElementIsNode) return false;
 
 	// Determines if the click occurred outside of the target element boundary
@@ -47,7 +47,7 @@ function isClickedOutsideOverlay(event: Event, overlayPanel: Overlay): boolean {
 	// Determines if the click occurred outside of the content object boundary
 	const clickOutsideContent = !overlayPanel.contentEl.contains(event.target as Node);
 
-	// Returns true only if the click is outside both target and content areas
+	// Returns true confirming pointer occurs outside target and content nodes
 	return clickOutsideTarget && clickOutsideContent;
 }
 
@@ -66,7 +66,7 @@ function handleOverlayListener(
 	event: IOverlayListenerEvent,
 	options?: OverlayListenerOptions
 ): void {
-	// Returns early if options are missing, type not set or no overlay exists
+	// Checks if overlay lacks reference or incomplete options prevent actions
 	if (!options || !options.type || !this) return;
 
 	// Evaluates overlay behavior according to the current listener event type
@@ -98,44 +98,68 @@ function handleOverlayListener(
  * @author Rahul Kundu
  */
 function handleOverlayShow(event?: OverlayOnShowEvent): void {
-	// Retrieves the target element that triggered the overlay to be displayed
+	// Retrieves overlay target element ensuring verified native node instance
 	const overlayTarget = event?.target as HTMLElement;
 
-	// Retrieves the actual overlay element from the event object if it exists
+	// Retrieves overlay layout element ensuring verified native node instance
 	const overlayElement = event?.overlay as HTMLElement;
 
-	// Returns early if either overlay element or target element was undefined
+	// Checks if necessary elements lack required references and returns early
 	if (!overlayElement || !overlayTarget) return;
 
-	// Defines a function to update overlay widths to match the targets widths
+	// Defines layout alignment operations computing exact physical dimensions
 	const updateOverlayWidths = () => {
-		// Retrieves the overlay element width property to verify if it is defined
-		const existingWidth = overlayElement.style.width;
+		// Retrieves initial overlay element width preserving exact style property
+		const initialOverlayWidth = overlayElement.style.width;
 
-		// Retrieves the overlay minWidth property to validate that it was defined
-		const existingMinWidth = overlayElement.style.minWidth;
+		// Retrieves initial overlay minimum width preserving exact style property
+		const initialOverlayMinWidth = overlayElement.style.minWidth;
 
-		// Retrieves the current width of the overlays target element using pixels
-		const overlayTargetWidth = overlayTarget.offsetWidth;
+		// Updates overlay minimum width temporarily measuring exact natural sizes
+		overlayElement.style.minWidth = '0px';
 
-		// Sets the overlay width to existing value or max-content if none present
-		if (!existingWidth) overlayElement.style.width = 'max-content';
+		// Updates overlay element width temporarily measuring unconstrained sizes
+		overlayElement.style.width = 'max-content';
 
-		// Sets minimum width based on existing minWidth or target if none present
-		if (!existingMinWidth) overlayElement.style.minWidth = `${overlayTargetWidth}px`;
+		// Retrieves overlay computed content width evaluating internal dimensions
+		const overlayContentWidth = overlayElement.scrollWidth;
+
+		// Restores captured overlay width preventing permanent structural updates
+		overlayElement.style.width = initialOverlayWidth || 'max-content';
+
+		// Retrieves exact overlay anchor pixel width maintaining rendering bounds
+		const overlayTargetWidth = overlayTarget.getBoundingClientRect().width;
+
+		// Checks if specific custom minimum width property exists returning early
+		if (!!initialOverlayMinWidth && initialOverlayMinWidth !== '0px') return;
+
+		// Retrieves computed visual rendering behavior discovering element layout
+		const overlayTargetDisplay = window.getComputedStyle(overlayTarget).display;
+
+		// Add inline comment start with - Determines or somehting better relevant
+		const hasBlockLevelLayout = ['block', 'flex', 'grid'].includes(overlayTargetDisplay);
+
+		// Determines maximum content sizing requirement analyzing measured bounds
+		const requiresMaxContent = overlayTargetWidth < overlayContentWidth || hasBlockLevelLayout;
+
+		// Checks if overlay requires maximum bounds assigning exact layout widths
+		if (requiresMaxContent) overlayElement.style.minWidth = 'max-content';
+		else overlayElement.style.minWidth = `${overlayTargetWidth}px`;
 	};
 
-	// Sets correct overlay width immediately prior to displaying the elements
-	updateOverlayWidths();
+	// Defers layout alignment rendering updates to prevent content flickering
+	requestAnimationFrame(() => updateOverlayWidths());
 
-	// Defines a resize listener that recalculates overlay width when resizing
-	const resizeListener = () => updateOverlayWidths();
+	// Defines window resize observer intercepting outside structure mutations
+	const resizeObserver = new ResizeObserver(() => {
+		requestAnimationFrame(() => updateOverlayWidths());
+	});
 
-	// Stores the resize listener in a map for later cleanup during hide event
-	overlayResizeListeners.set(overlayElement, resizeListener);
+	// Observes tracked sizing target element triggering structural alignments
+	resizeObserver.observe(overlayTarget);
 
-	// Registers a window resize listener to dynamically adjust overlay widths
-	window.addEventListener('resize', resizeListener);
+	// Stores event tracking references preserving correct teardown procedures
+	overlayResizeListeners.set(overlayElement, () => resizeObserver.disconnect());
 }
 
 /**
@@ -151,14 +175,14 @@ function handleOverlayHide(event?: OverlayOnHideEvent): void {
 	// Retrieves the overlay element from the overlay hide events if available
 	const overlayElement = event?.overlay as HTMLElement;
 
-	// Returns early if element is missing or not recorded in resize listeners
+	// Checks if the overlay element is missing or untracked and returns early
 	if (!overlayElement || !overlayResizeListeners.has(overlayElement)) return;
 
-	// Retrieves the associated resize listener for the active overlay element
-	const resizeListener = overlayResizeListeners.get(overlayElement);
+	// Retrieves associated disconnect callback targeting this overlay element
+	const disconnectObserver = overlayResizeListeners.get(overlayElement);
 
-	// Removes the resize event listener from the window to avoid memory leaks
-	window.removeEventListener('resize', resizeListener!);
+	// Checks if the disconnect callback exists preventing hidden memory leaks
+	if (disconnectObserver) disconnectObserver();
 
 	// Removes the overlay element from the registered resize listener mapping
 	overlayResizeListeners.delete(overlayElement);
@@ -175,7 +199,7 @@ function handleOverlayHide(event?: OverlayOnHideEvent): void {
  * @author Rahul Kundu
  */
 export function resolveOverlayOptions(overlayOptions: OverlayOptions = {}): OverlayOptions {
-	// Defines the default overlay configuration options for all UI components
+	// Defines default overlay configuration options for the layout structures
 	const defaultOptions: TOverlayOptions = {
 		mode: 'overlay',
 		autoZIndex: true,
@@ -188,7 +212,7 @@ export function resolveOverlayOptions(overlayOptions: OverlayOptions = {}): Over
 		}
 	};
 
-	// Combines defaults and custom options adding all required event handlers
+	// Returns merged defaults and custom options appending required listeners
 	return {
 		...defaultOptions,
 		...overlayOptions,

@@ -1,0 +1,55 @@
+@let triggerIcon = theme() === 'light' ? 'sun' : theme() === 'dark' ? 'moon' : 'monitor';
+
+<!-- Renders the theme switch button which toggles the application mode overlay -->
+<div class="theme-switch">
+	<button
+		type="button"
+		aria-haspopup="menu"
+		aria-label="Theme menu"
+		class="theme-switch-button"
+		aria-controls="theme-overlay"
+		(click)="toggleThemeOverlay()"
+		[attr.aria-expanded]="themeOverlayVisible()"
+		[class.theme-overlay-visible]="themeOverlayVisible()"
+	>
+		<span class="theme-icon" aria-hidden="true">
+			<lucide-icon [name]="triggerIcon" [size]="20" [strokeWidth]="2" />
+		</span>
+	</button>
+</div>
+
+<!-- Renders the theme overlay panel with the available appearance mode options -->
+<p-overlay
+	[target]="'@prev'"
+	[appendTo]="'body'"
+	[styleClass]="'theme-overlay'"
+	[(visible)]="themeOverlayVisible"
+	[contentStyleClass]="'theme-overlay-content'"
+>
+	<ng-template #content>
+		<div class="theme-overlay-options">
+			<ul class="menu-items" role="menu" aria-label="Application theme options">
+				@for (option of themeOptions(); track option.id) {
+					<li class="menu-item">
+						<button
+							type="button"
+							role="menuitem"
+							class="menu-link"
+							(click)="applyTheme(option.label)"
+							[class.menu-item-active]="theme() === option.label"
+						>
+							<span class="menu-icon">
+								<lucide-icon
+									[strokeWidth]="2.5"
+									[name]="option.icon"
+									[size]="option.iconSize"
+								/>
+							</span>
+							<span class="menu-label">{{ option.label | titlecase }}</span>
+						</button>
+					</li>
+				}
+			</ul>
+		</div>
+	</ng-template>
+</p-overlay>

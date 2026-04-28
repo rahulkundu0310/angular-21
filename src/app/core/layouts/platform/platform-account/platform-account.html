@@ -13,14 +13,14 @@
 		[attr.aria-expanded]="accountOverlayVisible()"
 		[class.account-overlay-visible]="accountOverlayVisible()"
 	>
-		<div class="account-avatar">
+		<div class="account-visual">
 			<!-- Renders the avatar image when defined or falls back to an initials display -->
 			@if (!!accountSummary?.image) {
 				<img
 					alt=""
 					imageFallback
 					loading="lazy"
-					class="account-image"
+					class="account-avatar"
 					[src]="accountSummary?.image"
 					[fallback]="'images/fallback-avatar.svg'"
 				/>
@@ -30,9 +30,9 @@
 				</span>
 			}
 
-			<!-- Overlays the avatar with a spinner while the account request is processing -->
+			<!-- Overlays the visual with a spinner while the account request is processing -->
 			@if (requestLoading) {
-				<div class="account-avatar-mask">
+				<div class="account-visual-mask">
 					<p-progressSpinner
 						[strokeWidth]="'4'"
 						[class]="'account-spinner'"
@@ -41,7 +41,7 @@
 				</div>
 			}
 		</div>
-		<div class="account-meta">
+		<div class="account-info">
 			<h6 class="account-name">
 				{{ accountSummary?.first_name }}
 			</h6>

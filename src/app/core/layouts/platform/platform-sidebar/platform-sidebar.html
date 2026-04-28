@@ -5,7 +5,7 @@
 <!-- Renders the broad sidebar used when the layout context is in extended view -->
 <aside class="sidebar sidebar-extended" [class]="{ 'sidebar-active': extendedLayout }">
 	<header class="sidebar-header">
-		<brand-logo [width]="160" [height]="39" [variant]="'standard'" />
+		<brand-logo [mode]="'color'" [width]="160" [height]="39" [variant]="'standard'" />
 	</header>
 	<div class="sidebar-content">
 		<platform-navigation [layout]="'extended'" />
@@ -15,7 +15,7 @@
 <!-- Renders the narrow sidebar used when the layout context is in compact view -->
 <aside class="sidebar sidebar-compact" [class]="{ 'sidebar-active': compactLayout }">
 	<header class="sidebar-header">
-		<brand-logo [width]="50" [height]="53" variant="compact" />
+		<brand-logo [mode]="'color'" [width]="50" [height]="53" variant="compact" />
 	</header>
 	<div class="sidebar-content">
 		<platform-navigation [layout]="'compact'" />
@@ -37,7 +37,7 @@
 >
 	<ng-template #headless>
 		<div class="drawer-header">
-			<brand-logo [width]="160" [height]="39" [variant]="'standard'" />
+			<brand-logo [mode]="'color'" [width]="160" [height]="39" [variant]="'standard'" />
 			<button type="button" class="drawer-close-button" (click)="closeNavigationDrawer()">
 				<lucide-icon name="x" [size]="20" [strokeWidth]="2.5" />
 			</button>

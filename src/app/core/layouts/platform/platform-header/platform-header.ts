@@ -1,6 +1,7 @@
 import { HostModifier } from '@shared/directives';
 import { LayoutStore, ViewportStore } from '@store';
 import { LucideAngularModule } from 'lucide-angular';
+import { ThemeSwitch } from '@shared/components/widgets';
 import type { TPlatformLayoutMode } from '@shared/types';
 import { PlatformAccount } from '../platform-account/platform-account';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
@@ -10,7 +11,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 	styleUrl: './platform-header.scss',
 	templateUrl: './platform-header.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [LucideAngularModule, PlatformAccount],
+	imports: [LucideAngularModule, PlatformAccount, ThemeSwitch],
 	hostDirectives: [{ directive: HostModifier, inputs: ['behavior'] }]
 })
 export class PlatformHeader {
