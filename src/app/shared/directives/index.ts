@@ -5,4 +5,6 @@ export { FieldState } from './field-state';
 export { HostModifier } from './host-modifier';
 export { DebounceInput } from './debounce-input';
 export { ImageFallback } from './image-fallback';
+export { MenuNormalizer } from './menu-normalizer';
 export { PreventAutofill } from './prevent-autofill';
+export { DatePickerNormalizer } from './date-picker-normalizer';

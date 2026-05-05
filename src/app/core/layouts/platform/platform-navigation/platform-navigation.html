@@ -183,6 +183,11 @@
 							[styleClass]="'submenu-popup'"
 							[ariaLabel]="`${menuItem.label} submenu`"
 							[model]="subMenuItems | cast: asMenuItems"
+							[motionOptions]="{
+								type: 'animation',
+								enterClass: { active: 'slide-in-up' },
+								leaveClass: { active: 'slide-out-down' }
+							}"
 						/>
 					</li>
 				}

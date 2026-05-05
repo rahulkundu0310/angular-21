@@ -35,21 +35,35 @@ export default defineConfig([
 		],
 		rules: {
 			// Angular selector rules permit prefixes and enforce strict casing format
-			'@angular-eslint/directive-selector': [
-				'error',
-				{
-					prefix: [],
-					type: 'attribute',
-					style: 'camelCase'
-				}
-			],
 			'@angular-eslint/component-selector': [
 				'error',
-				{
-					prefix: [],
-					type: 'element',
-					style: 'kebab-case'
-				}
+				[
+					{
+						prefix: [],
+						type: 'element',
+						style: 'kebab-case'
+					},
+					{
+						prefix: [],
+						type: 'attribute',
+						style: 'camelCase'
+					}
+				]
+			],
+			'@angular-eslint/directive-selector': [
+				'error',
+				[
+					{
+						prefix: [],
+						type: 'element',
+						style: 'kebab-case'
+					},
+					{
+						prefix: [],
+						type: 'attribute',
+						style: 'camelCase'
+					}
+				]
 			],
 
 			// Angular quality rules lower risk patterns and encourage stable codebase
@@ -92,6 +106,28 @@ export default defineConfig([
 	},
 
 	// Enables console restrictions exclusively for dedicated logger utilities
+	{
+		files: ['**/services/logger.ts', '**/store/logger/with-logger.ts'],
+		rules: {
+			'no-console': [
+				'warn',
+				{
+					allow: [
+						'log',
+						'info',
+						'warn',
+						'debug',
+						'error',
+						'group',
+						'groupEnd',
+						'groupCollapsed'
+					]
+				}
+			]
+		}
+	},
+
+	// Enables element restrictions exclusively for overlay normalizer utility
 	{
 		files: ['**/services/logger.ts', '**/store/logger/with-logger.ts'],
 		rules: {

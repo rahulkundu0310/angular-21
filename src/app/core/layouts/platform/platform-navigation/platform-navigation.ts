@@ -3,9 +3,9 @@ import { MenuModule } from 'primeng/menu';
 import type { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
-import { HostModifier } from '@shared/directives';
 import { PlatformStore } from '../platform-store';
 import { LucideAngularModule } from 'lucide-angular';
+import { HostModifier, MenuNormalizer } from '@shared/directives';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 
 @Component({
@@ -14,7 +14,14 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 	templateUrl: './platform-navigation.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	hostDirectives: [{ directive: HostModifier, inputs: ['behavior'] }],
-	imports: [RouterModule, LucideAngularModule, TooltipModule, MenuModule, CastPipe]
+	imports: [
+		CastPipe,
+		MenuModule,
+		RouterModule,
+		TooltipModule,
+		MenuNormalizer,
+		LucideAngularModule
+	]
 })
 export class PlatformNavigation {
 	// Dependency injections providing direct access to services and injectors

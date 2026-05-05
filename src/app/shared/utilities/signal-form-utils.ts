@@ -2,10 +2,20 @@ import { isPromise } from './data-type-utils';
 import { firstValueFrom, isObservable } from 'rxjs';
 import type { WritableSignal } from '@angular/core';
 import { disabled, form } from '@angular/forms/signals';
-import { entries, isBoolean, isFunction, isNil, isEmpty } from 'lodash-es';
 import { assertInInjectionContext, isSignal, signal } from '@angular/core';
-import type { IFormInstanceOptions, TFactory, TRecord } from '@shared/types';
 import type { FieldState, TreeValidationResult } from '@angular/forms/signals';
+import { entries, isBoolean, isFunction, isNil, isEmpty, isArray } from 'lodash-es';
+import type {
+	TRecord,
+	TFactory,
+	IFormContext,
+	TFormFieldTree,
+	TFormSubmitOptions,
+	IFormRestoreOptions,
+	IFormSubmitHandlers,
+	IFormInstanceOptions,
+	IFormRestoreHandlers
+} from '@shared/types';
 import type {
 	IForm,
 	IFormState,
@@ -57,41 +67,22 @@ export function formState<TModel>(
 		focusInvalidField = false
 	} = options ?? {};
 
+	// Retrieves configured submission handlers preserving structural contexts
+	// Retrieves configured bound submission handlers preserving current state
+	const { processInvalid, processAction } = resolveSubmitHandlers(submitted, {
+		action,
+		onInvalid,
+		focusInvalidField
+	});
+
 	// Constructs an option object handling form creation and submission phases
 	const formOptions: IFormInstanceOptions<TModel> = {
 		name,
 		injector,
 		submission: {
 			ignoreValidators,
-			onInvalid: (field, context) => {
-				// Updates submitted state passing true indicating validation errors exist
-				submitted.set(true);
-
-				// Checks if invalid field focusing preference is enabled for this process
-				if (focusInvalidField) {
-					// Initializes a variable to hold specific parameters defining field focus
-					let focusOptions: FocusOptions | undefined = undefined;
-
-					// Checks if provided property contains explicit parameters beyond boolean
-					if (!isBoolean(focusInvalidField)) focusOptions = focusInvalidField;
-
-					// Retrieves the first validation error item from this active form summary
-					const initialError = field().errorSummary().at(0);
-
-					// Initiates targeted focus on bound control element for the initial field
-					initialError?.fieldTree().focusBoundControl(focusOptions);
-				}
-
-				// Executes optional validation error callback resolving provided contexts
-				onInvalid?.(field, context);
-			},
-			action: (field, context) => {
-				// Updates submission state assigning false before proceeding to execution
-				submitted.set(false);
-
-				// Returns normalized promise resolution from the optional action callback
-				return normalizeAction(action?.(field, context));
-			}
+			action: processAction,
+			onInvalid: processInvalid
 		}
 	};
 
@@ -100,8 +91,21 @@ export function formState<TModel>(
 		? formSource<TModel>(model, formOptions)
 		: formSource<TModel>(model, schema, formOptions);
 
+	// Retrieves configured bound reversions handlers preserving current state
+	const { restoreSubmitted, restoreState, restoreFields } = resolveRestoreHandlers(
+		model,
+		formTree,
+		submitted
+	);
+
 	// Returns structured object combining configured tree and readonly status
-	return { form: formTree, submitted: submitted.asReadonly() };
+	return {
+		restoreFields,
+		form: formTree,
+		restoreSubmitted,
+		restore: restoreState,
+		submitted: submitted.asReadonly()
+	};
 }
 
 /**
@@ -205,4 +209,133 @@ function normalizeAction<TModel>(
 
 	// Returns action wrapped inside resolved promise ensuring standard format
 	return Promise.resolve<TreeValidationResult>(action);
+}
+
+/**
+ * Resolves configured submission callbacks managing valid and invalid form states during the underlying schema execution.
+ * Processes the provided configuration options extracting crucial actions to handle error targeting and expected outcome.
+ *
+ * @param submitted - The writable boolean indicator tracking ongoing validation status through current execution context.
+ * @param options - The specified configuration parameters supplying operational callbacks alongside bound focus behavior.
+ * @returns A structured reference containing executable handler mappings designed to process initiated submission phases.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+function resolveSubmitHandlers<TModel>(
+	submitted: WritableSignal<boolean>,
+	options: TFormSubmitOptions<TModel>
+): IFormSubmitHandlers<TModel> {
+	// Destructures the provided source object to extract necessary properties
+	const { action, onInvalid, focusInvalidField = false } = options ?? {};
+
+	// Configures callback handling invalid state updates with focus targeting
+	const processInvalid = (field: TFormFieldTree<TModel>, context: IFormContext<TModel>): void => {
+		// Updates submitted state passing true indicating validation errors exist
+		submitted.set(true);
+
+		// Checks if invalid field focusing preference is enabled for this process
+		if (focusInvalidField) {
+			// Initializes a variable to hold specific parameters defining field focus
+			let focusOptions: FocusOptions | undefined = undefined;
+
+			// Checks if provided property contains explicit parameters beyond boolean
+			if (!isBoolean(focusInvalidField)) focusOptions = focusInvalidField;
+
+			// Retrieves the first validation error item from this active form summary
+			const initialError = field().errorSummary().at(0);
+
+			// Initiates targeted focus on bound control element for the initial field
+			initialError?.fieldTree().focusBoundControl(focusOptions);
+		}
+
+		// Executes optional validation error callback resolving provided contexts
+		onInvalid?.(field, context);
+	};
+
+	// Configures callback handling valid submission resolving async operation
+	const processAction = (
+		field: TFormFieldTree<TModel>,
+		context: IFormContext<TModel>
+	): Promise<TreeValidationResult> => {
+		// Updates submission state assigning false before proceeding to execution
+		submitted.set(false);
+
+		// Returns normalized promise resolution from the optional action callback
+		return normalizeAction(action?.(field, context));
+	};
+
+	// Returns a specifically typed object resolving valid submission handlers
+	return { processInvalid, processAction };
+}
+
+/**
+ * Resolves configured restoration callbacks managing form state reversions safely during the underlying schema execution.
+ * Processes the provided entity model bindings extracting crucial operations to evaluate partial and complete inversions.
+ *
+ * @param model - The writable signal instance containing initial entity properties leveraged for resetting target states.
+ * @param formTree - The structured hierarchy supplying interactive properties crucial for clearing specific form entries.
+ * @param submitted - The writable boolean indicator tracking earlier submission status through entire validation context.
+ * @returns A structured reference containing executable handler mappings designed to initiate necessary rollback outcome.
+ *
+ * @since 01 December 2025
+ * @author Rahul Kundu
+ */
+function resolveRestoreHandlers<TModel>(
+	model: WritableSignal<TModel>,
+	formTree: TFormFieldTree<TModel>,
+	submitted: WritableSignal<boolean>
+): IFormRestoreHandlers<TModel> {
+	// Configures callback handling submission state reversals assigning false
+	const restoreSubmitted = (): void => submitted.set(false);
+
+	// Configures function handling complete form state restoration procedures
+	const restoreState = (options?: IFormRestoreOptions<TModel>): void => {
+		// Destructures the provided source object to extract necessary properties
+		const { value, markPristine = true, markUnsubmitted = true } = options ?? {};
+
+		// Checks if provided value contains valid entries assigning updated state
+		if (!isNil(value) && !isEmpty(value)) model.set(value);
+
+		// Checks if unsubmitted property requires reverting this submission state
+		if (markUnsubmitted) restoreSubmitted();
+
+		// Checks if pristine property requires restoring the untouched form state
+		if (markPristine) formTree().reset();
+	};
+
+	// Configures callback handling partial form restoration targeting entries
+	const restoreFields = <TKey extends keyof TModel>(
+		fields: TKey | TKey[],
+		options?: IFormRestoreOptions<Partial<TModel>>
+	): void => {
+		// Destructures the provided source object to extract necessary properties
+		const { value, markPristine = true, markUnsubmitted = true } = options ?? {};
+
+		// Normalizes provided fields input ensuring array structure for iteration
+		const fieldsToRestore = isArray(fields) ? fields : [fields];
+
+		// Checks if provided value contains valid entries assigning partial state
+		if (!isNil(value) && !isEmpty(value)) {
+			model.update((values) => ({ ...values, ...value }));
+		}
+
+		// Checks if unsubmitted property requires reverting this submission state
+		if (markUnsubmitted) restoreSubmitted();
+
+		// Checks if pristine property requires restoring untouched field statuses
+		if (markPristine) {
+			// Iterates through normalized collections performing targeted evaluations
+			for (const field of fieldsToRestore) {
+				// Retrieves targeted field instance evaluating underlying schema bindings
+				const fieldInstance = Reflect.get(formTree, field);
+
+				// Checks if evaluated instance represents valid structure executing reset
+				if (isFunction(fieldInstance)) fieldInstance().reset();
+			}
+		}
+	};
+
+	// Returns a specifically typed object resolving form restoration handlers
+	return { restoreSubmitted, restoreState, restoreFields };
 }

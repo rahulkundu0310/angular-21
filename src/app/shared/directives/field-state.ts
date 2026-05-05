@@ -8,7 +8,7 @@ import { Directive, ElementRef, effect, inject } from '@angular/core';
 export class FieldState {
 	// Dependency injections providing direct access to services and injectors
 	private readonly elementRef = inject(ElementRef<HTMLElement>);
-	private readonly field = inject(FormField, { optional: true });
+	private readonly formFieldInstance = inject(FormField, { optional: true });
 
 	// Public and private class member variables reflecting state and behavior
 	private readonly elementInstance: HTMLElement = this.elementRef.nativeElement;
@@ -22,7 +22,7 @@ export class FieldState {
 	 */
 	private readonly watchFieldState: EffectRef = effect(() => {
 		// Retrieves current field state from the injected resource when evaluated
-		const fieldState = this.field?.state();
+		const fieldState = this.formFieldInstance?.state();
 
 		// Checks if field state is missing or invalid and exits current execution
 		if (!fieldState) return;

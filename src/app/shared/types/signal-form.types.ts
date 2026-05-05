@@ -12,6 +12,8 @@ export type TFieldPath = string | number;
 
 export type TFormIgnoreValidators = 'pending' | 'none' | 'all';
 
+export type TFormFieldTree<TModel> = FieldTree<TModel, TFieldPath>;
+
 export type TFieldPredicate = boolean | Signal<boolean> | TFactory<boolean>;
 
 export type TFieldPredicates<TValue> = Partial<Record<keyof TValue, TFieldPredicate>>;
@@ -21,6 +23,11 @@ export type TFormStateSchema<TModel> = object | ((schema: TFormSchemaPath<TModel
 export type TFormSchemaPath<TValue> = SchemaPathTree<TValue> & TRecord<SchemaPath<unknown>>;
 
 export type TFormConfiguration<TModel> = TFormStateSchema<TModel> | IFormInstanceOptions<TModel>;
+
+export type TFormSubmitOptions<TModel> = Pick<
+	IFormStateOptions<TModel>,
+	'action' | 'onInvalid' | 'focusInvalidField'
+>;
 
 export type TFieldTree<TValue = unknown, TNullable extends boolean = false> = TNullable extends true
 	? TMaybe<FieldTree<TValue, TFieldPath>>
@@ -73,7 +80,34 @@ export interface IFormStateOptions<TModel> {
 	onInvalid?: TFormSubmitHandler<TModel, unknown>;
 }
 
+export interface IFormRestoreOptions<TModel = unknown> {
+	value?: TModel;
+	markPristine?: boolean;
+	markUnsubmitted?: boolean;
+}
+
+export interface IFormSubmitHandlers<TModel> {
+	processInvalid: TCallback<[field: TFormFieldTree<TModel>, context: IFormContext<TModel>]>;
+	processAction: TCallback<
+		[field: TFormFieldTree<TModel>, context: IFormContext<TModel>],
+		Promise<TreeValidationResult>
+	>;
+}
+
+export interface IFormRestoreHandlers<TModel> {
+	restoreSubmitted: TCallback<[]>;
+	restoreState: TCallback<[options?: IFormRestoreOptions<TModel>]>;
+	restoreFields: TCallback<
+		[fields: keyof TModel | (keyof TModel)[], options?: IFormRestoreOptions<Partial<TModel>>]
+	>;
+}
+
 export interface IFormState<TModel> {
-	readonly form: FieldTree<TModel, TFieldPath>;
+	restoreSubmitted: TCallback;
 	readonly submitted: Signal<boolean>;
+	readonly form: FieldTree<TModel, TFieldPath>;
+	restore: TCallback<[options?: IFormRestoreOptions<TModel>]>;
+	restoreFields: TCallback<
+		[fields: keyof TModel | (keyof TModel)[], options?: IFormRestoreOptions<Partial<TModel>>]
+	>;
 }
