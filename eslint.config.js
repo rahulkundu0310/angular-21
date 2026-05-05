@@ -105,28 +105,6 @@ export default defineConfig([
 		}
 	},
 
-	// Enables console restrictions exclusively for dedicated logger utilities
-	{
-		files: ['**/services/logger.ts', '**/store/logger/with-logger.ts'],
-		rules: {
-			'no-console': [
-				'warn',
-				{
-					allow: [
-						'log',
-						'info',
-						'warn',
-						'debug',
-						'error',
-						'group',
-						'groupEnd',
-						'groupCollapsed'
-					]
-				}
-			]
-		}
-	},
-
 	// Enables element restrictions exclusively for overlay normalizer utility
 	{
 		files: ['**/services/logger.ts', '**/store/logger/with-logger.ts'],
