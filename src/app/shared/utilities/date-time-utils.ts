@@ -120,7 +120,7 @@ export function formatDate(date: unknown, format: string, timezone?: string): st
 			if (isTimestamp(date)) {
 				formattedDate = DateTime.fromSeconds(toNumber(date));
 			} else {
-				// Retreives the parsed string via a standardized ISO 8601 date formatting
+				// Retrieves the parsed string via a standardized ISO 8601 date formatting
 				const parsedIsoDate = DateTime.fromISO(date);
 
 				// Checks if the ISO instance is valid to avoid manual fallback processing

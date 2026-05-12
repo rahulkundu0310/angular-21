@@ -47,7 +47,7 @@ export class DebounceInput implements OnInit {
 			)
 			.subscribe({
 				next: (value: string) => {
-					// Emits the untrimmed value during typing to preserve user-entered spaces
+					// Emits the untrimmed value during typing to preserve user entered spaces
 					this.debounced.emit(value);
 
 					// Stores normalization to get the canonical form of the last posted value

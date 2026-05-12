@@ -87,10 +87,10 @@ export const ThemeStore = signalStore(
 		 * @author Rahul Kundu
 		 */
 		const resolvedTheme = computed<TTheme>(() => {
-			// Retreives current selected theme directly from the reactive store state
+			// Retrieves current selected theme directly from the reactive store state
 			const theme = store.theme();
 
-			// Retreives current system styling directly from the reactive store state
+			// Retrieves current system styling directly from the reactive store state
 			const systemTheme = store.systemTheme();
 
 			// Returns matched system styling if specified otherwise the current theme
@@ -159,7 +159,7 @@ export const ThemeStore = signalStore(
 
 			// Registers reactive side effect which executes when signal value updates
 			effect(() => {
-				// Retreives current calculated styling preference from active store state
+				// Retrieves current calculated styling preference from active store state
 				const resolvedTheme = store.resolvedTheme();
 
 				// Suppresses global transitions to prevent layout flashing during updates

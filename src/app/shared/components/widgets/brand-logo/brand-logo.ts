@@ -38,13 +38,13 @@ export class BrandLogo {
 	 * @author Rahul Kundu
 	 */
 	protected readonly appearance = computed<TBrandAppearance>(() => {
-		// Retreives requested brand style preference from the active input signal
+		// Retrieves requested brand style preference from the active input signal
 		const mode = this.mode();
 
-		// Retreives current system styling directly from the reactive store state
+		// Retrieves current system styling directly from the reactive store state
 		const systemTheme = this.systemTheme();
 
-		// Retreives active calculated theme selection from the global store state
+		// Retrieves active calculated theme selection from the global store state
 		const resolvedTheme = this.resolvedTheme();
 
 		// Declares appearance map linking design preferences with visual palettes

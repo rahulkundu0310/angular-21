@@ -14,7 +14,7 @@ export class DatePickerNormalizer implements OnInit {
 
 	// Input and output properties reflecting shared state and emitting events
 	public readonly yearRange = input<number, number>(12, {
-		transform: (value: number) => (value > 12 ? 12 : value)
+		transform: (value: number) => Math.min(value, 12)
 	});
 
 	/**

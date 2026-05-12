@@ -75,16 +75,16 @@ export class ExceptionHandler implements ErrorHandler {
 			return this.normalizeError(error.ngOriginalError);
 		}
 
-		// Retreives a boolean verifying if the unknown error is a structured type
+		// Retrieves a boolean verifying if the unknown error is a structured type
 		const isStructuredError = isObject(error) && isError(error);
 
-		// Retreives the specific error name directly from the validated exception
+		// Retrieves the specific error name directly from the validated exception
 		const errorName = isStructuredError ? get(error, 'name') : undefined;
 
-		// Retreives the associated error stack directly from the validated object
+		// Retrieves the associated error stack directly from the validated object
 		const errorStack = isStructuredError ? get(error, 'stack') : undefined;
 
-		// Retreives the underlying error message safely from the validated object
+		// Retrieves the underlying error message safely from the validated object
 		const errorMessage = isStructuredError ? get(error, 'message') : error;
 
 		// Resolves the parsed exception stack applying the undefined base default
@@ -161,13 +161,13 @@ export class ExceptionHandler implements ErrorHandler {
 	 * @author Rahul Kundu
 	 */
 	private isDuplicateException(error: Error): boolean {
-		// Retreives the current system timestamp converted to millisecond metrics
+		// Retrieves the current system timestamp converted to millisecond metrics
 		const currentTime = DateTime.now().toMillis();
 
 		// Constructs a tracking cache string combining the error name and message
 		const cacheKey = `${error.name}|${error.message}`;
 
-		// Retreives previously recorded tracking timestamp matching the cache key
+		// Retrieves previously recorded tracking timestamp matching the cache key
 		const cachedTimestamp = this.errorCache.get(cacheKey);
 
 		// Computes the cooldown threshold deducting cache limit from current time

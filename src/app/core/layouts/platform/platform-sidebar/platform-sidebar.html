@@ -39,7 +39,12 @@
 		<div class="drawer-header">
 			<brand-logo [mode]="'color'" [width]="160" [height]="39" [variant]="'standard'" />
 			<button type="button" class="drawer-close-button" (click)="closeNavigationDrawer()">
-				<lucide-icon name="x" [size]="20" [strokeWidth]="2.5" />
+				<lucide-icon
+					[name]="'x'"
+					[size]="20"
+					[strokeWidth]="2.5"
+					class="drawer-close-button-icon"
+				/>
 			</button>
 		</div>
 		<div class="drawer-content">

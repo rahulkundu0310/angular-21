@@ -120,10 +120,10 @@ export const ViewportStore = signalStore(
 		 * @author Rahul Kundu
 		 */
 		const aspectRatio = computed<number>(() => {
-			// Retreives current viewport width directly from the reactive store state
+			// Retrieves current viewport width directly from the reactive store state
 			const viewportWidth = store.viewportWidth();
 
-			// Retreives current viewport depth directly from the reactive store state
+			// Retrieves current viewport depth directly from the reactive store state
 			const viewportHeight = store.viewportHeight();
 
 			// Returns calculated aspect ratio rounded precisely to two decimal places
@@ -138,7 +138,7 @@ export const ViewportStore = signalStore(
 		 * @author Rahul Kundu
 		 */
 		const viewportType = computed<TViewportType>(() => {
-			// Retreives current viewport width directly from the reactive store state
+			// Retrieves current viewport width directly from the reactive store state
 			const viewportWidth = store.viewportWidth();
 
 			// Destructures the provided source object to extract necessary properties
@@ -171,13 +171,13 @@ export const ViewportStore = signalStore(
 		 * @author Rahul Kundu
 		 */
 		const viewportContext = computed<TViewportContext>(() => {
-			// Retreives default desktop category expecting standard screen dimensions
+			// Retrieves default desktop category expecting standard screen dimensions
 			let deviceType: TDeviceType = 'desktop';
 
-			// Retreives current viewport width directly from the reactive store state
+			// Retrieves current viewport width directly from the reactive store state
 			const viewportWidth = store.viewportWidth();
 
-			// Retreives current viewport depth directly from the reactive store state
+			// Retrieves current viewport depth directly from the reactive store state
 			const viewportHeight = store.viewportHeight();
 
 			// Destructures the provided source object to extract necessary properties
@@ -188,13 +188,13 @@ export const ViewportStore = signalStore(
 			else if (viewportWidth < lg) deviceType = 'tablet';
 			else if (viewportWidth < xl) deviceType = 'laptop';
 
-			// Retreives media detection indicating mouse pointer supports hover state
+			// Retrieves media detection indicating mouse pointer supports hover state
 			const hoverCapable = window.matchMedia('(hover: hover)').matches;
 
-			// Retreives media detection indicating the pointer supports precise state
+			// Retrieves media detection indicating the pointer supports precise state
 			const pointerDevice = window.matchMedia('(pointer: fine)').matches;
 
-			// Retreives feature detection indicating touch points on current viewport
+			// Retrieves feature detection indicating touch points on current viewport
 			const touchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 			// Returns unified context utilizing derived layout and capability results

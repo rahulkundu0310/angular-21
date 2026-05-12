@@ -17,7 +17,7 @@ export const WINDOW = new InjectionToken<Window | null>('Browser Window', {
 		const document = inject(DOCUMENT);
 		const platformId = inject(PLATFORM_ID);
 
-		// Retreives the current runtime environment identifying browser execution
+		// Retrieves the current runtime environment identifying browser execution
 		const isBrowserPlatform = isPlatformBrowser(platformId);
 
 		// Returns the current browser document default view object otherwise null

@@ -206,7 +206,7 @@ export function resolveSnapshotData<TProperty extends TKeys<IRouteData>>(
 	// Retrieves nested child route snapshot using the active root tree source
 	const resolvedSnapshot = resolveActiveSnapshot(route.root);
 
-	// Retreives parent route entry from resolved snapshot for property lookup
+	// Retrieves parent route entry from resolved snapshot for property lookup
 	const routeData = resolvedSnapshot?.parent?.data as IRouteData;
 
 	// Returns property value when provided and parent route data is available

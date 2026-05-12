@@ -66,10 +66,10 @@ export function withStorage<TState extends object>(
 				// Checks if this incoming state is null and exits before mutation happens
 				if (isNil(state)) return;
 
-				// Retreives current store state cloning to prevent any reference mutation
+				// Retrieves current store state cloning to prevent any reference mutation
 				const stateSource = cloneDeep(getState(store));
 
-				// Retreives incoming fields limited to keys present on store state schema
+				// Retrieves incoming fields limited to keys present on store state schema
 				const sanitizedState = pick(state, keys(stateSource));
 
 				// Checks if sanitized result is valid ensuring store source update occurs
@@ -84,7 +84,7 @@ export function withStorage<TState extends object>(
 			 * @author Rahul Kundu
 			 */
 			const _rehydratePersistedState = (): void => {
-				// Retreives persisted state by using the provided specific key identifier
+				// Retrieves persisted state by using the provided specific key identifier
 				const persistedState = resolvePersistedState(key, normalizedOptions);
 
 				// Sanitizes retrieved payload ensuring allowed fields refresh store state
@@ -101,7 +101,7 @@ export function withStorage<TState extends object>(
 			 * @author Rahul Kundu
 			 */
 			const _setupBroadcastListener = (): BroadcastChannel | null => {
-				// Retreives application name property using project configuration context
+				// Retrieves application name property using project configuration context
 				const { name } = applicationConfig;
 
 				// Destructures the provided source object to extract necessary properties
@@ -123,7 +123,7 @@ export function withStorage<TState extends object>(
 
 					// Registers listeners to process incoming broadcast storage update events
 					channelInstance.onmessage = (event: MessageEvent<string>) => {
-						// Retreives serialized string value received from latest message property
+						// Retrieves serialized string value received from latest message property
 						const serializedValue = event.data;
 
 						// Checks if retrieved string is empty and exits before processing actions
@@ -194,13 +194,13 @@ export function withStorage<TState extends object>(
 
 				// Registers reactive side effect which executes when signal value updates
 				effect(() => {
-					// Retreives current store state cloning to prevent any reference mutation
+					// Retrieves current store state cloning to prevent any reference mutation
 					const currentState = cloneDeep(getStateSource<TState>(store));
 
 					// Checks if current state satisfies condition required for storage update
 					if (!shouldStore(currentState)) return;
 
-					// Retreives persistable fields applying include or exclude options schema
+					// Retrieves persistable fields applying include or exclude options schema
 					const persistableState = !isEmpty(include)
 						? pick(currentState, include)
 						: omit(currentState, exclude);

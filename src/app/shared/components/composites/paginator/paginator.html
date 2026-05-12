@@ -1,0 +1,185 @@
+<!-- Renders the dynamic pagination block depending on current visibility state -->
+@if (renderVisible()) {
+	<div class="paginator" [class]="showReport() ? 'paginator-extended' : 'paginator-compact'">
+		<!-- Renders the current page report with the visible entries and total records -->
+		@if (showReport()) {
+			<div class="page-report" aria-live="polite">
+				@let lastRecord = pageReport().lastRecord;
+				@let firstRecord = pageReport().firstRecord;
+				@let totalRecords = pageReport().totalRecords;
+
+				<p class="page-report-label">
+					Showing
+					<span class="page-report-accent">
+						{{ firstRecord }} to {{ lastRecord }} of {{ totalRecords }}
+					</span>
+					entries
+				</p>
+			</div>
+		}
+
+		<!-- Renders the managed navigation block managing the pagination control state -->
+		<nav class="page-navigator" aria-label="Pagination">
+			@let processing = loading();
+			@let pageCount = totalPages();
+			@let currentPage = pageNumber();
+			@let leadingDisabled = currentPage <= 1 || processing;
+			@let trailingDisabled = currentPage >= pageCount || processing;
+
+			<!-- Renders the leading directional controls for backward pagination sequences -->
+			@if (boundaryControls() || directionControls()) {
+				<div class="page-controls">
+					@if (boundaryControls()) {
+						<button
+							(click)="changePage(1)"
+							[disabled]="leadingDisabled"
+							aria-label="Go to first page"
+							class="page-button page-button-first"
+						>
+							<lucide-icon
+								[size]="12"
+								[strokeWidth]="2"
+								[name]="'chevron-first'"
+								class="page-button-icon"
+							></lucide-icon>
+						</button>
+					}
+
+					@if (directionControls()) {
+						<button
+							[disabled]="leadingDisabled"
+							aria-label="Go to previous page"
+							(click)="changePage(currentPage - 1)"
+							class="page-button page-button-previous"
+						>
+							<lucide-icon
+								[size]="12"
+								[strokeWidth]="2"
+								[name]="'chevron-left'"
+								class="page-button-icon"
+							></lucide-icon>
+						</button>
+					}
+				</div>
+			}
+
+			<!-- Renders the dynamically scoped target input and numerical pagination slots -->
+			<div class="page-selection">
+				<!-- Renders the configured numeric input field managing target page selections -->
+				@if (jumpToPageInput()) {
+					<div class="page-target">
+						<label for="page-target-input" class="page-target-label">Go to</label>
+						<p-inputNumber
+							[min]="1"
+							preventAutofill
+							#pageTargetInput
+							[max]="pageCount"
+							[showButtons]="true"
+							tooltipPosition="top"
+							[ngModel]="currentPage"
+							[disabled]="processing"
+							class="page-target-input"
+							inputId="page-target-input"
+							tooltipStyleClass="tooltip"
+							[tooltipDisabled]="processing"
+							[pTooltip]="'Press Enter to go to this page'"
+							(keydown)="jumpToPage($event, pageTargetInput.value)"
+						>
+							<ng-template #incrementbuttonicon>
+								<lucide-icon
+									[size]="12"
+									name="chevron-up"
+									[strokeWidth]="3"
+									class="page-target-input-icon"
+								></lucide-icon>
+							</ng-template>
+							<ng-template #decrementbuttonicon>
+								<lucide-icon
+									[size]="12"
+									[strokeWidth]="3"
+									name="chevron-down"
+									class="page-target-input-icon"
+								></lucide-icon>
+							</ng-template>
+						</p-inputNumber>
+					</div>
+				}
+
+				<!-- Renders the computed pagination slots generating a numerical page sequence -->
+				<div class="page-slots">
+					@for (slot of pageSlots(); track $index) {
+						<!-- Renders an inline ellipsis indicator representing skipped numerical ranges -->
+						@if (slot === ellipsis()) {
+							<div class="page-slot">
+								<span class="page-slot-ellipsis" aria-hidden="true">...</span>
+							</div>
+						} @else {
+							<!-- Renders the interactive page slot button reflecting an explicit page value -->
+							<div class="page-slot">
+								<button
+									[disabled]="processing"
+									class="page-slot-button"
+									(click)="changePage(slot)"
+									[class.page-slot-active]="currentPage === slot"
+									[attr.aria-current]="currentPage === slot ? 'page' : null"
+									[attr.aria-label]="
+										currentPage === slot ? `Page ${slot}` : `Go to page ${slot}`
+									"
+								>
+									<!-- Renders a visual progress spinner indicating an ongoing page load sequence -->
+									@if (processing && requestedPage() === slot) {
+										<p-progressSpinner
+											[strokeWidth]="'4'"
+											class="page-slot-spinner"
+											[animationDuration]="'2.5s'"
+											aria-label="Processing page"
+										></p-progressSpinner>
+									} @else {
+										<span class="page-slot-value">{{ slot }}</span>
+									}
+								</button>
+							</div>
+						}
+					}
+				</div>
+			</div>
+
+			<!-- Renders the trailing directional controls for forward pagination sequences -->
+			@if (boundaryControls() || directionControls()) {
+				<div class="page-controls">
+					@if (directionControls()) {
+						<button
+							aria-label="Go to next page"
+							[disabled]="trailingDisabled"
+							class="page-button page-button-next"
+							(click)="changePage(currentPage + 1)"
+						>
+							<lucide-icon
+								[size]="12"
+								[strokeWidth]="2"
+								[name]="'chevron-right'"
+								class="page-button-icon"
+							></lucide-icon>
+						</button>
+					}
+
+					@if (boundaryControls()) {
+						<button
+							aria-label="Go to last page"
+							[disabled]="trailingDisabled"
+							(click)="changePage(pageCount)"
+							class="page-button page-button-last"
+						>
+							<lucide-icon
+								[size]="12"
+								[strokeWidth]="2"
+								[name]="'chevron-last'"
+								class="page-button-icon"
+							></lucide-icon>
+						</button>
+					}
+				</div>
+			}
+		</nav>
+	</div>
+}

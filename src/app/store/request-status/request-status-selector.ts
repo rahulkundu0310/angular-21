@@ -65,7 +65,7 @@ export function selectRequestSnapshot(
 	return computed<IRequestSnapshot>(() => {
 		// Iterates through every selector to find the first active request status
 		for (const { event, store } of selectors) {
-			// Retreives request snapshot for this event key from current store record
+			// Retrieves request snapshot for this event key from current store record
 			const requestStatus = store.requestStatus()[event];
 
 			// Checks if request status is missing to proceed with next loop iteration
@@ -75,7 +75,7 @@ export function selectRequestSnapshot(
 			if (!requestStatus.idle) return requestStatus;
 		}
 
-		// Retreives first selector entry to provide fallback snapshot as baseline
+		// Retrieves first selector entry to provide fallback snapshot as baseline
 		const { store, event } = selectors.at(0)!;
 
 		// Returns request snapshot for first selector as the final fallback value

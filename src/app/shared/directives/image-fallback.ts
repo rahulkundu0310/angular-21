@@ -48,7 +48,7 @@ export class ImageFallback {
 		// Assigns the fallback source to the image element replacing failed asset
 		this.imageInstance.src = this.fallback();
 
-		// Broadcasts the fallback output event to notify all registered consumers
+		// Emits the fallback recovery event indicating successful asset rendering
 		this.fallbackUsed.emit();
 	}
 }

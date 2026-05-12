@@ -130,14 +130,14 @@ When to use:
 
 - Restructuring existing components or services
 - Migrating to a new pattern (e.g. signals, standalone components)
-- Simplifying or cleaning up logic without behaviour change
+- Simplifying or cleaning up logic without behavior change
 - Renaming files, classes, or functions for clarity
 
 ---
 
 ### `chore` — Maintenance
 
-Use for **work that does not affect production code or user-facing behaviour**.
+Use for **work that does not affect production code or user-facing behavior**.
 
 ```
 chore: bump javascript-time-ago, lodash-es, and zod to latest versions
@@ -195,7 +195,7 @@ When to use:
 
 ### `perf` — Performance
 
-Use when you are **improving speed or efficiency** without changing behaviour.
+Use when you are **improving speed or efficiency** without changing behavior.
 
 ```
 perf: lazy load analytics and integrations feature modules
@@ -283,19 +283,19 @@ When to use:
 
 ## Quick Decision Guide
 
-| What you did                                 | Type       |
-| -------------------------------------------- | ---------- |
-| Built a new component, page, or feature      | `feat`     |
-| Fixed a bug or broken behaviour              | `fix`      |
-| Restructured code without changing behaviour | `refactor` |
-| Updated dependencies or config files         | `chore`    |
-| Added or updated comments or docs            | `docs`     |
-| Fixed formatting only                        | `style`    |
-| Improved speed or reduced bundle size        | `perf`     |
-| Added or updated tests                       | `test`     |
-| Changed CI/CD pipeline                       | `ci`       |
-| Changed build configuration                  | `build`    |
-| Undid a previous commit                      | `revert`   |
+| What you did                                | Type       |
+| ------------------------------------------- | ---------- |
+| Built a new component, page, or feature     | `feat`     |
+| Fixed a bug or broken behavior              | `fix`      |
+| Restructured code without changing behavior | `refactor` |
+| Updated dependencies or config files        | `chore`    |
+| Added or updated comments or docs           | `docs`     |
+| Fixed formatting only                       | `style`    |
+| Improved speed or reduced bundle size       | `perf`     |
+| Added or updated tests                      | `test`     |
+| Changed CI/CD pipeline                      | `ci`       |
+| Changed build configuration                 | `build`    |
+| Undid a previous commit                     | `revert`   |
 
 ---
 
