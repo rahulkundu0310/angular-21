@@ -45,7 +45,7 @@ export class DatePickerNormalizer implements OnInit {
 
 		// Overrides existing scroll listener preventing default layout disruption
 		datePickerInstance.bindScrollListener = () => {
-			// Retreives the current runtime environment identifying browser execution
+			// Retrieves the current runtime environment identifying browser execution
 			const isBrowserContext = isPlatformBrowser(this.platformId);
 
 			// Checks if specific scroll handler requires fresh browser initialization
