@@ -1,7 +1,7 @@
-# Applies universal baseline formatting rules across every file in project
+# Applies common baseline formatting properties across the entire codebase
 root = true
 
-# Defines indentation charset line endings and whitespace across all files
+# Defines indentation charset line endings and whitespace for the codebase
 [*]
 charset = utf-8
 indent_size = 4
@@ -10,12 +10,29 @@ indent_style = tab
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# Restricts TypeScript to single quotes and disables double quote in files
-[*.ts]
-quote_type = single
-ij_typescript_use_double_quotes = false
-
-# Disables trailing whitespace trimming and removes line length boundaries
+# Disables trailing whitespace trimming and removes line length formatting
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
+
+# Restricts scripts to single quotes preventing double quoted declarations
+[*.{ts,js}]
+quote_type = single
+ij_typescript_use_double_quotes = false
+ij_javascript_use_double_quotes = false
+
+# Enforces strict space-based indentation properties governing YAML format
+[*.{yml,yaml}]
+indent_size = 4
+indent_style = space
+
+# Enforces specific tab-based indentation properties governing JSON format
+[*.{json,jsonc}]
+indent_size = 4
+indent_style = tab
+
+# Enforces tab-based formatting and line length limits across the codebase
+[*.{ts,js,html,css,scss,less}]
+indent_size = 4
+indent_style = tab
+max_line_length = 100

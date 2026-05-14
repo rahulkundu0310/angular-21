@@ -17,39 +17,39 @@ export const appRoutes: IRoute[] = [
 		canActivate: [accessControlGuard],
 		data: { scope: 'visitor', layout: 'access' },
 		loadChildren: () =>
-			import('./pages/access/access.routes').then((module) => module.accessRoutes)
+			import('./pages/access/access.routes').then(module => module.accessRoutes)
 	},
 	{
 		path: '',
 		component: PlatformLayout,
 		canActivate: [accessControlGuard],
 		providers: [Platform, PlatformStore],
-		resolve: { platfromResult: platformResolver },
+		resolve: { platformResult: platformResolver },
 		data: { scope: 'private', layout: 'platform' },
 		children: [
 			{
 				path: 'dashboard',
 				data: { preload: true, breadcrumb: { home: true, icon: 'house' } },
 				loadChildren: () =>
-					import('./pages/dashboard/dashboard.routes').then((m) => m.dashboardRoutes)
+					import('./pages/dashboard/dashboard.routes').then(m => m.dashboardRoutes)
 			},
 			{
 				path: 'users',
 				data: { preload: true },
-				loadChildren: () => import('./pages/users/users.routes').then((m) => m.usersRoutes)
+				loadChildren: () => import('./pages/users/users.routes').then(m => m.usersRoutes)
 			},
 			{
 				path: 'analytics',
 				data: { preload: true },
 				loadChildren: () =>
-					import('./pages/analytics/analytics.routes').then((m) => m.analyticsRoutes)
+					import('./pages/analytics/analytics.routes').then(m => m.analyticsRoutes)
 			},
 			{
 				path: 'integrations',
 				data: { preload: true },
 				loadChildren: () =>
 					import('./pages/integrations/integrations.routes').then(
-						(m) => m.integrationsRoutes
+						m => m.integrationsRoutes
 					)
 			}
 		]
@@ -58,7 +58,7 @@ export const appRoutes: IRoute[] = [
 		path: '',
 		data: { preload: true, topbar: false },
 		loadChildren: () =>
-			import('./pages/exceptions/exceptions.routes').then((m) => m.exceptionsRoutes)
+			import('./pages/exceptions/exceptions.routes').then(m => m.exceptionsRoutes)
 	},
 	{
 		path: '**',

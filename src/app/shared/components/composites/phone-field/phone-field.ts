@@ -48,6 +48,7 @@ export class PhoneField implements FormValueControl<IPhoneFieldValue | null> {
 	private readonly commonStore = inject(CommonStore);
 
 	// Input and output properties reflecting shared state and emitting events
+	public readonly touched = model<boolean>(false);
 	public readonly disabled = input<boolean>(false);
 	public readonly value = model<IPhoneFieldValue | null>(null);
 	public readonly config = input.required<IDerivedPhoneFieldConfig, IPhoneFieldConfig>({

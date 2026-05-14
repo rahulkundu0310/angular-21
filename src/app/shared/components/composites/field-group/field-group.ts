@@ -55,8 +55,8 @@ export class FieldGroup<TValue = unknown> {
 	});
 
 	/**
-	 * Computes error visibility by evaluating control status, validation faults, and configuration setting for prompt alerts.
-	 * Returns a boolean value indicating whether detected errors should be rendered based on control validity or dirty state.
+	 * Computes error visibility by evaluating control statuses validation issues and configuration rules triggering feedback.
+	 * Returns a boolean indicating whether the detected errors should be rendered based on control validity or touched state.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
@@ -68,10 +68,10 @@ export class FieldGroup<TValue = unknown> {
 		// Checks if field instance missing and returns false for mandatory status
 		if (!fieldInstance) return false;
 
-		// Returns error state using submitted errors or invalid using dirty state
+		// Returns error state using submitted errors or invalid on touched status
 		return (
 			(this.submitted() && !!fieldInstance().errors()) ||
-			(fieldInstance().invalid() && fieldInstance().dirty())
+			(fieldInstance().invalid() && fieldInstance().touched())
 		);
 	});
 

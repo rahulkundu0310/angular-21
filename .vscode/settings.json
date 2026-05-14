@@ -7,12 +7,16 @@
 	"editor.cursorBlinking": "expand",
 	"editor.cursorSmoothCaretAnimation": "on",
 
+	// Defines Prettier as the default formatter enforcing local configuration
+	"prettier.requireConfig": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+
 	// Disables GitHub Copilot predictive suggestions across various languages
 	"github.copilot.enable": {
 		"*": false,
-		"plaintext": false,
 		"markdown": false,
 		"scminput": false,
+		"plaintext": false,
 		"typescript": false
 	},
 
@@ -28,16 +32,6 @@
 			"backgroundColor": "transparent"
 		}
 	],
-
-	// Applies Prettier formatting rules to produce reliably consistent output
-	"prettier.semi": true,
-	"prettier.useTabs": true,
-	"prettier.printWidth": 100,
-	"prettier.singleQuote": true,
-	"prettier.proseWrap": "always",
-	"prettier.requireConfig": false,
-	"prettier.bracketSpacing": true,
-	"prettier.trailingComma": "none",
 
 	// Disables compact folder view keeping every directory visible by default
 	"explorer.compactFolders": false,

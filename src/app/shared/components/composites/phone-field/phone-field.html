@@ -79,6 +79,7 @@
 		[mask]="inputMask"
 		class="field-control"
 		[value]="phoneNumber()"
+		(blur)="touched.set(true)"
 		[dropSpecialCharacters]="true"
 		[attr.id]="fieldConfig.inputId"
 		[attr.aria-label]="'Phone number'"

@@ -1,0 +1,64 @@
+{
+	// Defines base spell checker rules configuring standard parsing behaviors
+	"version": "0.2",
+	"language": "en",
+	"allowCompoundWords": true,
+
+	// Excludes defined workspace directories skipping unwanted spell checking
+	"ignorePaths": [
+		".git",
+		"dist",
+		"*.log",
+		".idea",
+		".vscode",
+		".angular",
+		"coverage",
+		"*.min.js",
+		"*.min.css",
+		"yarn.lock",
+		"node_modules",
+		"package-lock.json"
+	],
+
+	// Specifies custom regex patterns bypassing inspection on generated texts
+	"ignoreRegExpList": [
+		"/\\b[0-9a-f]{32,}\\b/gi",
+		"/#[0-9a-fA-F]{3,8}\\b/gi",
+		"/https?:\\/\\/[^\\s\"']+/g",
+		"/data:image\\/[^;]+;base64,[^\\s\"')]+/g",
+		"/\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b/gi"
+	],
+
+	// Registers customized workspace vocabulary avoiding false spell warnings
+	"words": [
+		"opsz",
+		"wght",
+		"Kundu",
+		"Rahul",
+		"luxon",
+		"topbar",
+		"millis",
+		"locode",
+		"primeng",
+		"cooldown",
+		"primeuix",
+		"Haspopup",
+		"viewports",
+		"checkmark",
+		"Dispatchs",
+		"titlecase",
+		"ciphertext",
+		"yottabytes",
+		"lifecycles",
+		"Initialzes",
+		"persistable",
+		"Describedby",
+		"inputnumber",
+		"generatable",
+		"Unsubmitted",
+		"Destructures",
+		"confirmdialog",
+		"progressspinner",
+		"transitioncontext"
+	]
+}

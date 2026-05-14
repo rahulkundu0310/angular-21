@@ -1,3 +1,22 @@
 {
-	"recommendations": ["angular.ng-template"]
+	// Recommends essential extensions required for standard workspace tooling
+	"recommendations": [
+		"angular.ng-template",
+		"esbenp.prettier-vscode",
+		"dbaeumer.vscode-eslint",
+		"editorconfig.editorconfig",
+		"aaron-bond.better-comments",
+		"formulahendry.auto-rename-tag",
+		"streetsidesoftware.code-spell-checker"
+	],
+
+	// Excludes deprecated workspace extensions preventing execution conflicts
+	"unwantedRecommendations": [
+		"hookyqr.beautify",
+		"dbaeumer.beautify",
+		"esbenp.beautify-vscode",
+		"SimonSiefke.prettier-vscode",
+		"vscode.typescript-language-features",
+		"ms-vscode.vscode-typescript-tslint-plugin"
+	]
 }

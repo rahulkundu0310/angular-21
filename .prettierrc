@@ -3,16 +3,22 @@
 	"tabWidth": 4,
 	"useTabs": true,
 	"printWidth": 100,
+	"endOfLine": "lf",
 	"singleQuote": true,
 	"proseWrap": "always",
 	"bracketSpacing": true,
-	"requireConfig": false,
+	"arrowParens": "avoid",
 	"trailingComma": "none",
-	"editor.formatOnSave": true,
-	"jsxBracketSameLine": false,
+	"bracketSameLine": false,
 	"overrides": [
 		{
 			"files": "*.html",
+			"options": {
+				"parser": "angular"
+			}
+		},
+		{
+			"files": "*.component.html",
 			"options": {
 				"parser": "angular"
 			}

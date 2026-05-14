@@ -136,7 +136,7 @@ function handleOverlayShow(event?: OverlayOnShowEvent): void {
 		// Retrieves computed visual rendering behavior discovering element layout
 		const overlayTargetDisplay = window.getComputedStyle(overlayTarget).display;
 
-		// Add inline comment start with - Determines or somehting better relevant
+		// Determines if target layout uses block formatting for rendering display
 		const hasBlockLevelLayout = ['block', 'flex', 'grid'].includes(overlayTargetDisplay);
 
 		// Determines maximum content sizing requirement analyzing measured bounds

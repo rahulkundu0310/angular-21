@@ -17,8 +17,8 @@ export class Session {
 	private readonly authSessionKey: string = applicationConfig.authSessionKey;
 
 	/**
-	 * Persists the user authentication session into strict cookies to preserve current sign-in state across page navigations.
-	 * Processes session serialization and encryption to write protected cookie strings ensuring seamless future verification.
+	 * Persists the user authentication session into secured cookies to preserve current sign-in state across page navigation.
+	 * Processes session serialization and encryption to create protected cookie string ensuring seamless future verification.
 	 *
 	 * @param session - The auth session object to be serialized and encrypted and stored in client cookie for safe retrieval.
 	 *

@@ -37,6 +37,7 @@ import {
 export class PasswordField implements FormValueControl<string> {
 	// Input and output properties reflecting shared state and emitting events
 	public readonly value = model<string>('');
+	public readonly touched = model<boolean>(false);
 	public readonly disabled = input<boolean>(false);
 	public readonly config = input.required<IDerivedPasswordFieldConfig, IPasswordFieldConfig>({
 		transform: derivePasswordFieldConfig
@@ -82,7 +83,7 @@ export class PasswordField implements FormValueControl<string> {
 		if (this.disabled()) return;
 
 		// Updates password visibility by inverting boolean to reveal actual state
-		this.isMasked.update((masked) => !masked);
+		this.isMasked.update(masked => !masked);
 	}
 
 	/**
