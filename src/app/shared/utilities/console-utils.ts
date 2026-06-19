@@ -37,15 +37,25 @@ export function suppressViewTransitionAbortError(): void {
 function shouldSkipViewTransitionError(error: unknown): boolean {
 	// Handles an Error object type by checking message content and error name
 	if (isError(error)) {
+		// Determines if an error message contains skipped transition text content
 		const hasSkipMessage = includes(error.message, 'Transition was skipped');
+
+		// Determines if the active error name accurately matches abort indicators
 		const isAbortErrorName = error.name === 'AbortError';
+
+		// Returns a boolean confirming matching abort and skipped message details
 		return isAbortErrorName && hasSkipMessage;
 	}
 
 	// Handles string type by checking for specific abort and transition words
 	if (isString(error)) {
+		// Determines if the string value contains skipped transition text content
 		const containsSkipText = includes(error, 'Transition was skipped');
+
+		// Determines if the evaluated string incorporates abort error identifiers
 		const containsAbortText = includes(error, 'AbortError');
+
+		// Returns a boolean confirming matching abort and skipped text inclusions
 		return containsAbortText && containsSkipText;
 	}
 

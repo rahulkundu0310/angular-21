@@ -20,7 +20,7 @@ export function generateNumericId(): number {
 	// Extracts the last five digits from full timestamp for identifier prefix
 	const timestampSuffix = currentTimestamp.toString().slice(-5);
 
-	// Returns timestamp and random digits for final unique numeric identifier
+	// Returns a timestamp and random digits for unique numeric identification
 	return parseInt(timestampSuffix + randomDigits);
 }
 
@@ -55,6 +55,6 @@ export function generateObjectId(): string {
 		return randomHexDigit.toString(16);
 	});
 
-	// Returns final ObjectId by combining timestamp and random hex components
+	// Returns an ObjectId integrating the timestamp and random hex characters
 	return timestampHex + randomHexString.toLowerCase();
 }

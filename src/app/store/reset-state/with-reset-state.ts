@@ -25,7 +25,7 @@ type TStore<TState extends object = object> = {
  * @author Rahul Kundu
  */
 export function withResetState<TState extends object>() {
-	// Returns signal store feature combining properties and reactive behavior
+	// Returns a signal store feature binding properties and reactive behavior
 	return signalStoreFeature(
 		// Provides store methods enabling state updates and reactive interactions
 		withMethods((store) => {
@@ -58,7 +58,7 @@ export function withResetState<TState extends object>() {
 				patchState(store, overrideState ?? initialState);
 			};
 
-			// Returns methods collection exposing callable features for public access
+			// Returns a method collection containing callable items for public access
 			return { _setInitialState, resetState };
 		}),
 
@@ -66,7 +66,7 @@ export function withResetState<TState extends object>() {
 		withHooks((store) => {
 			/**
 			 * Handles store initialization by configuring reactive contexts and organizing state signals for consistent interactions.
-			 * Executes startup tasks such as triggering initial data loads, registering effects, or configuring reactive derivations.
+			 * Executes startup tasks triggering initial retrievals alongside registering effects or structuring reactive derivations.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
@@ -75,7 +75,7 @@ export function withResetState<TState extends object>() {
 				store._setInitialState(getStateSource(store));
 			};
 
-			// Returns callbacks collection executed during initialization and cleanup
+			// Returns a callback collection containing startup and associated cleanup
 			return { onInit };
 		})
 	);

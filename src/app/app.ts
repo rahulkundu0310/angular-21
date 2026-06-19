@@ -45,7 +45,7 @@ export class App implements AfterViewInit {
 
 	/**
 	 * Handles view initialization phase after component views and child content are safely rendered and available for access.
-	 * Executes post-render configurations and DOM manipulations to guarantee visual components are prepared for interactions.
+	 * Executes post render configurations and DOM manipulations to guarantee visual components are prepared for interactions.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu

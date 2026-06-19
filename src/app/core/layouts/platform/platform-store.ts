@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import type { IMenuItem } from '@shared/types';
 import { withNavigation } from '@store/navigation';
 import { withResetState } from '@store/reset-state';
-import { withState, withHooks, patchState, signalStore, withMethods } from '@ngrx/signals';
+import { withState, patchState, signalStore, withMethods } from '@ngrx/signals';
 
 interface IPlatformState {
 	_menuItems: IMenuItem[];
@@ -55,24 +55,7 @@ export const PlatformStore = signalStore(
 			patchState(store, { _menuItems: menuItems });
 		};
 
-		// Returns methods collection exposing callable features for public access
+		// Returns a method collection containing callable items for public access
 		return { setMenuItems };
-	}),
-
-	// Provides lifecycle hooks executing side effects during store operations
-	withHooks((store) => {
-		/**
-		 * Handles store destruction by releasing retained resources and dismantling reactive connections to prevent memory leaks.
-		 * Executes cleanup procedures such as cancelling inflight requests, resetting store signals, or clearing computed caches.
-		 *
-		 * @since 01 December 2025
-		 * @author Rahul Kundu
-		 */
-		const onDestroy = (): void => {
-			store.resetState(initialState);
-		};
-
-		// Returns callbacks collection executed during initialization and cleanup
-		return { onDestroy };
 	})
 );

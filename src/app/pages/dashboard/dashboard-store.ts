@@ -40,7 +40,7 @@ export const DashboardStore = signalStore(
 		// Dependency injections providing direct access to services and injectors
 		const dashboard = inject(Dashboard);
 
-		// Returns methods collection exposing callable features for public access
+		// Returns a method collection containing callable items for public access
 		return {};
 	})
 );

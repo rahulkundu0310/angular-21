@@ -30,7 +30,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 	// Captures the error message if an unauthenticated session is encountered
 	logger.error('Unauthenticated access detected redirecting to sign in');
 
-	// Returns url tree redirecting to sign in page to validate session access
+	// Returns a url tree redirecting onto the sign in page for session access
 	return router.createUrlTree(['/sign-in'], {
 		queryParams: { redirectUrl: state.url }
 	});

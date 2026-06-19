@@ -1,8 +1,8 @@
 import { isEmptyString } from '@shared/utilities';
 import { Directive, ElementRef, HostListener, inject } from '@angular/core';
 
-@Directive({ selector: '[trimInput]' })
-export class TrimInput {
+@Directive({ selector: '[trimWhitespace]' })
+export class TrimWhitespace {
 	// Dependency injections providing direct access to services and injectors
 	private readonly elementRef = inject(ElementRef<HTMLInputElement>);
 
@@ -11,7 +11,7 @@ export class TrimInput {
 	private capturedInputValue = '';
 	private capturedSelectionEnd = 0;
 	private capturedSelectionStart = 0;
-	private readonly inputInstance: HTMLInputElement = this.elementRef.nativeElement;
+	private readonly inputElement: HTMLInputElement = this.elementRef.nativeElement;
 
 	/**
 	 * Intercepts blur on the input field to strip leading and trailing spaces while preserving the internal value formatting.
@@ -25,7 +25,7 @@ export class TrimInput {
 	@HostListener('blur', ['$event'])
 	protected normalizeInputSpacing(event: FocusEvent): void {
 		// Retrieves the latest value from the native input element for processing
-		const inputValue = this.inputInstance.value;
+		const inputValue = this.inputElement.value;
 
 		// Returns early if the input text is not an empty string for optimization
 		if (isEmptyString(inputValue)) return;
@@ -55,16 +55,16 @@ export class TrimInput {
 		if (isEmptyString(clipboardContent)) return;
 
 		// Retrieves the current type property of the active input element for use
-		this.capturedInputType = this.inputInstance.type;
+		this.capturedInputType = this.inputElement.type;
 
 		// Retrieves the current value from the target input element for reference
-		this.capturedInputValue = this.inputInstance.value;
+		this.capturedInputValue = this.inputElement.value;
 
 		// Retrieves the selection end index from input element cursor positioning
-		this.capturedSelectionEnd = this.inputInstance.selectionEnd ?? 0;
+		this.capturedSelectionEnd = this.inputElement.selectionEnd ?? 0;
 
 		// Retrieves the selection start index from input field cursor positioning
-		this.capturedSelectionStart = this.inputInstance.selectionStart ?? 0;
+		this.capturedSelectionStart = this.inputElement.selectionStart ?? 0;
 
 		// Prevents default paste event to handle insertion manually with trimming
 		event.preventDefault();
@@ -131,7 +131,7 @@ export class TrimInput {
 
 		// Checks whether input type supports text selection to restore the cursor
 		if (this.hasTextSelectionCapability) {
-			this.inputInstance.setSelectionRange(offset, offset);
+			this.inputElement.setSelectionRange(offset, offset);
 		}
 	}
 
@@ -146,10 +146,10 @@ export class TrimInput {
 	 */
 	private synchronizeInputAndFieldState(value: string): void {
 		// Updates the input elements value to synchronized string for consistency
-		this.inputInstance.value = value;
+		this.inputElement.value = value;
 
 		// Dispatches event to notify attached form bindings of the modified value
-		this.inputInstance.dispatchEvent(new Event('input', { bubbles: true }));
+		this.inputElement.dispatchEvent(new Event('input', { bubbles: true }));
 	}
 
 	/**
@@ -165,7 +165,7 @@ export class TrimInput {
 		// Defines list of allowed input element types for applying cursor updates
 		const supportedInputTypes = ['text', 'password', 'search', 'tel', 'url'];
 
-		// Returns true if captured input type is included in supported operations
+		// Returns a boolean if captured input type is within supported operations
 		return supportedInputTypes.includes(this.capturedInputType);
 	}
 }

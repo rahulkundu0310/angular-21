@@ -73,7 +73,7 @@ export const ThemeStore = signalStore(
 			? mediaMatcher.matchMedia('(prefers-color-scheme: dark)')
 			: null;
 
-		// Returns properties collection exposing shared members for public access
+		// Returns a property collection containing shared items for public access
 		return { _colorSchemeQuery };
 	}),
 
@@ -93,11 +93,11 @@ export const ThemeStore = signalStore(
 			// Retrieves current system styling directly from the reactive store state
 			const systemTheme = store.systemTheme();
 
-			// Returns matched system styling if specified otherwise the current theme
+			// Returns a matched system theme if specified otherwise the current theme
 			return theme === 'system' ? systemTheme : theme;
 		});
 
-		// Returns signals collection exposing calculated values for public access
+		// Returns a signal collection containing derived values for public access
 		return { resolvedTheme };
 	}),
 
@@ -129,7 +129,7 @@ export const ThemeStore = signalStore(
 			patchState(store, { theme });
 		};
 
-		// Returns methods collection exposing callable features for public access
+		// Returns a method collection containing callable items for public access
 		return { _deriveSystemTheme, updateTheme };
 	}),
 
@@ -140,7 +140,7 @@ export const ThemeStore = signalStore(
 
 		/**
 		 * Handles store initialization by configuring reactive contexts and organizing state signals for consistent interactions.
-		 * Executes startup tasks such as triggering initial data loads, registering effects, or configuring reactive derivations.
+		 * Executes startup tasks triggering initial retrievals alongside registering effects or structuring reactive derivations.
 		 *
 		 * @since 01 December 2025
 		 * @author Rahul Kundu
@@ -172,7 +172,7 @@ export const ThemeStore = signalStore(
 
 		/**
 		 * Handles store destruction by releasing retained resources and dismantling reactive connections to prevent memory leaks.
-		 * Executes cleanup procedures such as cancelling inflight requests, resetting store signals, or clearing computed caches.
+		 * Executes cleanup procedures cancelling inflight requests alongside resetting state signals or clearing computed caches.
 		 *
 		 * @since 01 December 2025
 		 * @author Rahul Kundu
@@ -183,7 +183,7 @@ export const ThemeStore = signalStore(
 			});
 		};
 
-		// Returns callbacks collection executed during initialization and cleanup
+		// Returns a callback collection containing startup and associated cleanup
 		return { onInit, onDestroy };
 	})
 );

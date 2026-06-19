@@ -106,6 +106,9 @@ export class CachedRouteStrategy implements RouteReuseStrategy {
 	 *
 	 * @param route - The route configuration object utilized to identify the particular route entry within the cache strategy.
 	 * @returns A boolean indicating whether injector should be destroyed ensuring resources are eliminated for detached cache.
+	 *
+	 * @since 01 December 2025
+	 * @author Rahul Kundu
 	 */
 	public shouldDestroyInjector(route: Route): boolean {
 		return !this.routeHandlers.has(route);

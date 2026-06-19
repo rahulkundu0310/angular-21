@@ -45,13 +45,13 @@ export class FieldGroup<TValue = unknown> {
 	 */
 	protected readonly isRequired = computed<boolean>(() => {
 		// Retrieves current field instance from input signal for state evaluation
-		const fieldInstance = this.field();
+		const field = this.field();
 
 		// Checks if field instance missing and returns false for mandatory status
-		if (!fieldInstance) return false;
+		if (!field) return false;
 
-		// Returns mandatory status from field state using required accessor value
-		return fieldInstance().required();
+		// Returns a mandatory status from field state using the required accessor
+		return field().required();
 	});
 
 	/**
@@ -63,16 +63,22 @@ export class FieldGroup<TValue = unknown> {
 	 */
 	protected readonly hasValidationError = computed<boolean>(() => {
 		// Retrieves current field instance from input signal for state evaluation
-		const fieldInstance = this.field();
+		const field = this.field();
 
 		// Checks if field instance missing and returns false for mandatory status
-		if (!fieldInstance) return false;
+		if (!field) return false;
 
-		// Returns error state using submitted errors or invalid on touched status
-		return (
-			(this.submitted() && !!fieldInstance().errors()) ||
-			(fieldInstance().invalid() && fieldInstance().touched())
-		);
+		// Retrieves external submission property evaluating parent form structure
+		const submitted = this.submitted();
+
+		// Evaluates provided submission state checking existing field validations
+		const hasSubmissionErrors = submitted && !!field().errors();
+
+		// Evaluates combined interaction status ensuring accurate error rendering
+		const hasInteractionErrors = field().invalid() && field().touched();
+
+		// Returns an error state using submitted errors or invalid touched status
+		return hasSubmissionErrors || hasInteractionErrors;
 	});
 
 	/**
@@ -87,16 +93,16 @@ export class FieldGroup<TValue = unknown> {
 		const config = this.config();
 
 		// Retrieves current field instance from input signal for state evaluation
-		const fieldInstance = this.field();
+		const field = this.field();
 
 		// Retrieves pending status from field instance with config as the default
-		const pending = fieldInstance?.().pending() ?? config.pending;
+		const pending = field?.().pending() ?? config.pending;
 
 		// Retrieves disabled status using field instance or config as the default
-		const disabled = fieldInstance?.().disabled() ?? config.disabled;
+		const disabled = field?.().disabled() ?? config.disabled;
 
 		// Retrieves readonly status using field instance or config as the default
-		const readonly = fieldInstance?.().readonly?.() ?? config.readonly;
+		const readonly = field?.().readonly?.() ?? config.readonly;
 
 		// Destructures the provided source object to extract necessary properties
 		const { size, fluid, inline, styleClass, enableValidation } = config;
@@ -113,7 +119,7 @@ export class FieldGroup<TValue = unknown> {
 			'field-group-validation': enableValidation
 		};
 
-		// Returns enabled keys from class map joined as group style string output
+		// Returns a computed group style class list using the mapped enabled keys
 		return keys(pickBy(fieldGroupClassMap)).join(' ');
 	});
 
@@ -129,13 +135,13 @@ export class FieldGroup<TValue = unknown> {
 		const config = this.config();
 
 		// Retrieves current field instance from input signal for state evaluation
-		const fieldInstance = this.field();
+		const field = this.field();
 
 		// Checks if field instance exists and is valid before any further actions
-		if (!fieldInstance) return null;
+		if (!field) return null;
 
 		// Retrieves current validation issues from field state with errors output
-		const fieldErrors = fieldInstance().errors();
+		const fieldErrors = field().errors();
 
 		// Checks if faults are absent or returned list is empty before proceeding
 		if (!fieldErrors || !fieldErrors.length) return null;

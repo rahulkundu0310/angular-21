@@ -57,7 +57,7 @@ export const ProgressStore = signalStore(
 		 */
 		const active = computed<boolean>(() => store.instance()?.active() ?? false);
 
-		// Returns signals collection exposing calculated values for public access
+		// Returns a signal collection containing derived values for public access
 		return { active, progress };
 	}),
 
@@ -173,7 +173,7 @@ export const ProgressStore = signalStore(
 			patchState(store, { instance: instance ?? null });
 		};
 
-		// Returns methods collection exposing callable features for public access
+		// Returns a method collection containing callable items for public access
 		return {
 			track,
 			start,

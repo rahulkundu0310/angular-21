@@ -7,7 +7,7 @@
 	"singleQuote": true,
 	"proseWrap": "always",
 	"bracketSpacing": true,
-	"arrowParens": "avoid",
+	"arrowParens": "always",
 	"trailingComma": "none",
 	"bracketSameLine": false,
 	"overrides": [

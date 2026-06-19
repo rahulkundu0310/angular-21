@@ -40,26 +40,32 @@
 				{{ prompt.message }}
 			</p>
 		</div>
-		<div class="confirm-dialog-footer">
-			<action
-				[config]="{
-					size: 'medium',
-					label: 'Cancel',
-					severity: 'light',
-					ariaLabel: 'Cancel and close dialog'
-				}"
-				(onClick)="onReject()"
-			/>
-			<action
-				[config]="{
-					size: 'medium',
-					label: 'Confirm',
-					severity: 'primary',
-					ariaLabel: 'Confirm action'
-				}"
-				(onClick)="onAccept()"
-			/>
-		</div>
+		@if (prompt.acceptVisible !== false || prompt.rejectVisible !== false) {
+			<div class="confirm-dialog-footer">
+				@if (prompt.rejectVisible !== false) {
+					<action
+						[config]="{
+							size: 'medium',
+							severity: 'light',
+							ariaLabel: 'Cancel and close dialog',
+							label: prompt.rejectLabel || 'Cancel'
+						}"
+						(onClick)="onReject()"
+					/>
+				}
+				@if (prompt.acceptVisible !== false) {
+					<action
+						[config]="{
+							size: 'medium',
+							severity: 'primary',
+							ariaLabel: 'Confirm action',
+							label: prompt.acceptLabel || 'Confirm'
+						}"
+						(onClick)="onAccept()"
+					/>
+				}
+			</div>
+		}
 	</ng-template>
 </p-confirmDialog>
 

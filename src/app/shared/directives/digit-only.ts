@@ -43,7 +43,7 @@ export class DigitOnly {
 	private hasNegativeSignInInput = false;
 	private readonly currencyRegex: RegExp = /[$₹., ]/;
 	private readonly keyboardShortcuts: string[] = ['a', 'c', 'v', 'x'];
-	private readonly inputInstance: HTMLInputElement = this.elementRef.nativeElement;
+	private readonly inputElement: HTMLInputElement = this.elementRef.nativeElement;
 	private readonly navigationKeys: string[] = [
 		'Tab',
 		'End',
@@ -267,7 +267,7 @@ export class DigitOnly {
 		this.processClipboardContent(droppedContent.trim());
 
 		// Restores focus to the input element to maintain proper user interaction
-		this.inputInstance.focus();
+		this.inputElement.focus();
 
 		// Prevents the browser default behavior for drop to handle safe insertion
 		event.preventDefault();
@@ -309,23 +309,23 @@ export class DigitOnly {
 		// Checks if execCommand failed to insert the value into the input element
 		if (!wasInsertedSuccessfully) {
 			// Determines if the input supports the setRangeText method for injections
-			const supportsSetRangeText = isFunction(this.inputInstance.setRangeText);
+			const supportsSetRangeText = isFunction(this.inputElement.setRangeText);
 
 			// Prevents the browser default behavior for drop to handle safe insertion
 			// Check support for setRangeText to insert content into the input element
 			if (supportsSetRangeText) {
 				// Retrieves the current selection start and end points of the input field
-				const { selectionStart: start, selectionEnd: end } = this.inputInstance;
+				const { selectionStart: start, selectionEnd: end } = this.inputElement;
 
 				// Replaces the selection with the cleaned content and moves cursor to end
-				this.inputInstance.setRangeText(cleanedContent, start ?? 0, end ?? 0, 'end');
+				this.inputElement.setRangeText(cleanedContent, start ?? 0, end ?? 0, 'end');
 
 				// Checks for Firefox to dispatch event ensuring Angular detects the value
 				if (!isUndefined(window.InstallTrigger))
-					this.inputInstance.dispatchEvent(new Event('input', { cancelable: true }));
+					this.inputElement.dispatchEvent(new Event('input', { cancelable: true }));
 			} else {
 				// Falls back to manual cursor insertion when modern text APIs are missing
-				this.insertTextAtCursorPosition(this.inputInstance, cleanedContent);
+				this.insertTextAtCursorPosition(this.inputElement, cleanedContent);
 			}
 		}
 
@@ -333,7 +333,7 @@ export class DigitOnly {
 		if (this.decimal()) {
 			// Aligns internal decimal tracking with the last pasted text in the input
 			this.hasDecimalPointInInput = includes(
-				this.inputInstance.value,
+				this.inputElement.value,
 				this.decimalSeparator()
 			);
 		}
@@ -422,13 +422,13 @@ export class DigitOnly {
 		const sanitizedResult = replace(source, filterRegex, '');
 
 		// Retrieves the maximum length of characters allowed for this input field
-		const maxInputLength = this.inputInstance.maxLength;
+		const maxInputLength = this.inputElement.maxLength;
 
 		// Checks if max length is specified before truncating the sanitized value
 		if (maxInputLength <= 0) return sanitizedResult;
 
 		// Retrieves the current length of the value input element for calculation
-		const currentInputLength = this.inputInstance.value.length;
+		const currentInputLength = this.inputElement.value.length;
 
 		// Adjusts the available size if a minus sign exists in the sanitized text
 		const negativeSignAdjustment = includes(sanitizedResult, this.negativeSign()) ? 1 : 0;
@@ -521,10 +521,10 @@ export class DigitOnly {
 	 */
 	private get currentSelection(): string {
 		// Retrieves the current cursor positions from the input element correctly
-		const { selectionStart, selectionEnd } = this.inputInstance;
+		const { selectionStart, selectionEnd } = this.inputElement;
 
 		// Returns the substring currently selected by the user in the input field
-		return this.inputInstance.value.substring(selectionStart ?? 0, selectionEnd ?? 0);
+		return this.inputElement.value.substring(selectionStart ?? 0, selectionEnd ?? 0);
 	}
 
 	/**
@@ -539,10 +539,10 @@ export class DigitOnly {
 	 */
 	private calculatePredictedValue(insertion: string): string {
 		// Retrieves the current value in the input tag for prediction calculation
-		const inputValue = this.inputInstance.value;
+		const inputValue = this.inputElement.value;
 
 		// Retrieves the start and end points of the cursor within the input field
-		const { selectionStart, selectionEnd } = this.inputInstance;
+		const { selectionStart, selectionEnd } = this.inputElement;
 
 		// Retrieves the text currently highlighted or selected inside input field
 		const selectedText = inputValue.substring(selectionStart ?? 0, selectionEnd ?? 0);

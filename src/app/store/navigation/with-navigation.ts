@@ -42,7 +42,7 @@ export function withNavigation() {
 						// Checks if navigation end event is missing returning fallback empty list
 						if (isEmpty(navigationEnd)) return [];
 
-						// Returns evaluated menu items collection with updated navigation details
+						// Returns an evaluated menu items collection capturing navigation details
 						return navigation.evaluateMenuItems(menuItems);
 					});
 				}
@@ -59,11 +59,11 @@ export function withNavigation() {
 				// Retrieves the active router snapshot state directly from store instance
 				const routerSnapshot = routerState.routerSnapshot();
 
-				// Returns resolved breadcrumbs collection with active navigation sequence
+				// Returns a resolved breadcrumbs collection handling navigation sequences
 				return navigation.resolveBreadcrumbs(routerSnapshot);
 			});
 
-			// Returns properties collection exposing shared members for public access
+			// Returns a property collection containing shared items for public access
 			return { menuItems, breadcrumbs };
 		}),
 
@@ -84,7 +84,7 @@ export function withNavigation() {
 				});
 			};
 
-			// Returns methods collection exposing callable features for public access
+			// Returns a method collection containing callable items for public access
 			return { toggleMenuExpansion };
 		})
 	);
@@ -115,7 +115,7 @@ function updateMenuExpansion(menuId: number, menuItems: IMenuItem[]): IMenuItem[
 		// Checks if child items exist performing recursive update on nested items
 		if (items) updatedMenuItems = updateMenuExpansion(menuId, items);
 
-		// Returns updated menu item object with new expansion state and structure
+		// Returns an updated menu item object defining expansion state properties
 		return {
 			...menuItem,
 			items: updatedMenuItems,

@@ -7,8 +7,8 @@ import type { IOperationState } from '@shared/types';
 import type { EffectRef, OnInit } from '@angular/core';
 import { Logger, RouterState, Toaster } from '@core/services';
 import { selectRequestSnapshot } from '@store/request-status';
-import { PreventAutofill, TrimInput } from '@shared/directives';
 import { initialSignInModel, signInSchema } from './sign-in.schema';
+import { PreventAutofill, TrimWhitespace } from '@shared/directives';
 import { decryption, encryption, formState } from '@shared/utilities';
 import { FieldGroup, PasswordField } from '@shared/components/composites';
 import { FormField, FormRoot, validateStandardSchema } from '@angular/forms/signals';
@@ -30,11 +30,11 @@ import {
 	imports: [
 		Action,
 		FormRoot,
-		TrimInput,
 		FormField,
 		RouterLink,
 		FieldGroup,
 		PasswordField,
+		TrimWhitespace,
 		PreventAutofill
 	]
 })
@@ -67,7 +67,7 @@ export class SignIn implements OnInit {
 
 	/**
 	 * Handles initialization cycle by organizing necessary state structures and applying foundational configuration defaults.
-	 * Executes startup actions such as data retrieval, stream subscription, or state configuration for operational readiness.
+	 * Executes startup actions processing data retrieval and stream subscriptions or state configuration to ensure readiness.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
@@ -93,7 +93,7 @@ export class SignIn implements OnInit {
 		// Determines the combined processing outcome from all contributing values
 		const processing = pending || transitioning;
 
-		// Returns the resolved state derived from the combined processing outcome
+		// Returns a resolved state extracted from the combined processing outcome
 		return { loading: processing, disabled: processing };
 	});
 

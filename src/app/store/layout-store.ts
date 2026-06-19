@@ -70,7 +70,7 @@ export const LayoutStore = signalStore(
 			// Retrieves active layout variant definitions from the store signal state
 			const accessLayoutMode = store.accessLayoutMode();
 
-			// Returns the layout context object with configured options for viewports
+			// Returns a layout context object having configured options for viewports
 			return {
 				compact: accessLayoutMode === 'compact',
 				extended: accessLayoutMode === 'extended'
@@ -88,7 +88,7 @@ export const LayoutStore = signalStore(
 			// Retrieves active layout variant definitions from the store signal state
 			const platformLayoutMode = store.platformLayoutMode();
 
-			// Returns the layout context object with configured options for viewports
+			// Returns a layout context object having configured options for viewports
 			return {
 				compact: platformLayoutMode === 'compact',
 				extended: platformLayoutMode === 'extended',
@@ -96,7 +96,7 @@ export const LayoutStore = signalStore(
 			};
 		});
 
-		// Returns signals collection exposing calculated values for public access
+		// Returns a signal collection containing derived values for public access
 		return {
 			accessLayoutContext,
 			platformLayoutContext
@@ -162,7 +162,7 @@ export const LayoutStore = signalStore(
 				// Computes the inverse visibility state to determine the alternate output
 				const alternateDrawerVisibility = !navigationDrawerVisible;
 
-				// Returns the updated visibility state to modify the layout configuration
+				// Returns an updated visibility state to modify this layout configuration
 				return { navigationDrawerVisible: alternateDrawerVisibility };
 			});
 		};
@@ -183,12 +183,12 @@ export const LayoutStore = signalStore(
 				const alternateLayoutMode: TPlatformLayoutMode =
 					platformLayoutMode === 'extended' ? 'compact' : 'extended';
 
-				// Returns the resolved layout variant to modify the current configuration
+				// Returns a resolved layout variant to override the current configuration
 				return { platformLayoutMode: alternateLayoutMode };
 			});
 		};
 
-		// Returns methods collection exposing callable features for public access
+		// Returns a method collection containing callable items for public access
 		return {
 			setAccessLayoutMode,
 			setPlatformLayoutMode,

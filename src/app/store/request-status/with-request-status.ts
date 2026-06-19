@@ -63,7 +63,7 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 	// Updates events list by extracting string identifiers from event objects
 	const eventTypes = normalizedEvents.map((event) => getEventType(event));
 
-	// Returns signal store feature combining properties and reactive behavior
+	// Returns a signal store feature binding properties and reactive behavior
 	return signalStoreFeature(
 		// Provides initial store schema with baseline value for state composition
 		withState(initialState(eventTypes)),
@@ -97,7 +97,7 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 				} as const;
 			};
 
-			// Returns properties collection exposing shared members for public access
+			// Returns a property collection containing shared items for public access
 			return { _getRequestSnapshot };
 		}),
 
@@ -123,14 +123,14 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 						// Updates property key type casting it to the specified event string type
 						const event = prop as TEventsKey<TEvents>;
 
-						// Returns the request snapshot for the specified event from current state
+						// Returns a request snapshot for a specified event from the current state
 						return store._getRequestSnapshot(event, requests[event]);
 					},
 					getOwnPropertyDescriptor(_, prop) {
 						// Updates property key type casting it to the specified event string type
 						const event = prop as TEventsKey<TEvents>;
 
-						// Returns property descriptor setting enumeration and configuration flags
+						// Returns a property descriptor defining enumerable and configurable keys
 						return {
 							enumerable: true,
 							configurable: true,
@@ -140,7 +140,7 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 				});
 			});
 
-			// Returns signals collection exposing calculated values for public access
+			// Returns a signal collection containing derived values for public access
 			return { requestStatus };
 		}),
 
@@ -235,7 +235,7 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 				patchState(store, statusUpdater, normalizedState);
 			};
 
-			// Returns methods collection exposing callable features for public access
+			// Returns a method collection containing callable items for public access
 			return { markPending, markFulfilled, markRejected, markResolved };
 		}),
 
@@ -246,7 +246,7 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 
 			/**
 			 * Handles store initialization by configuring reactive contexts and organizing state signals for consistent interactions.
-			 * Executes startup tasks such as triggering initial data loads, registering effects, or configuring reactive derivations.
+			 * Executes startup tasks triggering initial retrievals alongside registering effects or structuring reactive derivations.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
@@ -283,7 +283,7 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 
 			/**
 			 * Handles store destruction by releasing retained resources and dismantling reactive connections to prevent memory leaks.
-			 * Executes cleanup procedures such as cancelling inflight requests, resetting store signals, or clearing computed caches.
+			 * Executes cleanup procedures cancelling inflight requests alongside resetting state signals or clearing computed caches.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
@@ -296,7 +296,7 @@ export function withRequestStatus<TState extends object, TEvents extends TRecord
 				eventTimeouts.clear();
 			};
 
-			// Returns callbacks collection executed during initialization and cleanup
+			// Returns a callback collection containing startup and associated cleanup
 			return { onInit, onDestroy };
 		})
 	);
@@ -415,7 +415,7 @@ export function setRejected<TState extends object>(
 // // Provides type constraint defining required structure for state instance
 // { state: type<TState>() },
 
-// // Returns signal store feature combining properties and reactive behavior
+// // Returns a signal store feature binding properties and reactive behavior
 // return signalStoreFeature()
 
 // // Provides initial store schema with baseline value for state composition
@@ -441,30 +441,30 @@ export function setRejected<TState extends object>(
 
 // // Provides custom properties extending store instance with static members
 // withProps((store) => {
-//     // Returns properties collection exposing shared members for public access
+//     // Returns a property collection containing shared items for public access
 //     return {};
 // }),
 
 // // Provides derived signals projecting current values from reactive source
 // withComputed((store) => {
-//     // Returns signals collection exposing calculated values for public access
+//     // Returns a signal collection containing derived values for public access
 //     return {};
 // }),
 
 // // Provides linked state slices deriving state values from reactive source
 // withLinkedState((store) => {
-//     // Returns signals collection exposing dependent signals for public access
+//     // Returns a signal collection containing related values for public access
 //     return {};
 // }),
 
 // // Provides store methods enabling state updates and reactive interactions
 // withMethods((store) => {
-//     // Returns methods collection exposing callable features for public access
+//     // Returns a method collection containing callable items for public access
 //     return {};
 // }),
 
 // // Provides lifecycle hooks executing side effects during store operations
 // withHooks((store) => {
-//     // Returns callbacks collection executed during initialization and cleanup
+//     // Returns a callback collection containing startup and associated cleanup
 //     return {};
 // }),

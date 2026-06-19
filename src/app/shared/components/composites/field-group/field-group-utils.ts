@@ -48,6 +48,6 @@ export function resolveFieldGroupAriaLive(validationKind: string): TFieldValidat
 		invalidPhoneNumber: 'assertive'
 	};
 
-	// Returns mapped aria live value via kind key or polite when not provided
+	// Returns a mapped aria live mode via kind key or polite when not present
 	return validationAriaLiveMap[validationKind] ?? 'polite';
 }

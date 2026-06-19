@@ -83,7 +83,7 @@ export function formatTime(timezone: string, format = 'hh:mm a'): string {
 	// Retrieves the current datetime value adjusted for the provided timezone
 	const formattedTime = DateTime.now().setZone(timezone);
 
-	// Returns the current time utilizing the specified display format pattern
+	// Returns a formatted time utilizing the specified display format pattern
 	return formattedTime.toFormat(format);
 }
 
@@ -146,6 +146,6 @@ export function formatDate(date: unknown, format: string, timezone?: string): st
 	// Applies timezone conversion to parsed date if timezone parameter passed
 	if (timezone) formattedDate = formattedDate.setZone(timezone);
 
-	// Returns the formatted date instance as a requested string format output
+	// Returns a formatted date instance as the requested string format output
 	return formattedDate.toFormat(format);
 }

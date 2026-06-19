@@ -43,7 +43,7 @@ export function encryption(plainText: string, secretKey: string = cryptoSecret):
 		});
 	}
 
-	// Returns Base64 string containing IV concatenated using ciphertext bytes
+	// Returns a Base64 string containing IV concatenated via ciphertext bytes
 	return initializationVector.concat(ciphertext).toString(Base64);
 }
 
@@ -87,6 +87,6 @@ export function decryption(encryptedInput: string, secretKey: string = cryptoSec
 		iv: extractedInitializationVector
 	});
 
-	// Returns decrypted words array again into UTF-8 plain text string format
+	// Returns a decrypted words array translated into UTF-8 plain text format
 	return decryptedWordArray.toString(Utf8);
 }

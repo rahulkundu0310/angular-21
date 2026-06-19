@@ -44,7 +44,7 @@ export const requestExceptionInterceptor: HttpInterceptorFn = (request, next) =>
 	// Retrieves timeout from specific request or defaults to transport config
 	const requestTimeout = request.timeout ?? transportConfig.timeout;
 
-	// Returns the next handler to proceed with the request handling execution
+	// Returns an observable stream to proceed with request execution pipeline
 	return next(request).pipe(
 		timeout(requestTimeout),
 		catchError((error: unknown) => {

@@ -78,13 +78,13 @@ export class Session {
 			// Checks if the parsed session object contains valid authentication state
 			if (!this.hasValidAuthSession(processedSession)) return null;
 
-			// Returns the fully processed and validated session object to the callers
+			// Returns a fully processed and validated session object to the requester
 			return processedSession;
 		} catch (error) {
 			// Logs the exception details if an error occurs during session resolution
 			this._logger.error('Error resolving authentication session', error);
 
-			// Returns null indicating that no valid session could be retrieved safely
+			// Returns a null state indicating that no valid session could be resolved
 			return null;
 		}
 	}
@@ -124,7 +124,7 @@ export class Session {
 		// Checks if the user details property is present and is valid object type
 		if (!isObject(typedSession['user_details'])) return false;
 
-		// Returns true if the user identifier within details is a numeric integer
+		// Returns a boolean indicating the identifier is an exact numeric integer
 		return isNumeric(result(typedSession, 'user_details.id'));
 	}
 }

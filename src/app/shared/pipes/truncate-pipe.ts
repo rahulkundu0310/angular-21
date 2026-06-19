@@ -28,7 +28,7 @@ export class TruncatePipe implements PipeTransform {
 		// Destructures the provided source object to extract necessary properties
 		const { addEllipsis = true, completeWords = false } = options;
 
-		// Returns truncated text based on given character limit and valid options
+		// Returns a truncated output using the target character limit and options
 		return truncate(value, {
 			length: limit,
 			omission: addEllipsis ? '...' : undefined,

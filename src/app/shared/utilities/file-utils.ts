@@ -18,7 +18,7 @@ export function validateFiles(
 	files: File[],
 	options: IFileValidationOptions
 ): IFileValidationError[] {
-	// Returns early with an empty array when no files uploaded for validation
+	// Checks if the uploaded files array lacks items returning an empty array
 	if (isEmpty(files)) return [];
 
 	// Initializes the empty array to store files which fail validation checks
@@ -81,7 +81,7 @@ export function validateFiles(
  * @author Rahul Kundu
  */
 export function formatFileSize(bytes: number): string {
-	// Returns empty string for zero or negative bytes to handle the edge case
+	// Checks if a given byte value is zero or negative returning empty string
 	if (bytes <= 0) return '';
 
 	// Defines the decimal precision constant for rounding size to two decimal
@@ -102,7 +102,7 @@ export function formatFileSize(bytes: number): string {
 	// Formats converted size to fixed decimal places for the readable display
 	const formattedSize = parseFloat(convertedSize.toFixed(DECIMAL_PRECISION));
 
-	// Returns the formatted string combining size value and proper unit label
+	// Returns a formatted string combining size values with proper unit label
 	return `${formattedSize} ${FILE_SIZE_UNITS[unitIndex]}`;
 }
 
@@ -175,6 +175,6 @@ export function getFileType(mimeType: string): TFileType {
 	// Checks if the content format starts with image for image classification
 	if (mimeType.startsWith('image/')) return 'image';
 
-	// Returns document as default format for all the other content categories
+	// Returns a document format as the default for unknown content categories
 	return 'document';
 }

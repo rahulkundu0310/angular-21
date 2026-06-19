@@ -38,6 +38,6 @@ export function isStateSource<TState extends object>(store: unknown): store is S
 	// Retrieves all the property symbols directly defined on the store object
 	const storeSymbols = Object.getOwnPropertySymbols(store);
 
-	// Returns true if any symbol description equals the specific state source
-	return storeSymbols.some((symbol) => symbol.description === 'STATE_SOURCE');
+	// Returns a boolean if any symbol description matches the specific source
+	return storeSymbols.some((symbol) => isObject(Reflect.get(store, symbol)));
 }

@@ -96,8 +96,10 @@ export function resolveEvent<TEvent extends Event>(
 	const predicate = (event: Event): event is TEvent =>
 		constructors.some((shape) => event instanceof shape);
 
-	// Returns filter for missing source else offers narrowed event when match
+	// Checks if source is missing to return filter else narrows matched event
 	if (isNil(source)) return filter(predicate);
+
+	// Returns a narrowed event instance when matching otherwise null fallback
 	return predicate(source) ? (source as TEvent) : null;
 }
 
@@ -156,7 +158,7 @@ export function resolveActiveSnapshot(route: ActivatedRouteSnapshot): ActivatedR
 		childIndex++;
 	}
 
-	// Returns resolved route snapshot object represents deepest route segment
+	// Returns a resolved route snapshot object matching deepest route segment
 	return routeSnapshot;
 }
 
@@ -209,7 +211,7 @@ export function resolveSnapshotData<TProperty extends TKeys<IRouteData>>(
 	// Retrieves parent route entry from resolved snapshot for property lookup
 	const routeData = resolvedSnapshot?.parent?.data as IRouteData;
 
-	// Returns property value when provided and parent route data is available
+	// Returns a property value when provided and the parent route data exists
 	return !isNil(property) && !isEmpty(routeData) ? routeData[property] : null;
 }
 
@@ -358,6 +360,6 @@ export function matchesActivePath(
 	// Retrieves route validation signal determining active state from context
 	const matchedRoute = isActive(path, router, matchOptions);
 
-	// Returns boolean status or signal indicating matching active route state
+	// Returns a boolean status or signal identifying the matching route state
 	return reactiveMode ? matchedRoute : matchedRoute();
 }

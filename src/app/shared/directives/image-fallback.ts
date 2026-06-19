@@ -12,7 +12,7 @@ export class ImageFallback {
 
 	// Public and private class member variables reflecting state and behavior
 	private fallbackApplied: boolean = false;
-	private readonly imageInstance: HTMLImageElement = this.elementRef.nativeElement;
+	private readonly imageElement: HTMLImageElement = this.elementRef.nativeElement;
 
 	/**
 	 * Intercepts load on the native element to broadcast a successful state resolving the supplied source asset consistently.
@@ -46,7 +46,7 @@ export class ImageFallback {
 		this.fallbackApplied = true;
 
 		// Assigns the fallback source to the image element replacing failed asset
-		this.imageInstance.src = this.fallback();
+		this.imageElement.src = this.fallback();
 
 		// Emits the fallback recovery event indicating successful asset rendering
 		this.fallbackUsed.emit();

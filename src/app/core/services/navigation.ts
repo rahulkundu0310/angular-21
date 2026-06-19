@@ -64,7 +64,7 @@ export class Navigation {
 			// Retrieves expansion state requirement based on children and active path
 			const requiresExpansion = !isEmpty(evaluatedMenuItems) && hasActiveState;
 
-			// Returns evaluated menu item structure with active navigation attributes
+			// Returns an evaluated menu item record with active navigation attributes
 			return {
 				...menuItem,
 				items: evaluatedMenuItems,
@@ -173,7 +173,7 @@ export class Navigation {
 			routeSnapshot = resolvePrimaryRoute(routeSnapshot);
 		}
 
-		// Returns complete breadcrumb structure representing navigation hierarchy
+		// Returns a complete breadcrumb structure presenting navigation hierarchy
 		return breadcrumbs;
 	}
 
@@ -241,7 +241,7 @@ export class Navigation {
 		// Normalizes breadcrumb path by removing trailing slashes for consistency
 		breadcrumbPath = breadcrumbPath.replace(/\/$/, '') || '/';
 
-		// Returns resolved context structure containing metadata and path segment
+		// Returns a resolved context structure wrapping metadata and path segment
 		return { breadcrumbMeta, breadcrumbPath };
 	}
 
@@ -279,11 +279,11 @@ export class Navigation {
 			// Checks if provided path is empty or default returning empty persistence
 			if (path === '' || path === '/') return '';
 
-			// Returns persistence strategy if active url contains query params string
+			// Returns a persistence strategy if matched url includes the query params
 			return isExtendedRoute ? 'preserve' : '';
 		}
 
-		// Returns persistence strategy if active url contains query params string
+		// Returns a persistence strategy if matched url includes the query params
 		return this.router.url.includes('?') ? 'preserve' : '';
 	}
 }

@@ -297,7 +297,7 @@ export class HttpAgent {
 		// Destructures the provided source object to extract necessary properties
 		const { useBaseUrl = true, version, pathPrefix } = options;
 
-		// Returns the original URL directly if the base url flag is not specified
+		// Returns an untouched target url directly if the base path is undetected
 		if (!useBaseUrl) return url;
 
 		// Initializes the endpoint using the base path property as the foundation
@@ -309,7 +309,7 @@ export class HttpAgent {
 		// Appends path prefix string to target url if it is present and not empty
 		if (pathPrefix?.trim()) requestUrl += `/${pathPrefix}`;
 
-		// Returns the concatenated request URL after sanitizing duplicate slashes
+		// Returns a concatenated request URL after sanitizing overlapping slashes
 		return `${requestUrl}/${url}`.replace(/([^:])\/\/+/g, '$1/');
 	}
 
@@ -347,11 +347,11 @@ export class HttpAgent {
 				if (value) requestHeaders = requestHeaders.set(key, value);
 			}
 
-			// Returns the fully constructed HttpHeaders instance with updated headers
+			// Returns a fully constructed HttpHeaders instance with latest parameters
 			return requestHeaders;
 		}
 
-		// Returns merged request headers combining defaults with provided entries
+		// Returns a unified header object combining default and requested entries
 		return { ...defaultHeaders, ...headers };
 	}
 
@@ -419,7 +419,7 @@ export class HttpAgent {
 			requestParams = requestParams.append(key, value);
 		}
 
-		// Returns the fully constructed HttpParams with these appended parameters
+		// Returns a fully constructed HttpParams instance with applied parameters
 		return requestParams;
 	}
 }

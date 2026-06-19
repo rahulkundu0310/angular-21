@@ -138,7 +138,7 @@ export class Toaster {
 			})
 			.finally(() => finalize?.());
 
-		// Returns the unique identifier promptly for synchronous external control
+		// Returns a unique identifier promptly for synchronous external operation
 		return toastId;
 	}
 
@@ -160,7 +160,7 @@ export class Toaster {
 		// Generates an unique identifier if one is not included in options object
 		const toastId = options?.id ?? generateObjectId();
 
-		// Returns the toast identifier after displaying custom component instance
+		// Returns a toast identifier after displaying specific component instance
 		return toast.custom(Toast, {
 			...options,
 			id: toastId,

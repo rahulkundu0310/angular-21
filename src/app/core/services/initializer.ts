@@ -94,7 +94,7 @@ export class Initializer {
 		// Constructs the dynamic Google Maps API URL with the required parameters
 		const mapsEndpoint = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${mapsApiKey}&callback=Function.prototype&loading=async`;
 
-		// Returns the library script load observable via injected resource loader
+		// Returns a library script load observable using injected resource loader
 		return this.resourceLoader.loadScript(mapsEndpoint, { async: true });
 	}
 }

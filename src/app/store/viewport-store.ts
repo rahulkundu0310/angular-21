@@ -84,7 +84,7 @@ export const ViewportStore = signalStore(
 			xxl: 1536
 		} as const;
 
-		// Returns properties collection exposing shared members for public access
+		// Returns a property collection containing shared items for public access
 		return { breakPoints };
 	}),
 
@@ -126,7 +126,7 @@ export const ViewportStore = signalStore(
 			// Retrieves current viewport depth directly from the reactive store state
 			const viewportHeight = store.viewportHeight();
 
-			// Returns calculated aspect ratio rounded precisely to two decimal places
+			// Returns a calculated aspect ratio rounded exactly to two decimal places
 			return Number((viewportWidth / viewportHeight).toFixed(2));
 		});
 
@@ -159,7 +159,7 @@ export const ViewportStore = signalStore(
 			// Checks if width matches defined limits returning extra large breakpoint
 			if (viewportWidth < xxl) return 'xl';
 
-			// Returns default double extra large type as the maximum sized breakpoint
+			// Returns a default double extra large type as a maximum sized breakpoint
 			return 'xxl';
 		});
 
@@ -197,7 +197,7 @@ export const ViewportStore = signalStore(
 			// Retrieves feature detection indicating touch points on current viewport
 			const touchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-			// Returns unified context utilizing derived layout and capability results
+			// Returns a unified context merging derived layout and capability results
 			return {
 				touchDevice,
 				hoverCapable,
@@ -213,7 +213,7 @@ export const ViewportStore = signalStore(
 			};
 		});
 
-		// Returns signals collection exposing calculated values for public access
+		// Returns a signal collection containing derived values for public access
 		return { pixelRatio, aspectRatio, viewportType, deviceType, viewportContext };
 	}),
 
@@ -253,7 +253,7 @@ export const ViewportStore = signalStore(
 			)
 		);
 
-		// Returns methods collection exposing callable features for public access
+		// Returns a method collection containing callable items for public access
 		return { _monitorViewportResize };
 	}),
 
@@ -261,7 +261,7 @@ export const ViewportStore = signalStore(
 	withHooks((store) => {
 		/**
 		 * Handles store initialization by configuring reactive contexts and organizing state signals for consistent interactions.
-		 * Executes startup tasks such as triggering initial data loads, registering effects, or configuring reactive derivations.
+		 * Executes startup tasks triggering initial retrievals alongside registering effects or structuring reactive derivations.
 		 *
 		 * @since 01 December 2025
 		 * @author Rahul Kundu
@@ -273,7 +273,7 @@ export const ViewportStore = signalStore(
 			});
 		};
 
-		// Returns callbacks collection executed during initialization and cleanup
+		// Returns a callback collection containing startup and associated cleanup
 		return { onInit };
 	})
 );

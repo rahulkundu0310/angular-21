@@ -107,7 +107,7 @@ export class FormatDatePipe implements PipeTransform {
 		// Returns a default fallback timezone abbreviation if the date is invalid
 		if (!dateTime || !dateTime.isValid) return 'EST';
 
-		// Returns the timezone abbreviation using the new zone for input instance
+		// Returns a timezone abbreviation using a new zone for the input instance
 		return dateTime.setZone(timezone).toFormat('ZZZZ');
 	}
 

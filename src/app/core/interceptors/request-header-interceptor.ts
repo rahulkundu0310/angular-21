@@ -26,6 +26,6 @@ export const requestHeaderInterceptor: HttpInterceptorFn = (request, next) => {
 		...(!!accessToken && { Authorization: `Bearer ${accessToken}` })
 	};
 
-	// Returns the modified request instance with merged header configurations
+	// Returns a modified request instance having merged header configurations
 	return next(request.clone<unknown>({ setHeaders: requestHeaders }));
 };

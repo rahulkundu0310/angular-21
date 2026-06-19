@@ -49,7 +49,7 @@ export function withStorage<TState extends object>(
 		exception: options.exception ?? ((error) => console.error(error))
 	};
 
-	// Returns signal store feature combining properties and reactive behavior
+	// Returns a signal store feature binding properties and reactive behavior
 	return signalStoreFeature(
 		// Provides store methods enabling state updates and reactive interactions
 		withMethods((store) => {
@@ -148,18 +148,18 @@ export function withStorage<TState extends object>(
 						}
 					};
 
-					// Returns channel instance enabling message exchange with active contexts
+					// Returns a channel instance for message exchange between shared contexts
 					return channelInstance;
 				} catch (error) {
 					// Captures execution errors passing details to specific exception handler
 					exception(error);
 
-					// Returns null value signifying broadcast channel creation process failed
+					// Returns a null value indicating a broadcast channel creation has failed
 					return null;
 				}
 			};
 
-			// Returns methods collection exposing callable features for public access
+			// Returns a method collection containing callable items for public access
 			return { _rehydratePersistedState, _setupBroadcastListener };
 		}),
 
@@ -173,7 +173,7 @@ export function withStorage<TState extends object>(
 
 			/**
 			 * Handles store initialization by configuring reactive contexts and organizing state signals for consistent interactions.
-			 * Executes startup tasks such as triggering initial data loads, registering effects, or configuring reactive derivations.
+			 * Executes startup tasks triggering initial retrievals alongside registering effects or structuring reactive derivations.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
@@ -224,7 +224,7 @@ export function withStorage<TState extends object>(
 
 			/**
 			 * Handles store destruction by releasing retained resources and dismantling reactive connections to prevent memory leaks.
-			 * Executes cleanup procedures such as cancelling inflight requests, resetting store signals, or clearing computed caches.
+			 * Executes cleanup procedures cancelling inflight requests alongside resetting state signals or clearing computed caches.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
@@ -235,7 +235,7 @@ export function withStorage<TState extends object>(
 				broadcastStream = null;
 			};
 
-			// Returns callbacks collection executed during initialization and cleanup
+			// Returns a callback collection containing startup and associated cleanup
 			return { onInit, onDestroy };
 		})
 	);
@@ -267,13 +267,13 @@ function resolvePersistedState<TState extends object>(
 		// Checks if retrieved string is empty or null avoiding processing failure
 		if (isEmpty(persistedValue)) return null;
 
-		// Returns deserialized object by turning stored string into usable object
+		// Returns a deserialized object by turning stored string to usable object
 		return deserialize(persistedValue!);
 	} catch (error) {
 		// Captures execution errors passing details to specific exception handler
 		exception(error);
 
-		// Returns null value indicating failure to retrieve valid storage content
+		// Returns a null value indicating failure to retrieve the storage content
 		return null;
 	}
 }

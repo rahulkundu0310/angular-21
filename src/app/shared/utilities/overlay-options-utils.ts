@@ -1,6 +1,6 @@
 import type { Overlay } from 'primeng/overlay';
 import type { Nullable } from 'primeng/ts-helpers';
-import type { TCallback, TOverlayOptions, IOverlayListenerEvent } from '../types';
+import type { TCallback, TOverlayOptions, IOverlayListenerEvent, TNoop } from '../types';
 import type {
 	OverlayOptions,
 	OverlayOnHideEvent,
@@ -47,7 +47,7 @@ function isClickedOutsideOverlay(event: Event, overlayPanel: Overlay): boolean {
 	// Determines if the click occurred outside of the content object boundary
 	const clickOutsideContent = !overlayPanel.contentEl.contains(event.target as Node);
 
-	// Returns true confirming pointer occurs outside target and content nodes
+	// Returns a boolean confirming pointer happens outside target and content
 	return clickOutsideTarget && clickOutsideContent;
 }
 
@@ -108,7 +108,7 @@ function handleOverlayShow(event?: OverlayOnShowEvent): void {
 	if (!overlayElement || !overlayTarget) return;
 
 	// Defines layout alignment operations computing exact physical dimensions
-	const updateOverlayWidths = () => {
+	const updateOverlayWidths: TNoop = () => {
 		// Retrieves initial overlay element width preserving exact style property
 		const initialOverlayWidth = overlayElement.style.width;
 
@@ -212,7 +212,7 @@ export function resolveOverlayOptions(overlayOptions: OverlayOptions = {}): Over
 		}
 	};
 
-	// Returns merged defaults and custom options appending required listeners
+	// Returns a merged configuration object attaching required event handlers
 	return {
 		...defaultOptions,
 		...overlayOptions,

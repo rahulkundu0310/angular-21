@@ -68,7 +68,7 @@ export const CommonStore = signalStore(
 			filter((segment): segment is string => !!segment)
 		);
 
-		// Returns properties collection exposing shared members for public access
+		// Returns a property collection containing shared items for public access
 		return { pageTitleSegment };
 	}),
 
@@ -167,7 +167,7 @@ export const CommonStore = signalStore(
 			);
 		};
 
-		// Returns methods collection exposing callable features for public access
+		// Returns a method collection containing callable items for public access
 		return { resolveCountry, loadCountries, setPageTitleSegment, _watchNavigationEnd };
 	}),
 
@@ -175,7 +175,7 @@ export const CommonStore = signalStore(
 	withHooks((store) => {
 		/**
 		 * Handles store initialization by configuring reactive contexts and organizing state signals for consistent interactions.
-		 * Executes startup tasks such as triggering initial data loads, registering effects, or configuring reactive derivations.
+		 * Executes startup tasks triggering initial retrievals alongside registering effects or structuring reactive derivations.
 		 *
 		 * @since 01 December 2025
 		 * @author Rahul Kundu
@@ -184,7 +184,7 @@ export const CommonStore = signalStore(
 			store._watchNavigationEnd();
 		};
 
-		// Returns callbacks collection executed during initialization and cleanup
+		// Returns a callback collection containing startup and associated cleanup
 		return { onInit };
 	})
 );

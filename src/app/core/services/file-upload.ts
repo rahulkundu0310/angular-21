@@ -35,7 +35,7 @@ export class FileUpload {
 			});
 		}
 
-		// Returns validation options object with size limits and allow extensions
+		// Returns a validation options object grouping limits and file extensions
 		return {
 			maxFileSize: uploadRule.maxFileSize,
 			fileSizeUnit: uploadRule.fileSizeUnit,
@@ -44,12 +44,12 @@ export class FileUpload {
 	}
 
 	/**
-	 * Validates selected files by checking each item for size limits and allowed extensions and provides a refined file list.
-	 * Processes file validation with sizing and extension checking to provide validation error details within upload context.
+	 * Validates selected files by checking each item for size boundaries and allowed file types and provides a filtered list.
+	 * Processes structural evaluations verifying targeted capacity constraints and format types displaying rejection details.
 	 *
 	 * @param files - The list of file objects to be checked against size limits and accepted extensions for chosen file type.
 	 * @param type - This file type identifier is used to select size limits and allowed extensions for the relevant criteria.
-	 * @returns An array of file objects containing items that match the configured rules after checks, alerts, and filtering.
+	 * @returns An array of validated file objects containing items satisfying the configured rules and underlying conditions.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
@@ -64,7 +64,7 @@ export class FileUpload {
 		// Notifies user about validation failures via toast messages for feedback
 		this.handleValidationErrors(type, validationErrors);
 
-		// Returns filtered array with only files that passed all validation rules
+		// Returns a filtered array holding files passing defined validation rules
 		return this.excludeInvalidFiles(files, validationErrors);
 	}
 
@@ -79,7 +79,7 @@ export class FileUpload {
 	 * @author Rahul Kundu
 	 */
 	private handleValidationErrors(type: TFileType, errors: IFileValidationError[]): void {
-		// Returns early if the provided error list contains no validation entries
+		// Checks if the provided array lacks validation entries and returns early
 		if (!errors.length) return;
 
 		// Retrieves the file upload configuration rule based on the provided type
@@ -128,13 +128,13 @@ export class FileUpload {
 	 * @author Rahul Kundu
 	 */
 	private excludeInvalidFiles(files: File[], errors: IFileValidationError[]): File[] {
-		// Returns early with original files when no validation errors are present
+		// Checks if errors are empty keeping the original files and returns early
 		if (!errors.length) return files;
 
 		// Creates a Set of filenames that failed validation for efficient lookups
 		const failedFileNames = new Set(errors.map(({ fileName }) => fileName));
 
-		// Returns valid files by filtering inputs with matching failed file names
+		// Returns an array containing valid files by excluding the failed entries
 		return files.filter((file) => !failedFileNames.has(file.name));
 	}
 }

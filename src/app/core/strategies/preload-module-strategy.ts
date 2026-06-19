@@ -34,7 +34,7 @@ export class PreloadModuleStrategy implements PreloadingStrategy {
 		// Determines the delay duration from route data or defaults to app config
 		const loadDelay = routeData.preloadDelay ?? applicationConfig.preloadDelay;
 
-		// Returns observable which waits for the delay before loading the modules
+		// Returns an observable that waits for a delay before loading the modules
 		return timer(loadDelay).pipe(mergeMap(() => loader()));
 	}
 
@@ -60,7 +60,7 @@ export class PreloadModuleStrategy implements PreloadingStrategy {
 		// Initializes a variable containing list of slow network connection types
 		const slowConnections: EffectiveType[] = ['slow-2g', '2g'];
 
-		// Returns true if network type is valid and is not inside slow connection
+		// Returns a boolean if network type is valid and outside slow connections
 		return !!networkType && !slowConnections.includes(networkType);
 	}
 }

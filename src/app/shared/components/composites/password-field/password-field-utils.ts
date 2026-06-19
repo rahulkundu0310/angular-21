@@ -57,7 +57,7 @@ export function assessPasswordStrength(password: string): number {
 	// Checks if the password has length above zero and returns assigned level
 	if (password.length > 0) return weak;
 
-	// Returns zero as fallback when no strength criteria match valid patterns
+	// Returns a default zero when no strength criteria matches valid patterns
 	return 0;
 }
 
@@ -81,7 +81,7 @@ export function resolvePasswordStrength(password: string): IPasswordStrength {
 	// Retrieves a clamped strength index by applying Math min against ceiling
 	const strengthIndex = Math.min(assessedStrength - offset, ceiling);
 
-	// Returns the strength label meter index and three character type results
+	// Returns a strength label meter index and several character type results
 	return {
 		label: labels[strengthIndex] ?? '',
 		meter: meters[strengthIndex] ?? '',
@@ -122,6 +122,6 @@ export function generateSecurePassword(minLength: number): string {
 	// Retrieves random characters from pool to satisfy required filler counts
 	const fillerCharacters = times(fillerCount, () => sample(characterPool)!);
 
-	// Returns required and filler characters shuffled into the final password
+	// Returns a constructed password shuffling required and filler characters
 	return shuffle([...requiredCharacters, ...fillerCharacters]).join('');
 }

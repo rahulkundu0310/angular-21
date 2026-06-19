@@ -16,16 +16,16 @@ export class InitialsPipe implements PipeTransform {
 	 * @author Rahul Kundu
 	 */
 	public transform(value: string, initialsCount: 1 | 2 = 1): string {
-		// Return empty string if full name input is null, undefined, or empty value
+		// Checks if required input name value is missing and returns empty string
 		if (!value) return '';
 
-		// Split trimmed name to segments and remove empty strings using compact method
+		// Retrieves compacted array containing separated valid name text segments
 		const initialLetters = compact(value.trim().split(/\s+/));
 
-		// Extract first character from each name segment for initial letter collection
+		// Retrieves starting character mapped across all valid name text segments
 		const initialSegments = initialLetters.map((segment) => segment[0]);
 
-		// Slice initials to maximum count, join, and convert to uppercase letter format
+		// Returns a formatted uppercase string containing sliced starting letters
 		return initialSegments.slice(0, initialsCount).join('').toUpperCase();
 	}
 }

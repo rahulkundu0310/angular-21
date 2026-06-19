@@ -72,14 +72,14 @@ export const ViewTransitionStore = signalStore(
 			// Retrieves boolean verifying whether private target matches intra layout
 			const platformTransition = isIntraLayout && transitionTarget === 'platform';
 
-			// Returns the transition names object with calculated options for layouts
+			// Returns a transition names object applying calculated layout properties
 			return {
 				accessOutlet: accessTransition ? 'access-outlet' : 'none',
 				platformOutlet: platformTransition ? 'platform-outlet' : 'none'
 			};
 		});
 
-		// Returns signals collection exposing calculated values for public access
+		// Returns a signal collection containing derived values for public access
 		return { transitionNames };
 	}),
 
@@ -101,7 +101,7 @@ export const ViewTransitionStore = signalStore(
 			// Retrieves destination path from current navigation for route comparison
 			const targetUrl = router.currentNavigation()?.finalUrl;
 
-			// Returns target URL matches current active route using specified options
+			// Returns a boolean indicating if target URL exactly matches active route
 			return matchesActivePath(router, targetUrl, 'exact');
 		};
 
@@ -179,7 +179,7 @@ export const ViewTransitionStore = signalStore(
 			});
 		};
 
-		// Returns methods collection exposing callable features for public access
+		// Returns a method collection containing callable items for public access
 		return { handleTransition, setTransitionMode, resetTransitionMode };
 	})
 );
@@ -215,6 +215,6 @@ function resolveTransitionContext(
 			: 'intra-layout'
 		: 'none';
 
-	// Returns the transition state and layout target for the current sequence
+	// Returns a transition state and a layout target for the current sequence
 	return { mode: transitionMode, target: targetLayout };
 }

@@ -7,7 +7,7 @@ export class Titlecase {
 	private readonly elementRef = inject(ElementRef<HTMLInputElement>);
 
 	// Public and private class member variables reflecting state and behavior
-	private readonly inputInstance: HTMLInputElement = this.elementRef.nativeElement;
+	private readonly inputElement: HTMLInputElement = this.elementRef.nativeElement;
 
 	/**
 	 * Intercepts field input to enforce title case formatting, whilst maintaining the cursor position for continuous editing.
@@ -24,7 +24,7 @@ export class Titlecase {
 		if (!event.isTrusted) return;
 
 		// Retrieves the latest value from the native input element for processing
-		const inputValue = this.inputInstance.value;
+		const inputValue = this.inputElement.value;
 
 		// Transforms the input value into title case for consistent UI formatting
 		const titleCaseInputValue = inputValue
@@ -32,10 +32,10 @@ export class Titlecase {
 			.replace(/\b\w/g, (match) => match.toUpperCase());
 
 		// Retrieves the selection end index from input element cursor positioning
-		const capturedSelectionEnd = this.inputInstance.selectionEnd ?? 0;
+		const capturedSelectionEnd = this.inputElement.selectionEnd ?? 0;
 
 		// Retrieves the selection start index from input field cursor positioning
-		const capturedSelectionStart = this.inputInstance.selectionStart ?? 0;
+		const capturedSelectionStart = this.inputElement.selectionStart ?? 0;
 
 		// Calculates length difference caused by formatting for cursor adjustment
 		const valueLengthDelta = titleCaseInputValue.length - inputValue.length;
@@ -65,24 +65,24 @@ export class Titlecase {
 	 */
 	private restoreSelectionPosition(startPosition: number, endPosition: number): void {
 		// Ensures input element has focus vital for cursor positioning operations
-		this.inputInstance.focus();
+		this.inputElement.focus();
 
 		// Checks if modern setSelectionRange method is available on input element
-		if (isFunction(this.inputInstance.setSelectionRange)) {
+		if (isFunction(this.inputElement.setSelectionRange)) {
 			// Applies precise selection range using the standard modern browser calls
-			this.inputInstance.setSelectionRange(startPosition, endPosition);
+			this.inputElement.setSelectionRange(startPosition, endPosition);
 
-			// Returns immediately after the successful compatible API range operation
+			// Returns early after executing a supported native range selection method
 			return;
 		}
 
 		// Checks for legacy browser support using the direct selection properties
-		if (this.inputInstance.selectionStart !== null) {
+		if (this.inputElement.selectionStart !== null) {
 			// Updates the selection final position completing legacy browser fallback
-			this.inputInstance.selectionEnd = endPosition;
+			this.inputElement.selectionEnd = endPosition;
 
 			// Updates the selection start position completing legacy browser fallback
-			this.inputInstance.selectionStart = startPosition;
+			this.inputElement.selectionStart = startPosition;
 		}
 	}
 
@@ -97,9 +97,9 @@ export class Titlecase {
 	 */
 	private synchronizeInputAndFieldState(value: string): void {
 		// Updates the input elements value to synchronized string for consistency
-		this.inputInstance.value = value;
+		this.inputElement.value = value;
 
 		// Dispatches event to notify attached form bindings of the modified value
-		this.inputInstance.dispatchEvent(new Event('input', { bubbles: true }));
+		this.inputElement.dispatchEvent(new Event('input', { bubbles: true }));
 	}
 }

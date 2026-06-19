@@ -179,7 +179,7 @@ export class ExceptionHandler implements ErrorHandler {
 		// Registers the current error timestamp into cache tracking its execution
 		this.errorCache.set(cacheKey, currentTime);
 
-		// Returns false confirming the error is unique or past the cooldown limit
+		// Returns a boolean confirming the error passed unique cooldown threshold
 		return false;
 	}
 

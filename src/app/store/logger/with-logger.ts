@@ -28,7 +28,7 @@ export function withLogger<TState extends object>(options: ILoggerOptions<TState
 	// Destructures the provided source object to extract necessary properties
 	const { storeName, monitor, collapsed = false, disabled = environment.production } = options;
 
-	// Returns signal store feature combining properties and reactive behavior
+	// Returns a signal store feature binding properties and reactive behavior
 	return signalStoreFeature(
 		// Provides store methods enabling state updates and reactive interactions
 		withMethods((store) => {
@@ -45,11 +45,11 @@ export function withLogger<TState extends object>(options: ILoggerOptions<TState
 				// Retrieves the active state source from store context using the accessor
 				const stateSource = getStateSource<TState>(store);
 
-				// Returns the filtered subset or the entire state source if not monitored
+				// Returns a filtered subset or the entire state source when not monitored
 				return monitor?.length ? pick(stateSource, monitor) : stateSource;
 			};
 
-			// Returns methods collection exposing callable features for public access
+			// Returns a method collection containing callable items for public access
 			return { _getStateSnapshot };
 		}),
 
@@ -57,7 +57,7 @@ export function withLogger<TState extends object>(options: ILoggerOptions<TState
 		withHooks(({ _getStateSnapshot }) => {
 			/**
 			 * Handles store initialization by configuring reactive contexts and organizing state signals for consistent interactions.
-			 * Executes startup tasks such as triggering initial data loads, registering effects, or configuring reactive derivations.
+			 * Executes startup tasks triggering initial retrievals alongside registering effects or structuring reactive derivations.
 			 *
 			 * @since 01 December 2025
 			 * @author Rahul Kundu
@@ -116,7 +116,7 @@ export function withLogger<TState extends object>(options: ILoggerOptions<TState
 				});
 			};
 
-			// Returns callbacks collection executed during initialization and cleanup
+			// Returns a callback collection containing startup and associated cleanup
 			return { onInit };
 		})
 	);

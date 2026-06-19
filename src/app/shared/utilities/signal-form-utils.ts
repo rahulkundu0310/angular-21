@@ -98,7 +98,7 @@ export function formState<TModel>(
 		submitted
 	);
 
-	// Returns structured object combining configured tree and readonly status
+	// Returns a composed object combining configured tree and readonly status
 	return {
 		restoreFields,
 		form: formTree,
@@ -181,7 +181,7 @@ function normalizePredicate(predicate: TFieldPredicate): TFactory<boolean> {
 	// Checks if predicate is function input and returns the provided instance
 	if (isFunction(predicate)) return predicate;
 
-	// Returns factory function resolving false as fallback for invalid inputs
+	// Returns a factory function resolving false as default for invalid types
 	return () => false;
 }
 
@@ -207,7 +207,7 @@ function normalizeAction<TModel>(
 	// Checks if action is observable stream and returns converted first value
 	if (isObservable(action)) return firstValueFrom(action);
 
-	// Returns action wrapped inside resolved promise ensuring standard format
+	// Returns an action wrapped inside resolved promise matching exact format
 	return Promise.resolve<TreeValidationResult>(action);
 }
 
@@ -261,7 +261,7 @@ function resolveSubmitHandlers<TModel>(
 		// Updates submission state assigning false before proceeding to execution
 		submitted.set(false);
 
-		// Returns normalized promise resolution from the optional action callback
+		// Returns a normalized promise resolution executing valid action callback
 		return normalizeAction(action?.(field, context));
 	};
 

@@ -22,13 +22,13 @@ export function passwordMatchValidator(
 		// Retrieves password content registering as a reactive validation process
 		const passwordValue = context.valueOf(passwordField);
 
-		// Returns early with null if either field is empty for required validator
+		// Checks if either field is empty and returns null as validation fallback
 		if (!confirmPasswordValue || !passwordValue) return null;
 
-		// Returns early with null if confirmation matches primary password values
+		// Checks if confirmation matches primary password values and returns null
 		if (confirmPasswordValue === passwordValue) return null;
 
-		// Returns custom error object whenever both values do not match correctly
+		// Returns a custom error object whenever the password values do not match
 		return {
 			kind: 'passwordMismatch',
 			message: 'Password confirmation does not match'

@@ -52,7 +52,7 @@ export class Action {
 		// Checks if only link is present without router before returning the type
 		if (!router && !!link) return 'link';
 
-		// Returns button as the default action type when no routing config exists
+		// Returns a button as the default action type if no routing config exists
 		return 'button';
 	});
 
@@ -103,7 +103,7 @@ export class Action {
 			'action-icon-only': !!icon && !label && !badge
 		};
 
-		// Returns active keys from class map joined as action style string output
+		// Returns a joined action style string holding active keys from class map
 		return keys(pickBy(actionClassMap)).join(' ');
 	});
 }

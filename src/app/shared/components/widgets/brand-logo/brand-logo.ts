@@ -60,7 +60,7 @@ export class BrandLogo {
 		// Checks if required theme properties are absent and returns color string
 		if (!this.resolvedTheme || !this.systemTheme) return 'color';
 
-		// Returns mapped appearance string evaluating context for correct styling
+		// Returns a mapped appearance string evaluating context for correct style
 		return appearanceMap[resolvedTheme === 'system' ? systemTheme : resolvedTheme];
 	});
 }

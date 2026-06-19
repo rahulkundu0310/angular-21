@@ -61,7 +61,7 @@ export function selectRequestSnapshot(
 		});
 	}
 
-	// Returns computed signal that provides the first active request snapshot
+	// Returns a computed signal identifying the first active request snapshot
 	return computed<IRequestSnapshot>(() => {
 		// Iterates through every selector to find the first active request status
 		for (const { event, store } of selectors) {
@@ -78,7 +78,7 @@ export function selectRequestSnapshot(
 		// Retrieves first selector entry to provide fallback snapshot as baseline
 		const { store, event } = selectors.at(0)!;
 
-		// Returns request snapshot for first selector as the final fallback value
+		// Returns a request snapshot for the first selector as the fallback value
 		return store.requestStatus()[event]!;
 	});
 }

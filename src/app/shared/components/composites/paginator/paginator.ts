@@ -73,7 +73,7 @@ export class Paginator {
 		// Retrieves always visible setting from input signal for state resolution
 		const alwaysVisible = this.alwaysVisible();
 
-		// Returns resolved visibility evaluating override against page boundaries
+		// Returns a resolved visibility checking override against page boundaries
 		return alwaysVisible || totalPages > 1;
 	});
 
@@ -94,7 +94,7 @@ export class Paginator {
 		// Retrieves unbounded page count dividing total records by maximum limits
 		const unboundedPages = Math.ceil(totalRecords / itemsPerPage);
 
-		// Returns calculated total pages enforcing minimum positive number limits
+		// Returns a calculated total page count enforcing minimum positive limits
 		return itemsPerPage <= 0 ? 1 : Math.max(1, unboundedPages);
 	});
 
@@ -115,7 +115,7 @@ export class Paginator {
 		// Retrieves unbounded initial index multiplying page offset by item limit
 		const unboundedIndex = (pageNumber - 1) * itemsPerPage;
 
-		// Returns constrained initial index ensuring strictly enforced boundaries
+		// Returns a constrained first index ensuring strictly enforced boundaries
 		return Math.max(0, unboundedIndex);
 	});
 
@@ -139,7 +139,7 @@ export class Paginator {
 		// Retrieves unbounded closing index adding page capacity to initial entry
 		const unboundedIndex = firstIndex + itemsPerPage;
 
-		// Returns constrained closing index ensuring strictly enforced boundaries
+		// Returns a constrained closing index ensuring strictly enforced boundary
 		return Math.min(unboundedIndex, totalRecords);
 	});
 
@@ -172,7 +172,7 @@ export class Paginator {
 		// Determines initial record position evaluating resolved empty conditions
 		const firstRecord = empty ? 0 : firstIndex + 1;
 
-		// Returns structured object containing consolidated pagination attributes
+		// Returns a composed object containing consolidated pagination attributes
 		return {
 			empty,
 			pageNumber,
@@ -205,7 +205,7 @@ export class Paginator {
 
 		// Checks if total page amount remains within allowed visible slots limits
 		if (totalPages <= visibleSlots) {
-			// Returns sequential numeric array holding every page without truncations
+			// Returns a sequential numeric array holding all pages without truncation
 			return range(1, totalPages + 1);
 		}
 
@@ -229,7 +229,7 @@ export class Paginator {
 			// Retrieves structured numeric array holding initial pagination sequences
 			const leadingSequence = range(1, boundarySize + 1);
 
-			// Returns structured pagination array injecting trailing ellipsis entries
+			// Returns a structured pagination array injecting trailing ellipsis items
 			return [...leadingSequence, ellipsis, totalPages];
 		}
 
@@ -244,7 +244,7 @@ export class Paginator {
 			// Retrieves structured numeric array covering ending pagination sequences
 			const trailingSequence = range(startOffset, totalPages + 1);
 
-			// Returns structured pagination array inserting starting ellipsis entries
+			// Returns a structured pagination array inserting starting ellipsis marks
 			return [firstPage, ellipsis, ...trailingSequence];
 		}
 
@@ -263,7 +263,7 @@ export class Paginator {
 		// Retrieves sequential numeric array covering middle pagination sequences
 		const innerSequence = range(startSequence, endSequence);
 
-		// Returns structured pagination array injecting multiple ellipsis entries
+		// Returns a structured pagination array injecting multiple ellipsis items
 		return [firstPage, ellipsis, ...innerSequence, ellipsis, totalPages];
 	});
 

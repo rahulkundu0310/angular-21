@@ -54,7 +54,7 @@ export class HostModifier {
 			([className, condition]) => condition && !isEmpty(trim(className))
 		);
 
-		// Returns final class names by mapping items to trim whitespace concisely
+		// Returns a valid class list by mapping keys to trim whitespace concisely
 		return filteredClasses.map(([className]) => className.trim()).join(' ');
 	}
 
@@ -74,7 +74,7 @@ export class HostModifier {
 		// Checks if behavior exists and returns result immediately when available
 		if (!isNil(behavior)) return behavior;
 
-		// Returns route snapshot behavior when no explicit input override present
+		// Returns a route snapshot behavior when an explicit input is unavailable
 		return this.snapshotBehavior ?? 'contents';
 	}
 

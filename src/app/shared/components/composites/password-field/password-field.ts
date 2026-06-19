@@ -67,7 +67,7 @@ export class PasswordField implements FormValueControl<string> {
 		// Checks if strength label exists and returns a formatted password string
 		if (strengthLabel) return `${strengthLabel} password`;
 
-		// Returns minimum length requirement string used as header fallback label
+		// Returns a minimum length requirement string used as the header fallback
 		return `must have at least ${minLength} characters.`;
 	});
 
@@ -83,7 +83,7 @@ export class PasswordField implements FormValueControl<string> {
 		if (this.disabled()) return;
 
 		// Updates password visibility by inverting boolean to reveal actual state
-		this.isMasked.update(masked => !masked);
+		this.isMasked.update((masked) => !masked);
 	}
 
 	/**

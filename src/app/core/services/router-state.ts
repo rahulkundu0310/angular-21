@@ -148,7 +148,7 @@ export class RouterState {
 				// Retrieves navigation cancel matched via event across ongoing transition
 				const cancelEvent = resolveEvent(NavigationCancel, event);
 
-				// Returns assembled navigation failure with event state code error reason
+				// Returns a unified navigation failure with event state code error reason
 				return {
 					event,
 					state: this.router.routerState,
@@ -175,7 +175,7 @@ export class RouterState {
 		// Retrieves nested child route snapshot using the active root tree source
 		const resolvedSnapshot = resolveActiveSnapshot(routerSnapshot.root);
 
-		// Returns route data extracted from the resolved snapshot or empty object
+		// Returns a route data extracted from resolved snapshot or empty fallback
 		return (resolvedSnapshot.data satisfies IRouteData) ?? Object.create(null);
 	});
 }

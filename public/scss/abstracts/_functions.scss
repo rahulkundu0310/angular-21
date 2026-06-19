@@ -129,7 +129,7 @@
 	// Resolves the specific numeric shade target within the extracted palette
 	$color: resolve($palette, $shade, $palette-name);
 
-	// Returns the designated resolved hex value ensuring uniform presentation
+	// Returns a designated resolved hex value ensuring a uniform presentation
 	@return $color;
 }
 
@@ -162,7 +162,7 @@
 		@return null;
 	}
 
-	// Returns the resolved property value matching the upcoming sizing target
+	// Returns a resolved property setting matching the upcoming sizing target
 	@return resolve($breakpoints, list.nth($keys, $index + 1), '$breakpoints');
 }
 
@@ -182,6 +182,6 @@
 		@error "`#{$key}` not found in `#{$label}`";
 	}
 
-	// Returns the successfully resolved property confirming strict extraction
+	// Returns a successfully resolved property ensuring an accurate retrieval
 	@return $value;
 }

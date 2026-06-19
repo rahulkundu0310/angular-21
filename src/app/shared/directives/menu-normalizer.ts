@@ -10,11 +10,11 @@ import { absolutePosition, isTouchDevice } from '@primeuix/utils';
 export class MenuNormalizer implements OnInit {
 	// Dependency injections providing direct access to services and injectors
 	private readonly platformId = inject(PLATFORM_ID);
-	private readonly menuInstance = inject(Menu, { optional: true, self: true });
+	private readonly menu = inject(Menu, { optional: true, self: true });
 
 	/**
 	 * Handles initialization cycle by organizing necessary state structures and applying foundational configuration defaults.
-	 * Executes startup actions such as data retrieval, stream subscription, or state configuration for operational readiness.
+	 * Executes startup actions processing data retrieval and stream subscriptions or state configuration to ensure readiness.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
@@ -32,42 +32,42 @@ export class MenuNormalizer implements OnInit {
 	 */
 	private overrideOverlayListeners(): void {
 		// Retrieves injected source instance applying custom behavioral overrides
-		const menuInstance = this.menuInstance;
+		const menu = this.menu;
 
 		// Checks if retrieved source instance lacks valid reference returns early
-		if (!menuInstance) return;
+		if (!menu) return;
 
 		// Overrides existing scroll listener preventing default layout disruption
-		menuInstance.bindScrollListener = () => {
+		menu.bindScrollListener = () => {
 			// Retrieves the current runtime environment identifying browser execution
 			const isBrowserContext = isPlatformBrowser(this.platformId);
 
 			// Checks if specific scroll handler requires fresh browser initialization
-			if (!menuInstance.scrollHandler && isBrowserContext) {
+			if (!menu.scrollHandler && isBrowserContext) {
 				// Defines realign behavior updating precise layout coordinate positioning
 				const realignOverlayPosition: TCallback = () => {
 					// Checks if view remains visible preventing layout shifts while arranging
-					if (menuInstance.visible) {
-						absolutePosition(menuInstance.container, menuInstance.target);
+					if (menu.visible) {
+						absolutePosition(menu.container, menu.target);
 					}
 				};
 
 				// Initializes connected scroll handler maintaining precise target binding
-				menuInstance.scrollHandler = new ConnectedOverlayScrollHandler(
-					menuInstance.target,
+				menu.scrollHandler = new ConnectedOverlayScrollHandler(
+					menu.target,
 					realignOverlayPosition
 				);
 			}
 
 			// Binds designated scroll handler execution triggering event subscription
-			menuInstance.scrollHandler?.bindScrollListener();
+			menu.scrollHandler?.bindScrollListener();
 		};
 
 		// Overrides existing resize listener preventing default layout disruption
-		menuInstance.onWindowResize = () => {
+		menu.onWindowResize = () => {
 			// Checks if menu remains visible preventing layout shifts on touch screen
-			if (menuInstance.visible && !isTouchDevice()) {
-				absolutePosition(menuInstance.container, menuInstance.target);
+			if (menu.visible && !isTouchDevice()) {
+				absolutePosition(menu.container, menu.target);
 			}
 		};
 	}

@@ -38,7 +38,7 @@ export class Auth {
 		// 	version: 'v1'
 		// };
 
-		// // Executes the resource request and returns an observable response stream
+		// // Returns an observable response stream processing the requested resource
 		// return this.http.post<IResponse<IAuthSession>>(requestUrl, payload, requestOptions);
 
 		return timer(3000).pipe(
@@ -92,7 +92,7 @@ export class Auth {
 			version: 'v1'
 		};
 
-		// Executes the resource request and returns an observable response stream
+		// Returns an observable response stream processing the requested resource
 		return this.http.post<IResponse>(requestUrl, payload, requestOptions);
 	}
 
@@ -115,7 +115,7 @@ export class Auth {
 			version: 'v1'
 		};
 
-		// Executes the resource request and returns an observable response stream
+		// Returns an observable response stream processing the requested resource
 		return this.http.post<IResponse>(requestUrl, payload, requestOptions);
 	}
 
@@ -137,7 +137,7 @@ export class Auth {
 		// 	version: 'v1'
 		// };
 
-		// // Executes the resource request and returns an observable response stream
+		// // Returns an observable response stream processing the requested resource
 		// return this.http.post<IResponse>(requestUrl, null, requestOptions);
 
 		return timer(3000).pipe(

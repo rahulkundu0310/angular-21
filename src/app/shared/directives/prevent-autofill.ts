@@ -14,11 +14,11 @@ export class PreventAutofill<TElement = HTMLInputElement | InputNumber>
 
 	// Public and private class member variables reflecting state and behavior
 	private readonly listeners: TNoop[] = [];
-	private readonly inputInstance: TElement = this.elementRef.nativeElement;
+	private readonly inputElement: TElement = this.elementRef.nativeElement;
 
 	/**
 	 * Handles view initialization phase after component views and child content are safely rendered and available for access.
-	 * Executes post-render configurations and DOM manipulations to guarantee visual components are prepared for interactions.
+	 * Executes post render configurations and DOM manipulations to guarantee visual components are prepared for interactions.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu
@@ -51,18 +51,18 @@ export class PreventAutofill<TElement = HTMLInputElement | InputNumber>
 	 */
 	private setupAutofillPrevention(): void {
 		// Retrieves native input element handle from injected ElementRef instance
-		const inputInstance = this.inputInstance;
+		const inputElement = this.inputElement;
 
 		// Evaluates the instance type to determine the autofill prevention method
 		switch (true) {
 			// Permits handling of PrimeNG InputNumber instances using a custom method
-			case inputInstance instanceof InputNumber:
-				this.preventInputNumberAutofill(inputInstance);
+			case inputElement instanceof InputNumber:
+				this.preventInputNumberAutofill(inputElement);
 				break;
 
 			// Permits handling of native input elements by applying random attributes
-			case inputInstance instanceof HTMLInputElement:
-				this.randomizeInputAttributes(inputInstance);
+			case inputElement instanceof HTMLInputElement:
+				this.randomizeInputAttributes(inputElement);
 				break;
 
 			// No operations are performed for unsupported or unrecognized input types
@@ -124,7 +124,7 @@ export class PreventAutofill<TElement = HTMLInputElement | InputNumber>
 
 	/**
 	 * Handles destruction stages by performing clearing operations to prevent memory issues and maintain resource efficiency.
-	 * Executes teardown tasks such as unsubscribing from streams, clearing active timers, or releasing all allocated storage.
+	 * Executes teardown tasks unbinding stream subscriptions alongside stopping active timers or releasing allocated storage.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu

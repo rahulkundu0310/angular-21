@@ -112,7 +112,7 @@ export class ResourceLoader {
 		// Appends the prepared resource element to the determined target location
 		resourceTarget.appendChild(resourceElement);
 
-		// Returns the observable stream allowing callers to listen to load events
+		// Returns an observable stream allowing handlers to listen to load events
 		return resourceSubject.asObservable();
 	}
 
@@ -168,7 +168,7 @@ export class ResourceLoader {
 			);
 		}
 
-		// Returns the fully configured HTML resource ready for insertion into DOM
+		// Returns a fully configured HTML resource ready for document integration
 		return resourceElement;
 	}
 
@@ -189,7 +189,7 @@ export class ResourceLoader {
 		// Assigns the URL to trigger the browser's built-in normalization process
 		anchorElement.href = url;
 
-		// Returns the resolved absolute URL string acting as the unique cache key
+		// Returns a resolved absolute URL to serve as the unique cache identifier
 		return anchorElement.href;
 	}
 }

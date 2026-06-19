@@ -71,7 +71,7 @@ export class Theme implements OnDestroy {
 
 	/**
 	 * Handles destruction stages by performing clearing operations to prevent memory issues and maintain resource efficiency.
-	 * Executes teardown tasks such as unsubscribing from streams, clearing active timers, or releasing all allocated storage.
+	 * Executes teardown tasks unbinding stream subscriptions alongside stopping active timers or releasing allocated storage.
 	 *
 	 * @since 01 December 2025
 	 * @author Rahul Kundu

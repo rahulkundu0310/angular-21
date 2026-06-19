@@ -20,7 +20,7 @@ export const WINDOW = new InjectionToken<Window | null>('Browser Window', {
 		// Retrieves the current runtime environment identifying browser execution
 		const isBrowserPlatform = isPlatformBrowser(platformId);
 
-		// Returns the current browser document default view object otherwise null
+		// Returns a provided browser document native window object otherwise null
 		return isBrowserPlatform ? document.defaultView : null;
 	}
 });

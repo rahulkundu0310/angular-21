@@ -39,7 +39,8 @@ export const accessControlGuard: CanActivateFn = (route, state) => {
 		// Checks if the session is missing or signing out to allow visitor access
 		if (!authenticated || signingOut) return true;
 
-		// Returns url tree redirecting to dashboard for the authenticated session
+		// Returns a url tree redirecting the authenticated session onto dashboard
+		// Returns a url tree redirecting authenticated session onto the dashboard
 		return router.createUrlTree(['/dashboard']);
 	}
 
@@ -48,7 +49,7 @@ export const accessControlGuard: CanActivateFn = (route, state) => {
 		// Checks if session is authorized and validates private navigation access
 		if (authenticated) return true;
 
-		// Returns url tree redirecting to sign in page to validate session access
+		// Returns a url tree redirecting onto the sign in page for session access
 		return router.createUrlTree(['/sign-in'], {
 			queryParams: { redirectUrl: state.url }
 		});
@@ -57,6 +58,6 @@ export const accessControlGuard: CanActivateFn = (route, state) => {
 	// Captures the error message when any invalid access scope is identified
 	logger.error(`Access blocked due to invalid ${accessConstraint} scope`);
 
-	// Returns a redirect url tree to the access denied page for unknown users
+	// Returns a url tree redirecting void session onto the access denied page
 	return router.createUrlTree(['/access-denied']);
 };

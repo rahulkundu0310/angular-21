@@ -40,7 +40,7 @@ export const UsersStore = signalStore(
 		// Dependency injections providing direct access to services and injectors
 		const users = inject(Users);
 
-		// Returns methods collection exposing callable features for public access
+		// Returns a method collection containing callable items for public access
 		return {};
 	})
 );
